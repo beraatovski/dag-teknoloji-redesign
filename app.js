@@ -1,10 +1,9 @@
 /**
  * DAĞ TEKNOLOJİ - MODERN WEB PLATFORM & E-COMMERCE ENGINE
- * Real Products (132 Items), Multi-Filter, Stock System, Admin Panel & 3D Engine
+ * Real Products (132 Items), Multi-Filter, Stock System, Admin Panel, Membership System & 3D Engine
  */
 
-// --- STATE MANAGEMENT ---
-// 1. Initialize products from LocalStorage if user/admin made edits, else use window.DAG_PRODUCTS
+// --- INITIAL STATE SETUP ---
 const initialProducts = (function() {
   const saved = localStorage.getItem('dag_custom_products');
   if (saved) {
@@ -16,8 +15,51 @@ const initialProducts = (function() {
   return window.DAG_PRODUCTS || [];
 })();
 
+// Default demo registered user
+const defaultUsers = [
+  {
+    id: 'usr-1',
+    name: 'Ahmet Yılmaz',
+    email: 'ahmet@dag.com',
+    password: '123',
+    phone: '0555 123 4567',
+    company: 'Yılmaz 3D Prototip & Tasarım',
+    accountType: 'corporate',
+    address: 'Halil Rıfat Paşa Mah. Perpa Ticaret Merkezi B Blok Kat: 8 No: 825 Şişli / İstanbul',
+    orders: [
+      {
+        id: '94812',
+        date: '28 Eki, 14:30',
+        itemsSummary: '1x Bambu Lab A1 Mini, 2x Ender 1.75mm PLA Siyah',
+        itemsCount: 3,
+        total: 13299,
+        status: 'Kargoya Verildi'
+      }
+    ],
+    wishlist: ['dt-4873', 'dt-5051', 'dt-4773']
+  }
+];
+
+const storedUsers = (function() {
+  const u = localStorage.getItem('dag_users');
+  if (u) {
+    try { return JSON.parse(u); } catch(e) {}
+  }
+  return defaultUsers;
+})();
+
+const storedCurrentUser = (function() {
+  const u = localStorage.getItem('dag_current_user');
+  if (u) {
+    try { return JSON.parse(u); } catch(e) {}
+  }
+  return null;
+})();
+
 const state = {
   products: initialProducts,
+  users: storedUsers,
+  currentUser: storedCurrentUser,
   cart: JSON.parse(localStorage.getItem('dag_cart') || '[]'),
   orders: JSON.parse(localStorage.getItem('dag_orders') || '[]'),
   isAdmin: sessionStorage.getItem('dag_is_admin') === 'true',
@@ -29,7 +71,7 @@ const state = {
     stockStatus: 'all', // 'all', 'in_stock', 'low_stock', 'out_of_stock'
     searchQuery: '',
     priceMax: 65000,
-    sortBy: 'default', // 'default', 'price_asc', 'price_desc', 'rating', 'stock_desc'
+    sortBy: 'default',
     displayLimit: 24
   },
 
@@ -66,6 +108,7 @@ const MATERIAL_DATA = {
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
   initThreeJsViewport();
+  renderUserNav();
   renderBrandFilters();
   renderProducts();
   updateCartBadge();
@@ -103,7 +146,6 @@ function initThreeJsViewport() {
 
   container.appendChild(renderer.domElement);
 
-  // Lights
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
   scene.add(ambientLight);
 
@@ -120,19 +162,15 @@ function initThreeJsViewport() {
   purplePointLight.position.set(4, -2, -3);
   scene.add(purplePointLight);
 
-  // Build Plate Grid
   createBuildPlate();
 
-  // Create 3D Model Group
   modelGroup = new THREE.Group();
   buildMechanicalPart(modelGroup);
   modelGroup.position.y = 1.2;
   scene.add(modelGroup);
 
-  // Print Head Laser
   createPrintHead();
 
-  // Mouse / Touch Interaction
   let isDragging = false;
   let prevMousePos = { x: 0, y: 0 };
 
@@ -405,27 +443,391 @@ window.handleFileUpload = function(event) {
 };
 
 // ==========================================================================
-// 3. MULTI-FACET FILTER SYSTEM & PRODUCT CATALOG
+// 3. MEMBERSHIP & USER AUTHENTICATION SYSTEM (ÜYELİK SİSTEMİ)
+// ==========================================================================
+function renderUserNav() {
+  const container = document.getElementById('user-nav-container');
+  const mobileContainer = document.getElementById('mobile-user-nav-container');
+  if (!container) return;
+
+  if (state.currentUser) {
+    const u = state.currentUser;
+    const initials = u.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    const wishlistCount = (u.wishlist || []).length;
+
+    container.innerHTML = `
+      <div class="relative">
+        <button onclick="toggleUserDropdown()" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-cyan-500/30 hover:border-cyan-400 text-xs text-white font-medium transition-all shadow-lg">
+          <span class="w-6 h-6 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-[11px]">${initials}</span>
+          <span class="max-w-[100px] truncate hidden md:inline">${u.name}</span>
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400"></i>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-56 rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl p-2 z-50 space-y-1">
+          <div class="px-3 py-2 border-b border-slate-800/80 mb-1">
+            <div class="text-xs font-bold text-white truncate">${u.name}</div>
+            <div class="text-[10px] text-cyan-400 font-mono truncate">${u.email}</div>
+            ${u.company ? `<div class="text-[10px] text-slate-400 truncate mt-0.5">${u.company}</div>` : ''}
+          </div>
+
+          <button onclick="openMyOrdersModal(); toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center justify-between transition-colors">
+            <span class="flex items-center gap-2">
+              <i data-lucide="package" class="w-4 h-4 text-cyan-400"></i>
+              <span>Siparişlerim</span>
+            </span>
+            <span class="text-[10px] bg-cyan-500/20 text-cyan-400 px-1.5 py-0.2 rounded-full font-mono">${(u.orders || []).length}</span>
+          </button>
+
+          <button onclick="openWishlistModal(); toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center justify-between transition-colors">
+            <span class="flex items-center gap-2">
+              <i data-lucide="heart" class="w-4 h-4 text-rose-400"></i>
+              <span>Favorilerim</span>
+            </span>
+            <span class="text-[10px] bg-rose-500/20 text-rose-400 px-1.5 py-0.2 rounded-full font-mono">${wishlistCount}</span>
+          </button>
+
+          <button onclick="openProfileModal(); toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center gap-2 transition-colors">
+            <i data-lucide="user-check" class="w-4 h-4 text-emerald-400"></i>
+            <span>Hesap Bilgilerim</span>
+          </button>
+
+          <div class="border-t border-slate-800/80 pt-1 mt-1">
+            <button onclick="userLogout()" class="w-full text-left px-3 py-2 rounded-xl text-xs text-rose-400 hover:bg-rose-500/10 flex items-center gap-2 transition-colors">
+              <i data-lucide="log-out" class="w-4 h-4"></i>
+              <span>Oturumu Kapat</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    if (mobileContainer) {
+      mobileContainer.innerHTML = `
+        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800">
+          <div class="flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs">${initials}</span>
+            <div>
+              <div class="text-xs font-bold text-white">${u.name}</div>
+              <div class="text-[10px] text-cyan-400 font-mono">${u.email}</div>
+            </div>
+          </div>
+          <button onclick="userLogout()" class="text-xs text-rose-400 hover:underline">Çıkış</button>
+        </div>
+      `;
+    }
+  } else {
+    // Guest state
+    container.innerHTML = `
+      <button onclick="openAuthModal('login')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-cyan-400 text-xs text-slate-300 hover:text-white transition-all font-semibold">
+        <i data-lucide="user" class="w-4 h-4 text-cyan-400"></i>
+        <span class="hidden md:inline">Giriş Yap / Üye Ol</span>
+      </button>
+    `;
+
+    if (mobileContainer) {
+      mobileContainer.innerHTML = `
+        <button onclick="openAuthModal('login')" class="w-full py-2.5 rounded-xl glow-cyan-btn text-slate-950 text-xs font-bold flex items-center justify-center gap-2">
+          <i data-lucide="user" class="w-4 h-4"></i>
+          <span>Giriş Yap veya Üye Ol</span>
+        </button>
+      `;
+    }
+  }
+
+  lucide.createIcons();
+}
+
+window.toggleUserDropdown = function(force) {
+  const menu = document.getElementById('user-dropdown-menu');
+  if (!menu) return;
+  if (force !== undefined) {
+    menu.classList.toggle('hidden', !force);
+  } else {
+    menu.classList.toggle('hidden');
+  }
+};
+
+window.openAuthModal = function(tab = 'login') {
+  switchAuthTab(tab);
+  openModal('auth-modal');
+};
+
+window.switchAuthTab = function(tab) {
+  const loginTab = document.getElementById('auth-tab-login');
+  const signupTab = document.getElementById('auth-tab-signup');
+  const loginForm = document.getElementById('auth-login-form-box');
+  const signupForm = document.getElementById('auth-signup-form-box');
+
+  if (tab === 'login') {
+    loginTab.classList.add('border-cyan-400', 'text-cyan-400');
+    loginTab.classList.remove('border-transparent', 'text-slate-400');
+    signupTab.classList.remove('border-cyan-400', 'text-cyan-400');
+    signupTab.classList.add('border-transparent', 'text-slate-400');
+    loginForm.classList.remove('hidden');
+    signupForm.classList.add('hidden');
+  } else {
+    signupTab.classList.add('border-cyan-400', 'text-cyan-400');
+    signupTab.classList.remove('border-transparent', 'text-slate-400');
+    loginTab.classList.remove('border-cyan-400', 'text-cyan-400');
+    loginTab.classList.add('border-transparent', 'text-slate-400');
+    signupForm.classList.remove('hidden');
+    loginForm.classList.add('hidden');
+  }
+};
+
+window.handleUserLogin = function(e) {
+  e.preventDefault();
+  const emailInput = document.getElementById('login-email').value.trim().toLowerCase();
+  const passwordInput = document.getElementById('login-password').value;
+
+  const found = state.users.find(u => (u.email.toLowerCase() === emailInput || u.phone === emailInput) && u.password === passwordInput);
+  
+  if (found) {
+    state.currentUser = found;
+    localStorage.setItem('dag_current_user', JSON.stringify(found));
+    closeModal('auth-modal');
+    renderUserNav();
+    renderProducts();
+    showToast(`Hoş geldiniz Sayın ${found.name}!`, 'success');
+  } else {
+    showToast('Hatalı e-posta veya şifre! (Demo için: ahmet@dag.com / 123)', 'error');
+  }
+};
+
+window.handleDemoLogin = function() {
+  const demoUser = state.users[0] || defaultUsers[0];
+  state.currentUser = demoUser;
+  localStorage.setItem('dag_current_user', JSON.stringify(demoUser));
+  closeModal('auth-modal');
+  renderUserNav();
+  renderProducts();
+  showToast(`Demo hesabı ile giriş yapıldı: ${demoUser.name}`, 'success');
+};
+
+window.handleUserSignup = function(e) {
+  e.preventDefault();
+  const name = document.getElementById('signup-name').value.trim();
+  const email = document.getElementById('signup-email').value.trim().toLowerCase();
+  const phone = document.getElementById('signup-phone').value.trim();
+  const password = document.getElementById('signup-password').value;
+  const company = document.getElementById('signup-company').value.trim();
+  const accountType = document.querySelector('input[name="account-type"]:checked')?.value || 'individual';
+
+  if (state.users.some(u => u.email.toLowerCase() === email)) {
+    showToast('Bu e-posta adresiyle kayıtlı bir hesap zaten var!', 'error');
+    return;
+  }
+
+  const newUser = {
+    id: 'usr-' + Date.now(),
+    name: name,
+    email: email,
+    phone: phone,
+    password: password,
+    company: company,
+    accountType: accountType,
+    address: 'İstanbul, Türkiye',
+    orders: [],
+    wishlist: []
+  };
+
+  state.users.push(newUser);
+  localStorage.setItem('dag_users', JSON.stringify(state.users));
+
+  state.currentUser = newUser;
+  localStorage.setItem('dag_current_user', JSON.stringify(newUser));
+
+  closeModal('auth-modal');
+  renderUserNav();
+  renderProducts();
+  showToast(`Aramıza hoş geldiniz Sayın ${name}! Hesabınız oluşturuldu.`, 'success');
+};
+
+window.userLogout = function() {
+  state.currentUser = null;
+  localStorage.removeItem('dag_current_user');
+  renderUserNav();
+  renderProducts();
+  showToast('Oturumunuz başarıyla kapatıldı.');
+};
+
+window.toggleWishlist = function(productId) {
+  if (!state.currentUser) {
+    showToast('Favorilerinize eklemek için lütfen giriş yapın veya üye olun.', 'info');
+    openAuthModal('login');
+    return;
+  }
+
+  const u = state.currentUser;
+  if (!u.wishlist) u.wishlist = [];
+
+  const index = u.wishlist.indexOf(productId);
+  const prod = state.products.find(p => p.id === productId);
+  const prodName = prod ? prod.name : 'Ürün';
+
+  if (index >= 0) {
+    u.wishlist.splice(index, 1);
+    showToast(`${prodName} favorilerden çıkarıldı.`);
+  } else {
+    u.wishlist.push(productId);
+    showToast(`${prodName} favorilerinize eklendi!`, 'success');
+  }
+
+  // Persist
+  localStorage.setItem('dag_current_user', JSON.stringify(u));
+  const userIdx = state.users.findIndex(item => item.id === u.id);
+  if (userIdx >= 0) {
+    state.users[userIdx].wishlist = u.wishlist;
+    localStorage.setItem('dag_users', JSON.stringify(state.users));
+  }
+
+  renderUserNav();
+  renderProducts();
+};
+
+window.openMyOrdersModal = function() {
+  if (!state.currentUser) return;
+  const u = state.currentUser;
+  const listEl = document.getElementById('user-orders-list');
+  const emptyEl = document.getElementById('user-orders-empty');
+
+  const orders = u.orders || [];
+  if (orders.length === 0) {
+    if (listEl) listEl.innerHTML = '';
+    if (emptyEl) emptyEl.classList.remove('hidden');
+  } else {
+    if (emptyEl) emptyEl.classList.add('hidden');
+    if (listEl) {
+      listEl.innerHTML = orders.map(o => `
+        <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-mono font-bold text-cyan-400">#ORD-${o.id}</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold">${o.status || 'Hazırlanıyor'}</span>
+            </div>
+            <p class="text-xs text-white font-medium line-clamp-1">${o.itemsSummary || (o.itemsCount + ' Adet Ürün')}</p>
+            <span class="text-[11px] text-slate-400 font-mono">${o.date}</span>
+          </div>
+
+          <div class="text-right flex sm:flex-col justify-between items-center sm:items-end">
+            <span class="text-sm font-extrabold text-white font-mono">${(o.total || 0).toLocaleString('tr-TR')} ₺</span>
+            <span class="text-[10px] text-cyan-400">Perpa Depo Teslim</span>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  openModal('user-orders-modal');
+  lucide.createIcons();
+};
+
+window.openWishlistModal = function() {
+  if (!state.currentUser) return;
+  const u = state.currentUser;
+  const container = document.getElementById('wishlist-items-container');
+  const emptyEl = document.getElementById('wishlist-empty-message');
+
+  const favIds = u.wishlist || [];
+  const favProducts = state.products.filter(p => favIds.includes(p.id));
+
+  if (favProducts.length === 0) {
+    if (container) container.innerHTML = '';
+    if (emptyEl) emptyEl.classList.remove('hidden');
+  } else {
+    if (emptyEl) emptyEl.classList.add('hidden');
+    if (container) {
+      container.innerHTML = favProducts.map(p => {
+        const stock = Number(p.stock !== undefined ? p.stock : 10);
+        const isOutOfStock = stock <= 0;
+
+        return `
+          <div class="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/80 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 flex-1 pr-2">
+              <img src="${p.image || p.remoteImage}" class="w-12 h-12 object-contain rounded-lg bg-slate-900 p-1 border border-slate-700/60" onerror="this.src='assets/logo.svg';" />
+              <div>
+                <h4 class="text-xs font-bold text-white line-clamp-1">${p.name}</h4>
+                <div class="flex items-center gap-2 mt-0.5">
+                  <span class="text-xs font-bold text-cyan-400">${p.price.toLocaleString('tr-TR')} ₺</span>
+                  ${isOutOfStock ? `<span class="text-[10px] text-rose-400">Tükendi</span>` : `<span class="text-[10px] text-emerald-400">Stokta (${stock})</span>`}
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              ${isOutOfStock ? `
+                <button disabled class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-500 text-xs font-bold cursor-not-allowed">Tükendi</button>
+              ` : `
+                <button onclick="addToCart('${p.id}'); closeModal('wishlist-modal');" class="px-3 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-1 shadow-md">
+                  <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+                  <span>Sepete</span>
+                </button>
+              `}
+              <button onclick="toggleWishlist('${p.id}'); openWishlistModal();" class="p-1.5 rounded-lg text-slate-500 hover:text-rose-400">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  openModal('wishlist-modal');
+  lucide.createIcons();
+};
+
+window.openProfileModal = function() {
+  if (!state.currentUser) return;
+  const u = state.currentUser;
+
+  document.getElementById('profile-name').value = u.name;
+  document.getElementById('profile-email').value = u.email;
+  document.getElementById('profile-phone').value = u.phone || '';
+  document.getElementById('profile-company').value = u.company || '';
+  document.getElementById('profile-address').value = u.address || '';
+
+  openModal('user-profile-modal');
+};
+
+window.handleSaveProfile = function(e) {
+  e.preventDefault();
+  if (!state.currentUser) return;
+
+  state.currentUser.name = document.getElementById('profile-name').value.trim();
+  state.currentUser.phone = document.getElementById('profile-phone').value.trim();
+  state.currentUser.company = document.getElementById('profile-company').value.trim();
+  state.currentUser.address = document.getElementById('profile-address').value.trim();
+
+  localStorage.setItem('dag_current_user', JSON.stringify(state.currentUser));
+  const idx = state.users.findIndex(item => item.id === state.currentUser.id);
+  if (idx >= 0) {
+    state.users[idx] = state.currentUser;
+    localStorage.setItem('dag_users', JSON.stringify(state.users));
+  }
+
+  closeModal('user-profile-modal');
+  renderUserNav();
+  showToast('Hesap bilgileriniz başarıyla güncellendi!', 'success');
+};
+
+// ==========================================================================
+// 4. MULTI-FACET FILTER SYSTEM & PRODUCT CATALOG
 // ==========================================================================
 function getFilteredProducts() {
   const f = state.filters;
   let items = state.products.filter(p => {
-    // 1. Category Filter
     if (f.category !== 'all' && p.category !== f.category) return false;
-
-    // 2. Brand Filter
     if (f.brand !== 'all' && (p.brand || 'Diğer') !== f.brand) return false;
 
-    // 3. Stock Status Filter
     const stock = Number(p.stock !== undefined ? p.stock : 10);
     if (f.stockStatus === 'in_stock' && stock <= 0) return false;
     if (f.stockStatus === 'low_stock' && (stock <= 0 || stock > 5)) return false;
     if (f.stockStatus === 'out_of_stock' && stock > 0) return false;
 
-    // 4. Price Max Filter
     if (f.priceMax && p.price > f.priceMax) return false;
 
-    // 5. Search Query
     if (f.searchQuery) {
       const q = f.searchQuery.toLowerCase();
       const nameMatch = p.name.toLowerCase().includes(q);
@@ -438,7 +840,6 @@ function getFilteredProducts() {
     return true;
   });
 
-  // Sorting
   if (f.sortBy === 'price_asc') {
     items.sort((a, b) => a.price - b.price);
   } else if (f.sortBy === 'price_desc') {
@@ -587,12 +988,14 @@ function renderProducts() {
     return;
   }
 
+  const wishlist = (state.currentUser && state.currentUser.wishlist) || [];
+
   container.innerHTML = visibleItems.map(p => {
     const stock = Number(p.stock !== undefined ? p.stock : 10);
     const isOutOfStock = stock <= 0;
     const isLowStock = stock > 0 && stock <= 5;
+    const isFavorited = wishlist.includes(p.id);
 
-    // Stock Badge HTML
     let stockBadgeHtml = '';
     if (isOutOfStock) {
       stockBadgeHtml = `
@@ -657,7 +1060,6 @@ function renderProducts() {
               ${p.subtitle || p.desc}
             </p>
 
-            <!-- Specs Pills -->
             <div class="flex flex-wrap gap-1 mb-5">
               ${(p.specs || []).slice(0, 2).map(s => `
                 <span class="text-[10px] bg-slate-800/80 border border-slate-700/60 text-slate-300 px-2 py-0.5 rounded">
@@ -677,16 +1079,21 @@ function renderProducts() {
             </div>
             
             <div class="flex items-center gap-1.5">
-              <button onclick="openProductModal('${p.id}')" title="Hızlı İncele" class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700">
+              <!-- Wishlist Heart Button -->
+              <button onclick="toggleWishlist('${p.id}')" title="${isFavorited ? 'Favorilerden Çıkar' : 'Favorilere Ekle'}" class="wishlist-btn ${isFavorited ? 'active text-rose-500 bg-rose-500/15 border-rose-500/40' : 'text-slate-400 hover:text-rose-400 bg-slate-800/80'} p-2 rounded-xl transition-all border border-slate-700">
+                <i data-lucide="heart" class="w-4 h-4 ${isFavorited ? 'fill-rose-500 text-rose-500' : ''}"></i>
+              </button>
+
+              <button onclick="openProductModal('${p.id}')" title="Hızlı İncele" class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700">
                 <i data-lucide="eye" class="w-4 h-4"></i>
               </button>
               
               ${isOutOfStock ? `
-                <button disabled class="px-3.5 py-2.5 rounded-xl bg-slate-800/80 text-slate-500 font-bold text-xs cursor-not-allowed border border-slate-700">
+                <button disabled class="px-3.5 py-2 rounded-xl bg-slate-800/80 text-slate-500 font-bold text-xs cursor-not-allowed border border-slate-700">
                   <span>Tükendi</span>
                 </button>
               ` : `
-                <button onclick="addToCart('${p.id}')" class="px-3.5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-lg shadow-cyan-500/20 active:scale-95">
+                <button onclick="addToCart('${p.id}')" class="px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-lg shadow-cyan-500/20 active:scale-95">
                   <i data-lucide="shopping-bag" class="w-4 h-4"></i>
                   <span>Ekle</span>
                 </button>
@@ -712,7 +1119,7 @@ function getCategoryName(cat) {
 }
 
 // ==========================================================================
-// 4. E-COMMERCE SHOPPING CART & REAL STOCK RESERVATION
+// 5. E-COMMERCE SHOPPING CART & REAL STOCK RESERVATION
 // ==========================================================================
 window.addToCart = function(productId, qty = 1) {
   const prod = state.products.find(p => p.id === productId);
@@ -876,11 +1283,24 @@ window.removeFromCart = function(id) {
 window.processCheckout = function() {
   if (state.cart.length === 0) return;
   toggleCartDrawer(false);
+
+  // Autofill user information if logged in
+  if (state.currentUser) {
+    const u = state.currentUser;
+    const nameEl = document.getElementById('checkout-name');
+    const phoneEl = document.getElementById('checkout-phone');
+    const addrEl = document.getElementById('checkout-address');
+
+    if (nameEl) nameEl.value = u.name;
+    if (phoneEl) phoneEl.value = u.phone || '';
+    if (addrEl) addrEl.value = u.address || '';
+  }
+
   openModal('checkout-modal');
 };
 
 // ==========================================================================
-// 5. PRODUCT DETAIL MODAL (QUICK-VIEW)
+// 6. PRODUCT DETAIL MODAL (QUICK-VIEW)
 // ==========================================================================
 window.openProductModal = function(productId) {
   const p = state.products.find(item => item.id === productId);
@@ -891,6 +1311,8 @@ window.openProductModal = function(productId) {
 
   const stock = Number(p.stock !== undefined ? p.stock : 10);
   const isOutOfStock = stock <= 0;
+  const wishlist = (state.currentUser && state.currentUser.wishlist) || [];
+  const isFavorited = wishlist.includes(p.id);
 
   content.innerHTML = `
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -943,7 +1365,7 @@ window.openProductModal = function(productId) {
           <span class="text-xs text-emerald-400 font-medium">KDV Dahil</span>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2.5">
           ${isOutOfStock ? `
             <button disabled class="flex-1 py-3 px-6 rounded-xl bg-slate-800 text-slate-500 font-bold text-sm cursor-not-allowed">
               Ürün Şu Anda Tükendi
@@ -955,6 +1377,10 @@ window.openProductModal = function(productId) {
             </button>
           `}
           
+          <button onclick="toggleWishlist('${p.id}'); openProductModal('${p.id}');" class="p-3 rounded-xl border border-slate-800 ${isFavorited ? 'text-rose-500 bg-rose-500/15' : 'text-slate-400 hover:text-rose-400 bg-slate-800'}" title="Favorilere Ekle">
+            <i data-lucide="heart" class="w-5 h-5 ${isFavorited ? 'fill-rose-500' : ''}"></i>
+          </button>
+
           <a href="https://wa.me/905070201198?text=Merhaba,%20${encodeURIComponent(p.name)}%20(SKU:%20${p.sku || p.id})%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" class="p-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 transition-colors" title="WhatsApp ile Sor">
             <i data-lucide="message-circle" class="w-5 h-5"></i>
           </a>
@@ -968,7 +1394,7 @@ window.openProductModal = function(productId) {
 };
 
 // ==========================================================================
-// 6. ADMIN PANEL SYSTEM (YÖNETİCİ PANELİ - CRUD & STOK)
+// 7. ADMIN PANEL SYSTEM (YÖNETİCİ PANELİ - CRUD & STOK)
 // ==========================================================================
 window.openAdminLogin = function() {
   if (state.isAdmin) {
@@ -1216,7 +1642,6 @@ window.handleSaveProductForm = function(e) {
   const specs = rawSpecs.split(',').map(s => s.trim()).filter(Boolean);
 
   if (editId) {
-    // Update existing
     const p = state.products.find(item => item.id === editId);
     if (p) {
       p.name = name;
@@ -1232,7 +1657,6 @@ window.handleSaveProductForm = function(e) {
       showToast(`${p.name} başarıyla güncellendi!`, 'success');
     }
   } else {
-    // Create new
     const newId = 'dt-custom-' + Date.now();
     const newProduct = {
       id: newId,
@@ -1284,7 +1708,7 @@ function saveProductsState() {
 }
 
 // ==========================================================================
-// 7. TOAST NOTIFICATIONS & MODALS
+// 8. TOAST NOTIFICATIONS & MODALS
 // ==========================================================================
 window.openModal = function(modalId) {
   const modal = document.getElementById(modalId);
@@ -1349,16 +1773,15 @@ function setupEventListeners() {
     });
   }
 
-  // Checkout Form - Real Stock Deduction
+  // Checkout Form - Real Stock Deduction & Order Record
   const checkoutForm = document.getElementById('checkout-form');
   if (checkoutForm) {
     checkoutForm.addEventListener('submit', (e) => {
       e.preventDefault();
       
-      const nameInput = checkoutForm.querySelector('input[type="text"]');
-      const customerName = nameInput ? nameInput.value : 'Müşteri';
+      const nameInput = document.getElementById('checkout-name');
+      const customerName = (nameInput && nameInput.value.trim()) || (state.currentUser ? state.currentUser.name : 'Müşteri');
 
-      // Deduct purchased quantities from stock
       let totalAmount = 0;
       const itemsSummaryList = [];
 
@@ -1371,28 +1794,41 @@ function setupEventListeners() {
         }
       });
 
-      // Save order record
       const newOrder = {
         id: Math.floor(10000 + Math.random() * 90000),
         customer: customerName,
         itemsCount: state.cart.reduce((s, i) => s + i.quantity, 0),
         itemsSummary: itemsSummaryList.slice(0, 2).join(', '),
         total: totalAmount,
+        status: 'Sipariş Alındı',
         date: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
       };
+
+      // Push to global orders
       state.orders.unshift(newOrder);
       localStorage.setItem('dag_orders', JSON.stringify(state.orders));
 
-      // Persist new stock
+      // Push to current user orders if logged in
+      if (state.currentUser) {
+        if (!state.currentUser.orders) state.currentUser.orders = [];
+        state.currentUser.orders.unshift(newOrder);
+        localStorage.setItem('dag_current_user', JSON.stringify(state.currentUser));
+
+        const uIdx = state.users.findIndex(u => u.id === state.currentUser.id);
+        if (uIdx >= 0) {
+          state.users[uIdx].orders = state.currentUser.orders;
+          localStorage.setItem('dag_users', JSON.stringify(state.users));
+        }
+        renderUserNav();
+      }
+
       saveProductsState();
 
-      // Clear cart
       state.cart = [];
       saveCart();
       updateCartBadge();
       closeModal('checkout-modal');
 
-      // Refresh product cards and admin table
       renderProducts();
       renderAdminStats();
       renderAdminProductsTable();
