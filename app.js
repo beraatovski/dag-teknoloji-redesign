@@ -488,9 +488,9 @@ function renderUserNav() {
 
     container.innerHTML = `
       <div class="relative">
-        <button onclick="toggleUserDropdown()" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-cyan-500/30 hover:border-cyan-400 text-xs text-white font-medium transition-all shadow-lg">
+        <button onclick="toggleUserDropdown()" class="flex items-center gap-2.5 px-3.5 sm:px-4 py-2.5 rounded-xl bg-slate-900/90 border border-cyan-500/40 hover:border-cyan-400 text-xs text-white font-semibold transition-all shadow-md">
           <span class="w-6 h-6 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-[11px]">${initials}</span>
-          <span class="max-w-[100px] truncate hidden md:inline">${u.name}</span>
+          <span class="max-w-[110px] truncate hidden md:inline">${u.name}</span>
           <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400"></i>
         </button>
 
@@ -550,7 +550,7 @@ function renderUserNav() {
   } else {
     // Guest state
     container.innerHTML = `
-      <button onclick="openAuthModal('login')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-cyan-400 text-xs text-slate-300 hover:text-white transition-all font-semibold">
+      <button onclick="openAuthModal('login')" class="flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-400 text-xs text-slate-300 hover:text-white transition-all font-semibold shadow-sm">
         <i data-lucide="user" class="w-4 h-4 text-cyan-400"></i>
         <span class="hidden md:inline">Giriş Yap / Üye Ol</span>
       </button>
