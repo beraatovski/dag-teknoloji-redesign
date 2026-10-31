@@ -4,7 +4,8 @@
  */
 
 // --- PRODUCT DATABASE ---
-const PRODUCTS = [
+// Loads all real scraped products from products.js (132 products from dagteknoloji.com.tr)
+const PRODUCTS = (window.DAG_PRODUCTS && window.DAG_PRODUCTS.length > 0) ? window.DAG_PRODUCTS : [
   // 3D Yazıcılar
   {
     id: 'pr-1',
@@ -695,17 +696,19 @@ function renderProducts() {
           </div>
         </div>
 
-        <!-- Custom Tech Mockup Box -->
-        <div class="w-full h-44 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-center relative overflow-hidden group-hover:border-cyan-500/40 transition-colors">
-          <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/5 to-indigo-500/10 pointer-events-none"></div>
-          
-          <!-- Category Specific Tech Icon Artwork -->
-          <div class="w-20 h-20 rounded-2xl bg-slate-800/90 border border-slate-700/80 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:text-cyan-300 transition-all duration-300 shadow-xl shadow-cyan-950/20">
+        <!-- Real Product Image Display with Graceful Fallback -->
+        <div class="w-full h-48 rounded-xl bg-slate-950/70 border border-slate-800/80 p-3 flex items-center justify-center relative overflow-hidden group-hover:border-cyan-500/40 transition-all">
+          <img 
+            src="${p.image || p.remoteImage}" 
+            alt="${p.name}" 
+            class="max-h-full max-w-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300"
+            loading="lazy"
+            onerror="if(this.src!=='${p.remoteImage}' && '${p.remoteImage}'){this.src='${p.remoteImage}';}else{this.style.display='none';this.nextElementSibling.classList.remove('hidden');}"
+          />
+          <div class="hidden w-20 h-20 rounded-2xl bg-slate-800/90 border border-slate-700/80 flex items-center justify-center text-cyan-400">
             <i data-lucide="${p.icon}" class="w-10 h-10"></i>
           </div>
-
-          <!-- Subtle watermark badge -->
-          <span class="absolute bottom-2 right-3 text-[10px] tracking-wider font-mono text-slate-500 uppercase">Perpa Stok</span>
+          <span class="absolute bottom-2 right-2 text-[9px] tracking-wider font-mono text-slate-400 bg-slate-900/90 px-1.5 py-0.5 rounded border border-slate-800 uppercase">Perpa Stok</span>
         </div>
       </div>
 
@@ -961,9 +964,14 @@ window.openProductModal = function(productId) {
   content.innerHTML = `
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- Visual Column -->
-      <div class="p-8 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col items-center justify-center text-center">
-        <div class="w-28 h-28 rounded-3xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-6 shadow-2xl shadow-cyan-500/20">
-          <i data-lucide="${p.icon}" class="w-14 h-14"></i>
+      <div class="p-6 rounded-2xl bg-slate-950/90 border border-slate-800 flex flex-col items-center justify-center text-center">
+        <div class="w-full h-64 rounded-2xl bg-slate-900/60 p-4 flex items-center justify-center mb-4">
+          <img 
+            src="${p.image || p.remoteImage}" 
+            alt="${p.name}" 
+            class="max-h-full max-w-full object-contain filter drop-shadow-lg" 
+            onerror="if(this.src!=='${p.remoteImage}' && '${p.remoteImage}'){this.src='${p.remoteImage}';}" 
+          />
         </div>
         <span class="text-xs font-semibold px-3 py-1 rounded-full border ${p.badgeColor} mb-2">${p.badge}</span>
         <span class="text-xs text-slate-400 font-mono">Perpa Ticaret Merkezi B Blok No:825 Stok Teslim</span>
