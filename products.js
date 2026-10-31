@@ -1,5 +1,5 @@
 ﻿/**
- * DAĞ TEKNOLOJİ - GERÇEK ÜRÜN VERİ TABANI (132 Ürün)
+ * DAĞ TEKNOLOJİ - GERÇEK ÜRÜN VERİ TABANI (132 Ürün + Stok Entegrasyonu)
  * Kaynak: https://dagteknoloji.com.tr/
  */
 window.DAG_PRODUCTS = [
@@ -23,7 +23,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "AçıklamalarBambu Lab A1 Mini 3D YazıcıGenel ÖzelliklerMulti-Color PrintingPlug-N-PlayActive Flow Rat.."
+        "desc":  "AçıklamalarBambu Lab A1 Mini 3D YazıcıGenel ÖzelliklerMulti-Color PrintingPlug-N-PlayActive Flow Rat..",
+        "brand":  "Bambu Lab",
+        "sku":  "DT-4873",
+        "stock":  6
     },
     {
         "id":  "dt-4871",
@@ -45,7 +48,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb.."
+        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb..",
+        "brand":  "Ender",
+        "sku":  "DT-4871",
+        "stock":  25
     },
     {
         "id":  "dt-4773",
@@ -67,7 +73,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "FLSUN S1, yüksek hız, yüksek hassasiyet ve geniş baskı hacmi sunan bir FDM 3D yazıcıdır. Hobiciler v.."
+        "desc":  "FLSUN S1, yüksek hız, yüksek hassasiyet ve geniş baskı hacmi sunan bir FDM 3D yazıcıdır. Hobiciler v..",
+        "brand":  "Flsun",
+        "sku":  "DT-4773",
+        "stock":  32
     },
     {
         "id":  "dt-4774",
@@ -89,7 +98,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "FLSUN T1, yüksek hassasiyet ve hıza sahip, kompakt boyutlu bir FDM 3D yazıcıdır. Hobi kullanıcıları .."
+        "desc":  "FLSUN T1, yüksek hassasiyet ve hıza sahip, kompakt boyutlu bir FDM 3D yazıcıdır. Hobi kullanıcıları ..",
+        "brand":  "Flsun",
+        "sku":  "DT-4774",
+        "stock":  11
     },
     {
         "id":  "dt-4816",
@@ -111,7 +123,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "Creality firmasının üretmiş olduğu Falcon2 Pro 40W sağlam ve güvenli bir yapıya sahiptir. Eski versi.."
+        "desc":  "Creality firmasının üretmiş olduğu Falcon2 Pro 40W sağlam ve güvenli bir yapıya sahiptir. Eski versi..",
+        "brand":  "Creality",
+        "sku":  "DT-4816",
+        "stock":  18
     },
     {
         "id":  "dt-4812",
@@ -133,7 +148,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "Snapmaker Ray (40 Watt) 3D Lazer Kesim ve Oyma MakinesiSnapmaker Ray Lazer Kesim ve Oyma Makinesi, 4.."
+        "desc":  "Snapmaker Ray (40 Watt) 3D Lazer Kesim ve Oyma MakinesiSnapmaker Ray Lazer Kesim ve Oyma Makinesi, 4..",
+        "brand":  "Snapmaker",
+        "sku":  "DT-4812",
+        "stock":  0
     },
     {
         "id":  "dt-5163",
@@ -155,7 +173,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "Ferret Pro, taşınabilir, kablosuz ve yüksek hassasiyetli tam renkli 3D tarama sağlayan el tipi bir 3.."
+        "desc":  "Ferret Pro, taşınabilir, kablosuz ve yüksek hassasiyetli tam renkli 3D tarama sağlayan el tipi bir 3..",
+        "brand":  "Creality",
+        "sku":  "DT-5163",
+        "stock":  32
     },
     {
         "id":  "dt-5162",
@@ -177,7 +198,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "Otter Lite, taşınabilir, kablosuz destekli, yüksek doğrulukta (±0.05 mm) renkli 3D tarama yapan ciha.."
+        "desc":  "Otter Lite, taşınabilir, kablosuz destekli, yüksek doğrulukta (±0.05 mm) renkli 3D tarama yapan ciha..",
+        "brand":  "Creality",
+        "sku":  "DT-5162",
+        "stock":  2
     },
     {
         "id":  "dt-5029",
@@ -199,7 +223,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "Creality CR-Scan Raptor 3D Tarayıcı *7 Mavi Paralel Lazer Çizgisi *Metroloji Sınıf D.."
+        "desc":  "Creality CR-Scan Raptor 3D Tarayıcı *7 Mavi Paralel Lazer Çizgisi *Metroloji Sınıf D..",
+        "brand":  "Creality",
+        "sku":  "DT-5029",
+        "stock":  18
     },
     {
         "id":  "dt-5161",
@@ -221,7 +248,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "Profesyonel 3D TarayıcıCreality Raptor Pro22 Çapraz + 7 Paralel Mavi Lazer ve NIR yapısal ışık tekno.."
+        "desc":  "Profesyonel 3D TarayıcıCreality Raptor Pro22 Çapraz + 7 Paralel Mavi Lazer ve NIR yapısal ışık tekno..",
+        "brand":  "Creality",
+        "sku":  "DT-5161",
+        "stock":  25
     },
     {
         "id":  "dt-4886",
@@ -243,7 +273,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu sayede yeni nesil hızlı yazı.."
+        "desc":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu sayede yeni nesil hızlı yazı..",
+        "brand":  "Creality",
+        "sku":  "DT-4886",
+        "stock":  32
     },
     {
         "id":  "dt-4885",
@@ -265,7 +298,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu sayede yeni nesil hızlı yazı.."
+        "desc":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu sayede yeni nesil hızlı yazı..",
+        "brand":  "Creality",
+        "sku":  "DT-4885",
+        "stock":  11
     },
     {
         "id":  "dt-4883",
@@ -287,7 +323,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu sayede yeni nesil hızlı yazı.."
+        "desc":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu sayede yeni nesil hızlı yazı..",
+        "brand":  "Creality",
+        "sku":  "DT-4883",
+        "stock":  18
     },
     {
         "id":  "dt-4879",
@@ -309,7 +348,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu sayede yeni nesil hızlı yazı.."
+        "desc":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu sayede yeni nesil hızlı yazı..",
+        "brand":  "Creality",
+        "sku":  "DT-4879",
+        "stock":  25
     },
     {
         "id":  "dt-4878",
@@ -331,7 +373,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu sayede yeni nesil hızlı yazı.."
+        "desc":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu sayede yeni nesil hızlı yazı..",
+        "brand":  "Creality",
+        "sku":  "DT-4878",
+        "stock":  0
     },
     {
         "id":  "dt-5020",
@@ -353,7 +398,10 @@ window.DAG_PRODUCTS = [
                       "Orijinal Garanti",
                       "Perpa Servis"
                   ],
-        "desc":  "Creality Falcon A1 20W Lazer Kazıyıcı ve Kesici 20W gücündeki diyot lazeri, 0.06x0.08mm\u0027lik sıkıştır.."
+        "desc":  "Creality Falcon A1 20W Lazer Kazıyıcı ve Kesici 20W gücündeki diyot lazeri, 0.06x0.08mm\u0027lik sıkıştır..",
+        "brand":  "Creality",
+        "sku":  "DT-5020",
+        "stock":  11
     },
     {
         "id":  "dt-5051",
@@ -375,7 +423,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb.."
+        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb..",
+        "brand":  "Ender",
+        "sku":  "DT-5051",
+        "stock":  18
     },
     {
         "id":  "dt-4853",
@@ -397,7 +448,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb.."
+        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb..",
+        "brand":  "Ender",
+        "sku":  "DT-4853",
+        "stock":  25
     },
     {
         "id":  "dt-4856",
@@ -419,7 +473,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb.."
+        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb..",
+        "brand":  "Ender",
+        "sku":  "DT-4856",
+        "stock":  32
     },
     {
         "id":  "dt-4855",
@@ -441,7 +498,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb.."
+        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb..",
+        "brand":  "Ender",
+        "sku":  "DT-4855",
+        "stock":  11
     },
     {
         "id":  "dt-4857",
@@ -463,7 +523,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb.."
+        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb..",
+        "brand":  "Ender",
+        "sku":  "DT-4857",
+        "stock":  18
     },
     {
         "id":  "dt-4854",
@@ -485,7 +548,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb.."
+        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb..",
+        "brand":  "Ender",
+        "sku":  "DT-4854",
+        "stock":  1
     },
     {
         "id":  "dt-4847",
@@ -507,7 +573,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb.."
+        "desc":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı kalitesi sağlar\u0026nb..",
+        "brand":  "Ender",
+        "sku":  "DT-4847",
+        "stock":  32
     },
     {
         "id":  "dt-5166",
@@ -529,7 +598,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Baskı Kolaylığı PLA+, PLA\u0027nın geliştirilmiş bir versiyonudur. Yüksek mukavemet ve tokluğa sahi.."
+        "desc":  "Baskı Kolaylığı PLA+, PLA\u0027nın geliştirilmiş bir versiyonudur. Yüksek mukavemet ve tokluğa sahi..",
+        "brand":  "Diğer",
+        "sku":  "DT-5166",
+        "stock":  11
     },
     {
         "id":  "dt-5167",
@@ -551,7 +623,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5167",
+        "stock":  18
     },
     {
         "id":  "dt-5168",
@@ -573,7 +648,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5168",
+        "stock":  25
     },
     {
         "id":  "dt-5169",
@@ -595,7 +673,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5169",
+        "stock":  32
     },
     {
         "id":  "dt-5180",
@@ -617,7 +698,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5180",
+        "stock":  11
     },
     {
         "id":  "dt-5170",
@@ -639,7 +723,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5170",
+        "stock":  0
     },
     {
         "id":  "dt-5171",
@@ -661,7 +748,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5171",
+        "stock":  25
     },
     {
         "id":  "dt-5173",
@@ -683,7 +773,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5173",
+        "stock":  32
     },
     {
         "id":  "dt-5174",
@@ -705,7 +798,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5174",
+        "stock":  11
     },
     {
         "id":  "dt-5175",
@@ -727,7 +823,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5175",
+        "stock":  18
     },
     {
         "id":  "dt-5177",
@@ -749,7 +848,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5177",
+        "stock":  25
     },
     {
         "id":  "dt-5178",
@@ -771,7 +873,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5178",
+        "stock":  32
     },
     {
         "id":  "dt-5179",
@@ -793,7 +898,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5179",
+        "stock":  3
     },
     {
         "id":  "dt-5181",
@@ -815,7 +923,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5181",
+        "stock":  18
     },
     {
         "id":  "dt-5182",
@@ -837,7 +948,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5182",
+        "stock":  25
     },
     {
         "id":  "dt-5183",
@@ -859,7 +973,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5183",
+        "stock":  32
     },
     {
         "id":  "dt-5184",
@@ -881,7 +998,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5184",
+        "stock":  11
     },
     {
         "id":  "dt-5186",
@@ -903,7 +1023,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5186",
+        "stock":  18
     },
     {
         "id":  "dt-5187",
@@ -925,7 +1048,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5187",
+        "stock":  25
     },
     {
         "id":  "dt-5188",
@@ -947,7 +1073,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5188",
+        "stock":  0
     },
     {
         "id":  "dt-5189",
@@ -969,7 +1098,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5189",
+        "stock":  11
     },
     {
         "id":  "dt-5190",
@@ -991,7 +1123,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5190",
+        "stock":  18
     },
     {
         "id":  "dt-5191",
@@ -1013,7 +1148,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5191",
+        "stock":  25
     },
     {
         "id":  "dt-5192",
@@ -1035,7 +1173,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5192",
+        "stock":  32
     },
     {
         "id":  "dt-5193",
@@ -1057,7 +1198,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5193",
+        "stock":  11
     },
     {
         "id":  "dt-5194",
@@ -1079,7 +1223,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5194",
+        "stock":  18
     },
     {
         "id":  "dt-5195",
@@ -1101,7 +1248,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5195",
+        "stock":  2
     },
     {
         "id":  "dt-5196",
@@ -1123,7 +1273,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd.."
+        "desc":  "Filetto Premium 3D Yazıcı Filamenti – Kusursuz Baskılar İçin Profesyonel Çözüm3D baskı projelerinizd..",
+        "brand":  "Diğer",
+        "sku":  "DT-5196",
+        "stock":  32
     },
     {
         "id":  "dt-5209",
@@ -1145,7 +1298,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy.."
+        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy..",
+        "brand":  "Diğer",
+        "sku":  "DT-5209",
+        "stock":  11
     },
     {
         "id":  "dt-5210",
@@ -1167,7 +1323,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy.."
+        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy..",
+        "brand":  "Diğer",
+        "sku":  "DT-5210",
+        "stock":  18
     },
     {
         "id":  "dt-5211",
@@ -1189,7 +1348,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy.."
+        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy..",
+        "brand":  "Diğer",
+        "sku":  "DT-5211",
+        "stock":  25
     },
     {
         "id":  "dt-5212",
@@ -1211,7 +1373,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy.."
+        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy..",
+        "brand":  "Diğer",
+        "sku":  "DT-5212",
+        "stock":  32
     },
     {
         "id":  "dt-5213",
@@ -1233,7 +1398,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy.."
+        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy..",
+        "brand":  "Diğer",
+        "sku":  "DT-5213",
+        "stock":  11
     },
     {
         "id":  "dt-5214",
@@ -1255,7 +1423,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy.."
+        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy..",
+        "brand":  "Diğer",
+        "sku":  "DT-5214",
+        "stock":  0
     },
     {
         "id":  "dt-5215",
@@ -1277,7 +1448,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy.."
+        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy..",
+        "brand":  "Diğer",
+        "sku":  "DT-5215",
+        "stock":  25
     },
     {
         "id":  "dt-5216",
@@ -1299,7 +1473,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy.."
+        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy..",
+        "brand":  "Diğer",
+        "sku":  "DT-5216",
+        "stock":  32
     },
     {
         "id":  "dt-5217",
@@ -1321,7 +1498,10 @@ window.DAG_PRODUCTS = [
                       "YÃ¼ksek Mukavemet",
                       "Tıkanma Yapmaz"
                   ],
-        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy.."
+        "desc":  "Sunlu PETG Filament – 1 kg | 1.75 mmSunlu PETG Filament, PLA’nın baskı kolaylığını ABS’nin dayanımıy..",
+        "brand":  "Diğer",
+        "sku":  "DT-5217",
+        "stock":  11
     },
     {
         "id":  "dt-3780",
@@ -1343,7 +1523,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 117A W2070A Swan Black Toner MFP 17.."
+        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 117A W2070A Swan Black Toner MFP 17..",
+        "brand":  "HP",
+        "sku":  "DT-3780",
+        "stock":  18
     },
     {
         "id":  "dt-3781",
@@ -1365,7 +1548,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 117A W2071A Swan Cyan Toner MFP 179fn.."
+        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 117A W2071A Swan Cyan Toner MFP 179fn..",
+        "brand":  "HP",
+        "sku":  "DT-3781",
+        "stock":  25
     },
     {
         "id":  "dt-3782",
@@ -1387,7 +1573,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 117A W2072A Yellow Swan Toner MFP 179.."
+        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 117A W2072A Yellow Swan Toner MFP 179..",
+        "brand":  "HP",
+        "sku":  "DT-3782",
+        "stock":  32
     },
     {
         "id":  "dt-3783",
@@ -1409,7 +1598,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 117A W2073A Swan Magenta Toner MFP .."
+        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 117A W2073A Swan Magenta Toner MFP ..",
+        "brand":  "HP",
+        "sku":  "DT-3783",
+        "stock":  1
     },
     {
         "id":  "dt-4729",
@@ -1431,7 +1623,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 331X W1331X Muadil Toner (15K) Las.."
+        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 331X W1331X Muadil Toner (15K) Las..",
+        "brand":  "HP",
+        "sku":  "DT-4729",
+        "stock":  18
     },
     {
         "id":  "dt-3773",
@@ -1453,7 +1648,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO :415A, W2030, 2030A, W2031A, W2032A,\u0026nb.."
+        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO :415A, W2030, 2030A, W2031A, W2032A,\u0026nb..",
+        "brand":  "HP",
+        "sku":  "DT-3773",
+        "stock":  25
     },
     {
         "id":  "dt-3774",
@@ -1475,7 +1673,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : 415A, W2030, 2030A, W2031A, W203.."
+        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : 415A, W2030, 2030A, W2031A, W203..",
+        "brand":  "HP",
+        "sku":  "DT-3774",
+        "stock":  32
     },
     {
         "id":  "dt-3775",
@@ -1497,7 +1698,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : 415A, W2030, 2030A, W2031A, W203.."
+        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : 415A, W2030, 2030A, W2031A, W203..",
+        "brand":  "HP",
+        "sku":  "DT-3775",
+        "stock":  11
     },
     {
         "id":  "dt-3799",
@@ -1519,7 +1723,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : Hp 44A CF244A Dolphin Toner(1000SF) P.."
+        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : Hp 44A CF244A Dolphin Toner(1000SF) P..",
+        "brand":  "HP",
+        "sku":  "DT-3799",
+        "stock":  18
     },
     {
         "id":  "dt-3697",
@@ -1541,7 +1748,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 59X CF 259X CRG 057H T08 Toner 10000SF .."
+        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 59X CF 259X CRG 057H T08 Toner 10000SF ..",
+        "brand":  "HP",
+        "sku":  "DT-3697",
+        "stock":  25
     },
     {
         "id":  "dt-4373",
@@ -1563,7 +1773,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 59X CF259X CRG057H Muadil Toner 1.."
+        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : HP 59X CF259X CRG057H Muadil Toner 1..",
+        "brand":  "HP",
+        "sku":  "DT-4373",
+        "stock":  0
     },
     {
         "id":  "dt-4715",
@@ -1585,7 +1798,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : Muadil - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : CANON CRG 069/ 5094C002 Muadil Bl.."
+        "desc":  "KALİTE : Muadil - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : CANON CRG 069/ 5094C002 Muadil Bl..",
+        "brand":  "Canon",
+        "sku":  "DT-4715",
+        "stock":  11
     },
     {
         "id":  "dt-4718",
@@ -1607,7 +1823,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : Muadil - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : CANON CRG 069/ 5091C002 Muadil Ye.."
+        "desc":  "KALİTE : Muadil - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : CANON CRG 069/ 5091C002 Muadil Ye..",
+        "brand":  "Canon",
+        "sku":  "DT-4718",
+        "stock":  18
     },
     {
         "id":  "dt-4717",
@@ -1629,7 +1848,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : Muadil - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : CANON CRG 069/ 5092C002 Muadil Ma.."
+        "desc":  "KALİTE : Muadil - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : CANON CRG 069/ 5092C002 Muadil Ma..",
+        "brand":  "Canon",
+        "sku":  "DT-4717",
+        "stock":  25
     },
     {
         "id":  "dt-4716",
@@ -1651,7 +1873,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : Muadil - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : CANON CRG 069/ 5093C002 Muadil Cy.."
+        "desc":  "KALİTE : Muadil - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : CANON CRG 069/ 5093C002 Muadil Cy..",
+        "brand":  "Canon",
+        "sku":  "DT-4716",
+        "stock":  32
     },
     {
         "id":  "dt-4667",
@@ -1673,7 +1898,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : CANON CRG-070H Laser Toner 10,2k çipsi.."
+        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : CANON CRG-070H Laser Toner 10,2k çipsi..",
+        "brand":  "Canon",
+        "sku":  "DT-4667",
+        "stock":  11
     },
     {
         "id":  "dt-4573",
@@ -1695,7 +1923,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : Muadil - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : CANON T06/CRG 056H Hp CF 289Y Muadil L.."
+        "desc":  "KALİTE : Muadil - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : CANON T06/CRG 056H Hp CF 289Y Muadil L..",
+        "brand":  "Canon",
+        "sku":  "DT-4573",
+        "stock":  18
     },
     {
         "id":  "dt-2068",
@@ -1717,7 +1948,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "rother TN-1040 Toneri Kullanan Yazıcı ModelleriBrother DCP Serisi;Brother DCP-1511 Muadil Toner,Brot.."
+        "desc":  "rother TN-1040 Toneri Kullanan Yazıcı ModelleriBrother DCP Serisi;Brother DCP-1511 Muadil Toner,Brot..",
+        "brand":  "Brother",
+        "sku":  "DT-2068",
+        "stock":  3
     },
     {
         "id":  "dt-2060",
@@ -1739,7 +1973,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 2025 350 Dolphin Toner HL .."
+        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 2025 350 Dolphin Toner HL ..",
+        "brand":  "Brother",
+        "sku":  "DT-2060",
+        "stock":  32
     },
     {
         "id":  "dt-2063",
@@ -1761,7 +1998,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 2060 Swan Laser Toner 1200K .."
+        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 2060 Swan Laser Toner 1200K ..",
+        "brand":  "Brother",
+        "sku":  "DT-2063",
+        "stock":  11
     },
     {
         "id":  "dt-2064",
@@ -1783,7 +2023,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 2150 TN 360 Doplhin laser .."
+        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 2150 TN 360 Doplhin laser ..",
+        "brand":  "Brother",
+        "sku":  "DT-2064",
+        "stock":  18
     },
     {
         "id":  "dt-2065",
@@ -1805,7 +2048,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 2150 TN 360 Swan laser toner .."
+        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 2150 TN 360 Swan laser toner ..",
+        "brand":  "Brother",
+        "sku":  "DT-2065",
+        "stock":  25
     },
     {
         "id":  "dt-2074",
@@ -1827,7 +2073,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 2355 Dolphin Toner 2600K .."
+        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 2355 Dolphin Toner 2600K ..",
+        "brand":  "Brother",
+        "sku":  "DT-2074",
+        "stock":  32
     },
     {
         "id":  "dt-3944",
@@ -1849,7 +2098,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 2355 Swan Toner HL L 2300 D D.."
+        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 2355 Swan Toner HL L 2300 D D..",
+        "brand":  "Brother",
+        "sku":  "DT-3944",
+        "stock":  11
     },
     {
         "id":  "dt-4226",
@@ -1871,7 +2123,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 3060/3185/ 3290/ 7600 Unive.."
+        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN 3060/3185/ 3290/ 7600 Unive..",
+        "brand":  "Brother",
+        "sku":  "DT-4226",
+        "stock":  0
     },
     {
         "id":  "dt-2062",
@@ -1893,7 +2148,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN-2060 Dolphin Toner HL 2130.."
+        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : BROTHER TN-2060 Dolphin Toner HL 2130..",
+        "brand":  "Brother",
+        "sku":  "DT-2062",
+        "stock":  25
     },
     {
         "id":  "dt-3739",
@@ -1915,7 +2173,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "Brother DCP-L2510 / L2530 / L2550 / HL-L2310 / L2350 / L2370 / L2375 / L2395Brother DCP-.."
+        "desc":  "Brother DCP-L2510 / L2530 / L2550 / HL-L2310 / L2350 / L2370 / L2375 / L2395Brother DCP-..",
+        "brand":  "Brother",
+        "sku":  "DT-3739",
+        "stock":  32
     },
     {
         "id":  "dt-2069",
@@ -1937,7 +2198,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "HL-L5210/6210/6410/MFC-L6910/6710/DCP 5510.."
+        "desc":  "HL-L5210/6210/6410/MFC-L6910/6710/DCP 5510..",
+        "brand":  "Brother",
+        "sku":  "DT-2069",
+        "stock":  11
     },
     {
         "id":  "dt-2270",
@@ -1959,7 +2223,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : Muadil - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : 106R02773 Muadil .."
+        "desc":  "KALİTE : Muadil - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : 106R02773 Muadil ..",
+        "brand":  "Xerox",
+        "sku":  "DT-2270",
+        "stock":  18
     },
     {
         "id":  "dt-2269",
@@ -1981,7 +2248,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : 106R02778 Toner Xerox Phaser 3052 Wo.."
+        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : 106R02778 Toner Xerox Phaser 3052 Wo..",
+        "brand":  "Xerox",
+        "sku":  "DT-2269",
+        "stock":  25
     },
     {
         "id":  "dt-4757",
@@ -2003,7 +2273,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : 106R03621 XEROX WorkCentre 3330/3335/3.."
+        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : 106R03621 XEROX WorkCentre 3330/3335/3..",
+        "brand":  "Xerox",
+        "sku":  "DT-4757",
+        "stock":  32
     },
     {
         "id":  "dt-4720",
@@ -2025,7 +2298,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : 106R04348 XEROX Dolphin Laser Toner (.."
+        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : 106R04348 XEROX Dolphin Laser Toner (..",
+        "brand":  "Xerox",
+        "sku":  "DT-4720",
+        "stock":  2
     },
     {
         "id":  "dt-2257",
@@ -2047,7 +2323,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "Toner Modeli: 106R0080(90)Toner Renk: Siyah(Black)Toner Baskı Sayısı: 2500Toner Marka.."
+        "desc":  "Toner Modeli: 106R0080(90)Toner Renk: Siyah(Black)Toner Baskı Sayısı: 2500Toner Marka..",
+        "brand":  "Xerox",
+        "sku":  "DT-2257",
+        "stock":  18
     },
     {
         "id":  "dt-2283",
@@ -2069,7 +2348,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : XEROX 106R01371 DOLPHIN TONER (14K) P.."
+        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : XEROX 106R01371 DOLPHIN TONER (14K) P..",
+        "brand":  "Xerox",
+        "sku":  "DT-2283",
+        "stock":  25
     },
     {
         "id":  "dt-2276",
@@ -2091,7 +2373,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : XEROX 106R01601 DOLPHIN CYAN TONER (2.."
+        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : XEROX 106R01601 DOLPHIN CYAN TONER (2..",
+        "brand":  "Xerox",
+        "sku":  "DT-2276",
+        "stock":  32
     },
     {
         "id":  "dt-2278",
@@ -2113,7 +2398,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : XEROX 106R01602 DOLPHIN MAGENTA TONER.."
+        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : XEROX 106R01602 DOLPHIN MAGENTA TONER..",
+        "brand":  "Xerox",
+        "sku":  "DT-2278",
+        "stock":  11
     },
     {
         "id":  "dt-3038",
@@ -2135,7 +2423,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : XEROX 106R01602 SWAN MAGENTA TONER (2 5K.."
+        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : XEROX 106R01602 SWAN MAGENTA TONER (2 5K..",
+        "brand":  "Xerox",
+        "sku":  "DT-3038",
+        "stock":  18
     },
     {
         "id":  "dt-2277",
@@ -2157,7 +2448,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : XEROX 106R01603 DOLPHIN YELLOW TONER .."
+        "desc":  "KALİTE : DOLPHIN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : XEROX 106R01603 DOLPHIN YELLOW TONER ..",
+        "brand":  "Xerox",
+        "sku":  "DT-2277",
+        "stock":  25
     },
     {
         "id":  "dt-3039",
@@ -2179,7 +2473,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : XEROX 106R01603 SWAN YELLOW TONER (2 5K).."
+        "desc":  "KALİTE : SWAN - ÜRÜN CİNSİ : Toner Kartuş - ÜRÜN MODEL NO : XEROX 106R01603 SWAN YELLOW TONER (2 5K)..",
+        "brand":  "Xerox",
+        "sku":  "DT-3039",
+        "stock":  0
     },
     {
         "id":  "dt-3129",
@@ -2201,7 +2498,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : REEL - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA KM 2530 REEL PREMİUM TONER ( 1 kg Şişe .."
+        "desc":  "KALİTE : REEL - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA KM 2530 REEL PREMİUM TONER ( 1 kg Şişe ..",
+        "brand":  "Kyocera",
+        "sku":  "DT-3129",
+        "stock":  11
     },
     {
         "id":  "dt-572",
@@ -2223,7 +2523,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA KM 2530 Universal KM 02V4 Toner \u0026nb.."
+        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA KM 2530 Universal KM 02V4 Toner \u0026nb..",
+        "brand":  "Kyocera",
+        "sku":  "DT-572",
+        "stock":  18
     },
     {
         "id":  "dt-577",
@@ -2245,7 +2548,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA KM 2530 USA Toner 10 Kg Torba ( KM 02V4) .."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA KM 2530 USA Toner 10 Kg Torba ( KM 02V4) ..",
+        "brand":  "Kyocera",
+        "sku":  "DT-577",
+        "stock":  25
     },
     {
         "id":  "dt-3769",
@@ -2267,7 +2573,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 1110 5S Toner Fs 1040 1020mfp 1120.."
+        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 1110 5S Toner Fs 1040 1020mfp 1120..",
+        "brand":  "Kyocera",
+        "sku":  "DT-3769",
+        "stock":  32
     },
     {
         "id":  "dt-3770",
@@ -2289,7 +2598,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 1120 5S Toner Fs 1060DN 1025mfp 11.."
+        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 1120 5S Toner Fs 1060DN 1025mfp 11..",
+        "brand":  "Kyocera",
+        "sku":  "DT-3770",
+        "stock":  11
     },
     {
         "id":  "dt-2930",
@@ -2311,7 +2623,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 1130 AA Toner (250GR) - KYOCERA TK.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 1130 AA Toner (250GR) - KYOCERA TK..",
+        "brand":  "Kyocera",
+        "sku":  "DT-2930",
+        "stock":  18
     },
     {
         "id":  "dt-553",
@@ -2333,7 +2648,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 1140 AA Toner Fs 1035MFP 1135MFP 8176.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 1140 AA Toner Fs 1035MFP 1135MFP 8176..",
+        "brand":  "Kyocera",
+        "sku":  "DT-553",
+        "stock":  1
     },
     {
         "id":  "dt-3729",
@@ -2355,7 +2673,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 1150HC AA Toner(250gr) ECOSYS M 2135dn.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 1150HC AA Toner(250gr) ECOSYS M 2135dn..",
+        "brand":  "Kyocera",
+        "sku":  "DT-3729",
+        "stock":  32
     },
     {
         "id":  "dt-3755",
@@ -2377,7 +2698,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 1170 AA Toner 290gr m 2040dn m 2540dn .."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 1170 AA Toner 290gr m 2040dn m 2540dn ..",
+        "brand":  "Kyocera",
+        "sku":  "DT-3755",
+        "stock":  11
     },
     {
         "id":  "dt-545",
@@ -2399,7 +2723,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 130 AA Toner (290gr) - KYOCERA TK 13.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 130 AA Toner (290gr) - KYOCERA TK 13..",
+        "brand":  "Kyocera",
+        "sku":  "DT-545",
+        "stock":  18
     },
     {
         "id":  "dt-4116",
@@ -2421,7 +2748,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 3060 5S Toner ECOSYS M 3145idn ECO.."
+        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : KYOCERA TK 3060 5S Toner ECOSYS M 3145idn ECO..",
+        "brand":  "Kyocera",
+        "sku":  "DT-4116",
+        "stock":  25
     },
     {
         "id":  "dt-4753",
@@ -2443,7 +2773,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH AFICIO MP-C 2030/ C 2051/ C 2551 AA Magenta.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH AFICIO MP-C 2030/ C 2051/ C 2551 AA Magenta..",
+        "brand":  "Diğer",
+        "sku":  "DT-4753",
+        "stock":  32
     },
     {
         "id":  "dt-4754",
@@ -2465,7 +2798,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH AFICIO MP-C 2030/ C 2051/ C 2551 AA Yellow .."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH AFICIO MP-C 2030/ C 2051/ C 2551 AA Yellow ..",
+        "brand":  "Diğer",
+        "sku":  "DT-4754",
+        "stock":  11
     },
     {
         "id":  "dt-685",
@@ -2487,7 +2823,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH Aficio MPC 2030 C 2051 C 2551 AA Cyan Toner.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH Aficio MPC 2030 C 2051 C 2551 AA Cyan Toner..",
+        "brand":  "Diğer",
+        "sku":  "DT-685",
+        "stock":  0
     },
     {
         "id":  "dt-639",
@@ -2509,7 +2848,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : REEL - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH Aficio MPC 305 SP 305SPF Cyan Reel Toner .."
+        "desc":  "KALİTE : REEL - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH Aficio MPC 305 SP 305SPF Cyan Reel Toner ..",
+        "brand":  "Diğer",
+        "sku":  "DT-639",
+        "stock":  25
     },
     {
         "id":  "dt-640",
@@ -2531,7 +2873,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : REEL - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH Aficio MPC 305 SP 305SPF Magenta Reel Ton.."
+        "desc":  "KALİTE : REEL - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH Aficio MPC 305 SP 305SPF Magenta Reel Ton..",
+        "brand":  "Diğer",
+        "sku":  "DT-640",
+        "stock":  32
     },
     {
         "id":  "dt-4651",
@@ -2553,7 +2898,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH IM 550/ IM 600/ P 800/ P 801 AA Toner -.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH IM 550/ IM 600/ P 800/ P 801 AA Toner -..",
+        "brand":  "Diğer",
+        "sku":  "DT-4651",
+        "stock":  11
     },
     {
         "id":  "dt-3891",
@@ -2575,7 +2923,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH IMC 2000 2000A 2500 2500A CPP Black Toner C.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH IMC 2000 2000A 2500 2500A CPP Black Toner C..",
+        "brand":  "Diğer",
+        "sku":  "DT-3891",
+        "stock":  18
     },
     {
         "id":  "dt-3894",
@@ -2597,7 +2948,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH IMC 2000 2000A 2500 2500A CPP Magenta Toner.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH IMC 2000 2000A 2500 2500A CPP Magenta Toner..",
+        "brand":  "Diğer",
+        "sku":  "DT-3894",
+        "stock":  25
     },
     {
         "id":  "dt-3893",
@@ -2619,7 +2973,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH IMC 2000 2000A 2500 2500A CPP Yellow Toner .."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH IMC 2000 2000A 2500 2500A CPP Yellow Toner ..",
+        "brand":  "Diğer",
+        "sku":  "DT-3893",
+        "stock":  32
     },
     {
         "id":  "dt-3892",
@@ -2641,7 +2998,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH IMC 2000 2000A 2500 2500A CPPC yan Toner Ca.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH IMC 2000 2000A 2500 2500A CPPC yan Toner Ca..",
+        "brand":  "Diğer",
+        "sku":  "DT-3892",
+        "stock":  3
     },
     {
         "id":  "dt-4634",
@@ -2663,7 +3023,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH MC 2000 2001 Muadil Black Toner(Yüksek Kapa.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Toner - ÜRÜN MODEL NO : RICOH MC 2000 2001 Muadil Black Toner(Yüksek Kapa..",
+        "brand":  "Diğer",
+        "sku":  "DT-4634",
+        "stock":  18
     },
     {
         "id":  "dt-4468",
@@ -2685,7 +3048,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Dolum Toner - ÜRÜN MODEL NO : LEXMARK MS MX Serisi AA Toner 822 823 Ser.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Dolum Toner - ÜRÜN MODEL NO : LEXMARK MS MX Serisi AA Toner 822 823 Ser..",
+        "brand":  "Diğer",
+        "sku":  "DT-4468",
+        "stock":  25
     },
     {
         "id":  "dt-2043",
@@ -2707,7 +3073,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Dolum Toner - ÜRÜN MODEL NO : SAMSUNG ML 1710 SP311 AA Toner (1000gr Şişe.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Dolum Toner - ÜRÜN MODEL NO : SAMSUNG ML 1710 SP311 AA Toner (1000gr Şişe..",
+        "brand":  "Samsung",
+        "sku":  "DT-2043",
+        "stock":  32
     },
     {
         "id":  "dt-2044",
@@ -2729,7 +3098,10 @@ window.DAG_PRODUCTS = [
                       "Koyu Siyah Net Baskı",
                       "Garantili"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Dolum Toner - ÜRÜN MODEL NO : SAMSUNG MLT 101 111 SCX 3405FW Reel Toner (.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Dolum Toner - ÜRÜN MODEL NO : SAMSUNG MLT 101 111 SCX 3405FW Reel Toner (..",
+        "brand":  "Samsung",
+        "sku":  "DT-2044",
+        "stock":  11
     },
     {
         "id":  "dt-4808",
@@ -2751,7 +3123,10 @@ window.DAG_PRODUCTS = [
                       "Kolay Montaj",
                       "Stok Teslim"
                   ],
-        "desc":  "Basit ve Kolay Kurulum Yeni tasarım, panelleri sabitlemek için oluklar kullanarak montajı basitleşti.."
+        "desc":  "Basit ve Kolay Kurulum Yeni tasarım, panelleri sabitlemek için oluklar kullanarak montajı basitleşti..",
+        "brand":  "Flsun",
+        "sku":  "DT-4808",
+        "stock":  18
     },
     {
         "id":  "dt-927",
@@ -2773,7 +3148,10 @@ window.DAG_PRODUCTS = [
                       "Kolay Montaj",
                       "Stok Teslim"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Drum - ÜRÜN MODEL NO : Hp 126A CE314A Muadil Drum Ünitesi - Hp 126A C.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Drum - ÜRÜN MODEL NO : Hp 126A CE314A Muadil Drum Ünitesi - Hp 126A C..",
+        "brand":  "HP",
+        "sku":  "DT-927",
+        "stock":  25
     },
     {
         "id":  "dt-3512",
@@ -2795,7 +3173,10 @@ window.DAG_PRODUCTS = [
                       "Kolay Montaj",
                       "Stok Teslim"
                   ],
-        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Drum - ÜRÜN MODEL NO : HP 32A CF 232A CRG D051 Univers Drum Ünitesi Laser.."
+        "desc":  "KALİTE : DT - ÜRÜN CİNSİ : Drum - ÜRÜN MODEL NO : HP 32A CF 232A CRG D051 Univers Drum Ünitesi Laser..",
+        "brand":  "HP",
+        "sku":  "DT-3512",
+        "stock":  0
     },
     {
         "id":  "dt-3489",
@@ -2817,7 +3198,10 @@ window.DAG_PRODUCTS = [
                       "Kolay Montaj",
                       "Stok Teslim"
                   ],
-        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Drum - ÜRÜN MODEL NO : HP CF 234A Muadil Drum Unit Ultra M106W M143A .."
+        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Drum - ÜRÜN MODEL NO : HP CF 234A Muadil Drum Unit Ultra M106W M143A ..",
+        "brand":  "HP",
+        "sku":  "DT-3489",
+        "stock":  11
     },
     {
         "id":  "dt-4349",
@@ -2839,7 +3223,10 @@ window.DAG_PRODUCTS = [
                       "Kolay Montaj",
                       "Stok Teslim"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Drum - ÜRÜN MODEL NO : CANON C EXV49 Drum Unit 8528B004AA iR ADVANCE C 33.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Drum - ÜRÜN MODEL NO : CANON C EXV49 Drum Unit 8528B004AA iR ADVANCE C 33..",
+        "brand":  "Canon",
+        "sku":  "DT-4349",
+        "stock":  18
     },
     {
         "id":  "dt-924",
@@ -2861,7 +3248,10 @@ window.DAG_PRODUCTS = [
                       "Kolay Montaj",
                       "Stok Teslim"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Drum - ÜRÜN MODEL NO : CANON OPC Drum IR 2016 2018 2020 2020i 2022 2025 2.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Drum - ÜRÜN MODEL NO : CANON OPC Drum IR 2016 2018 2020 2020i 2022 2025 2..",
+        "brand":  "Canon",
+        "sku":  "DT-924",
+        "stock":  25
     },
     {
         "id":  "dt-3948",
@@ -2883,7 +3273,10 @@ window.DAG_PRODUCTS = [
                       "Kolay Montaj",
                       "Stok Teslim"
                   ],
-        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Drum - ÜRÜN MODEL NO : CANON OPC DRUM iR 2520 iR 2525 iR 2530 iR 2535.."
+        "desc":  "KALİTE : MUADİL - ÜRÜN CİNSİ : Drum - ÜRÜN MODEL NO : CANON OPC DRUM iR 2520 iR 2525 iR 2530 iR 2535..",
+        "brand":  "Canon",
+        "sku":  "DT-3948",
+        "stock":  32
     },
     {
         "id":  "dt-1910",
@@ -2905,7 +3298,9 @@ window.DAG_PRODUCTS = [
                       "Kolay Montaj",
                       "Stok Teslim"
                   ],
-        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Fuser Fixing Film - ÜRÜN MODEL NO : IR 2016 2520 2525 2530 Fuser Fixing F.."
+        "desc":  "KALİTE : AA - ÜRÜN CİNSİ : Fuser Fixing Film - ÜRÜN MODEL NO : IR 2016 2520 2525 2530 Fuser Fixing F..",
+        "brand":  "Diğer",
+        "sku":  "DT-1910",
+        "stock":  11
     }
-]
-;
+];

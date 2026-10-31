@@ -32,6 +32,9 @@
     }
   </script>
 
+  <!-- Favicon & Custom Logo -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
   <!-- Lucide Icons & Three.js -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -65,29 +68,15 @@
       
       <!-- LOGO -->
       <a href="#" class="flex items-center gap-3 group">
-        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
-          <!-- Geometric Mountain / 3D Layered Motif -->
-          <svg class="w-6 h-6 text-slate-950" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2L2 19.5H22L12 2ZM12 6.8L17.5 16.5H6.5L12 6.8Z" />
-            <path d="M12 11.5L9.5 16.5H14.5L12 11.5Z" fill="#07090e" />
-          </svg>
-        </div>
-        <div>
-          <span class="text-xl font-heading font-extrabold tracking-tight text-white flex items-center gap-1">
-            DAĞ <span class="text-cyan-400">TEKNOLOJİ</span>
-          </span>
-          <span class="text-[10px] tracking-widest uppercase font-mono text-slate-400 block -mt-1">
-            3D Innovation & Print Lab
-          </span>
-        </div>
+        <img src="assets/logo.svg" alt="Dağ Teknoloji" class="h-11 w-auto brand-logo-img">
       </a>
 
       <!-- DESKTOP NAV LINKS -->
-      <nav class="hidden lg:flex items-center gap-8 text-sm font-medium text-slate-300">
-        <a href="#products-section" class="hover:text-cyan-400 transition-colors">Ürünler</a>
+      <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-300">
+        <a href="#products-section" class="hover:text-cyan-400 transition-colors">Katalog & Stok</a>
         <a href="#calc-section" class="hover:text-cyan-400 transition-colors flex items-center gap-1">
           <span>3D Maliyet Hesapla</span>
-          <span class="px-1.5 py-0.2 text-[10px] bg-cyan-500/20 text-cyan-400 rounded-full border border-cyan-500/30">Yeni</span>
+          <span class="px-1.5 py-0.2 text-[10px] bg-cyan-500/20 text-cyan-400 rounded-full border border-cyan-500/30">Canlı</span>
         </a>
         <a href="#services-section" class="hover:text-cyan-400 transition-colors">Hizmetlerimiz</a>
         <a href="#about-section" class="hover:text-cyan-400 transition-colors">Hakkımızda</a>
@@ -95,11 +84,17 @@
       </nav>
 
       <!-- ACTION BUTTONS -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2.5">
+        <!-- Admin Panel Button -->
+        <button onclick="openAdminLogin()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-400 text-slate-300 hover:text-white transition-all text-xs font-semibold" title="Yönetici Paneli (Stok & Ürün Yönetimi)">
+          <i data-lucide="shield-check" class="w-4 h-4 text-cyan-400"></i>
+          <span class="hidden xl:inline">Yönetici Paneli</span>
+        </button>
+
         <!-- Direct WhatsApp -->
         <a href="https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizden%20yaz%C4%B1yorum." target="_blank" class="hidden sm:flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-colors">
           <i data-lucide="message-circle" class="w-4 h-4"></i>
-          <span>WhatsApp Destek</span>
+          <span class="hidden md:inline">WhatsApp</span>
         </a>
 
         <!-- Cart Button -->
@@ -109,9 +104,9 @@
         </button>
 
         <!-- Quote Modal CTA -->
-        <a href="#calc-section" class="hidden sm:inline-flex glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl items-center gap-1.5">
+        <a href="#calc-section" class="hidden sm:inline-flex glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider px-3.5 py-2.5 rounded-xl items-center gap-1.5">
           <i data-lucide="sparkles" class="w-4 h-4"></i>
-          <span>Hemen Fiyat Al</span>
+          <span>3D Fiyat Al</span>
         </a>
 
         <!-- Mobile Menu Hamburger -->
@@ -479,59 +474,145 @@
     </div>
   </section>
 
-  <!-- PRODUCT SHOWCASE & CATALOG SECTION -->
+  <!-- PRODUCT SHOWCASE & E-COMMERCE CATALOG SECTION -->
   <section id="products-section" class="py-20 relative bg-slate-950/40 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <!-- Section Title & Search -->
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+      <!-- Section Title & Live Stats -->
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
         <div>
-          <span class="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
-            Geniş Ürün Yelpazesi
-          </span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">
-            Öne Çıkan <span class="text-gradient-cyan">Teknolojik Çözümler</span>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold uppercase mb-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+            Canlı Stok &amp; E-Ticaret Kataloğu
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-1">
+            Tüm Ürünler &amp; <span class="text-gradient-cyan">Gelişmiş Filtreleme</span>
           </h2>
-          <p class="text-slate-400 text-sm mt-2">
-            3D yazıcı donanımları, mühendislik sarf malzemeleri ve kurumsal muadil tonerler.
+          <p class="text-slate-400 text-sm mt-1">
+            Perpa Ticaret Merkezi stoklarımızdaki 130+ ürünü anlık stok durumu ve marka filtreleriyle inceleyin.
           </p>
         </div>
 
-        <!-- Search Bar -->
-        <div class="relative w-full md:w-80">
-          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-          <input 
-            type="text" 
-            id="product-search-input"
-            placeholder="Ürün adı, marka veya model ara..." 
-            oninput="handleProductSearch(this.value)"
-            class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 focus:border-cyan-400 focus:outline-none text-sm text-slate-100 placeholder-slate-500 transition-colors"
-          >
+        <!-- Filtered Product Counter -->
+        <div id="filtered-count-display" class="text-xs text-slate-400 font-mono bg-slate-900/80 px-3.5 py-2 rounded-xl border border-slate-800 self-start lg:self-auto">
+          Yükleniyor...
         </div>
       </div>
 
-      <!-- Category Filter Tabs -->
-      <div class="flex flex-wrap items-center gap-2 mb-10 pb-2 overflow-x-auto">
-        <button onclick="filterCategory('all')" data-category="all" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold transition-all bg-cyan-500 text-slate-950">
-          Tüm Ürünler
-        </button>
-        <button onclick="filterCategory('printers')" data-category="printers" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800/60 text-slate-300 hover:bg-slate-800">
-          3D Yazıcı & Tarayıcı
-        </button>
-        <button onclick="filterCategory('filaments')" data-category="filaments" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800/60 text-slate-300 hover:bg-slate-800">
-          Filament & Sarf Malzemeleri
-        </button>
-        <button onclick="filterCategory('toners')" data-category="toners" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800/60 text-slate-300 hover:bg-slate-800">
-          Muadil & Orijinal Toner
-        </button>
-        <button onclick="filterCategory('parts')" data-category="parts" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800/60 text-slate-300 hover:bg-slate-800">
-          Yedek Parça & Nozzle
-        </button>
+      <!-- FILTER CONTROLS CONTAINER -->
+      <div class="glass-panel p-5 rounded-2xl mb-8 border border-slate-800 space-y-4">
+        
+        <!-- 1. Category Tabs Row -->
+        <div class="flex items-center justify-between flex-wrap gap-2 pb-4 border-b border-slate-800/80">
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="filterCategory('all')" data-category="all" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold transition-all bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/20">
+              Tüm Ürünler
+            </button>
+            <button onclick="filterCategory('printers')" data-category="printers" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800/60 text-slate-300 hover:bg-slate-800">
+              3D Yazıcı &amp; Lazer
+            </button>
+            <button onclick="filterCategory('filaments')" data-category="filaments" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800/60 text-slate-300 hover:bg-slate-800">
+              Filament &amp; Sarf
+            </button>
+            <button onclick="filterCategory('toners')" data-category="toners" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800/60 text-slate-300 hover:bg-slate-800">
+              Muadil &amp; Orijinal Toner
+            </button>
+            <button onclick="filterCategory('parts')" data-category="parts" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800/60 text-slate-300 hover:bg-slate-800">
+              Yedek Parça &amp; Mekanik
+            </button>
+          </div>
+
+          <button onclick="resetFilters()" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 border border-slate-700 transition-colors">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+            <span>Filtreleri Temizle</span>
+          </button>
+        </div>
+
+        <!-- 2. Brand Chips Filter -->
+        <div>
+          <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-2 font-semibold">Marka / Üretici:</div>
+          <div id="brand-filters-container" class="flex flex-wrap items-center gap-1.5">
+            <!-- Rendered dynamically by app.js -->
+          </div>
+        </div>
+
+        <!-- 3. Advanced Search & Controls Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2 border-t border-slate-800/80">
+          
+          <!-- Search -->
+          <div class="relative">
+            <label class="block text-[11px] font-mono text-slate-400 uppercase mb-1">Model / Kelime Ara:</label>
+            <div class="relative">
+              <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+              <input 
+                type="text" 
+                id="product-search-input"
+                placeholder="Örn: Ender, Bambu, 117A, Nozzle..." 
+                oninput="handleProductSearch(this.value)"
+                class="w-full pl-9 pr-3 py-2 rounded-xl bg-slate-900 border border-slate-800 focus:border-cyan-400 focus:outline-none text-xs text-slate-100 placeholder-slate-500 transition-colors"
+              >
+            </div>
+          </div>
+
+          <!-- Stock Filter -->
+          <div>
+            <label class="block text-[11px] font-mono text-slate-400 uppercase mb-1">Stok Durumu:</label>
+            <select id="stock-filter-select" onchange="handleStockFilter(this.value)" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 focus:border-cyan-400 focus:outline-none text-xs text-slate-200">
+              <option value="all">Tüm Stok Durumları</option>
+              <option value="in_stock">Yalnızca Stokta Olanlar</option>
+              <option value="low_stock">Kritik Stok (Son 5 Adet)</option>
+              <option value="out_of_stock">Tükenenler (Stokta Yok)</option>
+            </select>
+          </div>
+
+          <!-- Sorting -->
+          <div>
+            <label class="block text-[11px] font-mono text-slate-400 uppercase mb-1">Sıralama:</label>
+            <select id="sort-select" onchange="handleSortChange(this.value)" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 focus:border-cyan-400 focus:outline-none text-xs text-slate-200">
+              <option value="default">Varsayılan (Önerilen)</option>
+              <option value="price_asc">Fiyat: Düşükten Yükseğe</option>
+              <option value="price_desc">Fiyat: Yüksekten Düşüğe</option>
+              <option value="rating">Müşteri Puanına Göre</option>
+              <option value="stock_desc">Stok Miktarına Göre (Çoktan Aza)</option>
+            </select>
+          </div>
+
+          <!-- Price Slider -->
+          <div>
+            <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 uppercase mb-1">
+              <span>Maksimum Fiyat:</span>
+              <span id="price-filter-display" class="text-cyan-400 font-bold">Maks: 65.000 ₺</span>
+            </div>
+            <input 
+              type="range" 
+              id="price-filter-slider" 
+              min="200" 
+              max="65000" 
+              step="500" 
+              value="65000" 
+              oninput="handlePriceFilter(this.value)" 
+              class="w-full mt-1.5"
+            >
+          </div>
+
+        </div>
+
       </div>
 
       <!-- Products Grid -->
       <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- Load More & Show All Controls -->
+      <div id="load-more-container" class="mt-12 text-center flex flex-wrap items-center justify-center gap-3">
+        <button onclick="loadMoreProducts()" class="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 hover:border-cyan-400 text-xs font-bold text-white transition-all shadow-lg flex items-center gap-2">
+          <i data-lucide="plus-circle" class="w-4 h-4 text-cyan-400"></i>
+          <span id="load-more-btn-text">Daha Fazla Göster</span>
+        </button>
+        <button onclick="showAllProducts()" class="px-5 py-3 rounded-xl bg-slate-800/60 hover:bg-slate-800 text-xs font-bold text-slate-300 hover:text-white border border-slate-700/60 transition-all">
+          Tümünü Tek Sayfada Göster (130+)
+        </button>
       </div>
 
     </div>
@@ -892,14 +973,7 @@
         <!-- Col 1: Brand Info (2 cols wide on LG) -->
         <div class="lg:col-span-2 space-y-4">
           <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-              <svg class="w-5 h-5 text-slate-950" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 19.5H22L12 2ZM12 6.8L17.5 16.5H6.5L12 6.8Z" />
-              </svg>
-            </div>
-            <span class="text-lg font-heading font-extrabold text-white">
-              DAĞ <span class="text-cyan-400">TEKNOLOJİ</span>
-            </span>
+            <img src="assets/logo.svg" alt="Dağ Teknoloji" class="h-10 w-auto brand-logo-img">
           </div>
           <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
             İstanbul Perpa Ticaret Merkezi merkezli 3D yazıcı, filament, muadil toner ve endüstriyel 3 boyutlu üretim çözümleri.
@@ -1108,6 +1182,278 @@
         </div>
         <button type="submit" class="w-full py-3.5 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
           <span>Siparişi Onayla</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================== -->
+  <!-- ADMIN PANEL & STOCK MANAGEMENT MODALS -->
+  <!-- ========================================================================== -->
+
+  <!-- 1. ADMIN LOGIN MODAL -->
+  <div id="admin-login-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="closeModal('admin-login-modal')" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+    <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 z-10 shadow-2xl">
+      <button onclick="closeModal('admin-login-modal')" class="absolute top-5 right-5 p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mx-auto mb-4">
+        <i data-lucide="shield-lock" class="w-7 h-7"></i>
+      </div>
+
+      <h3 class="text-xl font-bold text-white text-center mb-1">Yönetici Girişi</h3>
+      <p class="text-xs text-slate-400 text-center mb-6">Stok ve ürün bilgilerini yönetmek için lütfen 4 haneli PIN kodunuzu girin.</p>
+
+      <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Admin Güvenlik PIN Kodu</label>
+          <input 
+            type="password" 
+            id="admin-pin-input" 
+            maxlength="4" 
+            placeholder="1234" 
+            required 
+            class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 focus:border-cyan-400 focus:outline-none text-center text-xl tracking-widest text-white font-mono"
+          >
+          <span class="text-[11px] text-slate-500 text-center block mt-1">Varsayılan Demo PIN: <strong class="text-cyan-400">1234</strong></span>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+          <i data-lucide="key" class="w-4 h-4"></i>
+          <span>Panele Giriş Yap</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. ADMIN MAIN DASHBOARD MODAL -->
+  <div id="admin-panel-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-hidden">
+    <div onclick="closeModal('admin-panel-modal')" class="fixed inset-0 bg-black/85 backdrop-blur-md"></div>
+    
+    <div class="relative w-full max-w-6xl h-[92vh] bg-slate-950 border border-slate-800 rounded-3xl z-10 shadow-2xl flex flex-col overflow-hidden">
+      
+      <!-- Top Admin Header Bar -->
+      <div class="p-5 sm:px-8 border-b border-slate-800 bg-slate-900/90 flex flex-wrap items-center justify-between gap-4 flex-shrink-0">
+        <div class="flex items-center gap-3">
+          <img src="assets/logo.svg" alt="Dağ Teknoloji" class="h-8 w-auto">
+          <div class="border-l border-slate-800 pl-3">
+            <span class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block">YÖNETİM SİSTEMİ</span>
+            <span class="text-sm font-bold text-white">Ürün &amp; Stok Kontrol Paneli</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5">
+          <button onclick="openNewProductModal()" class="glow-cyan-btn px-4 py-2 rounded-xl text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-500/20">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+            <span>Yeni Ürün Ekle</span>
+          </button>
+          
+          <button onclick="resetToDefaultProducts()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition-colors" title="Kataloğu Sıfırla">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+          </button>
+
+          <button onclick="adminLogout()" class="px-3.5 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-semibold transition-colors flex items-center gap-1.5">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <span>Çıkış</span>
+          </button>
+
+          <button onclick="closeModal('admin-panel-modal')" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Dashboard Body (Scrollable) -->
+      <div class="flex-1 overflow-y-auto p-5 sm:p-8 space-y-6">
+        
+        <!-- Live Stat Cards (4 Cards) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass-panel p-4 rounded-2xl border border-slate-800/80">
+            <span class="text-[11px] font-mono text-slate-400 uppercase block mb-1">Toplam Ürün</span>
+            <div id="admin-stat-total-products" class="text-2xl sm:text-3xl font-extrabold text-white">0</div>
+            <span class="text-[10px] text-cyan-400 font-mono mt-1 block">Aktif Katalog</span>
+          </div>
+
+          <div class="glass-panel p-4 rounded-2xl border border-slate-800/80">
+            <span class="text-[11px] font-mono text-slate-400 uppercase block mb-1">Toplam Stok Miktarı</span>
+            <div id="admin-stat-total-stock" class="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-mono">0 Adet</div>
+            <span class="text-[10px] text-slate-500 font-mono mt-1 block">Perpa Depo</span>
+          </div>
+
+          <div class="glass-panel p-4 rounded-2xl border border-slate-800/80">
+            <span class="text-[11px] font-mono text-slate-400 uppercase block mb-1">Kritik / Tükenen Stok</span>
+            <div id="admin-stat-low-stock" class="text-2xl sm:text-3xl font-extrabold text-amber-400 font-mono">0 Ürün</div>
+            <span class="text-[10px] text-amber-500/80 font-mono mt-1 block">Yenileme Gerekiyor</span>
+          </div>
+
+          <div class="glass-panel p-4 rounded-2xl border border-slate-800/80">
+            <span class="text-[11px] font-mono text-slate-400 uppercase block mb-1">Envanter Değeri</span>
+            <div id="admin-stat-total-value" class="text-2xl sm:text-3xl font-extrabold text-cyan-300 font-mono">0 ₺</div>
+            <span class="text-[10px] text-slate-500 font-mono mt-1 block">Perakende Tutar</span>
+          </div>
+        </div>
+
+        <!-- Admin Table & Filter Tools -->
+        <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+          
+          <!-- Filter Bar inside Admin -->
+          <div class="p-4 bg-slate-900/60 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2 flex-1 max-w-md">
+              <i data-lucide="search" class="w-4 h-4 text-slate-500"></i>
+              <input 
+                type="text" 
+                placeholder="Yönetici arama: İsim, SKU, Marka..." 
+                oninput="state.adminFilter.query = this.value; renderAdminProductsTable();" 
+                class="w-full bg-slate-900 border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+              >
+            </div>
+
+            <div class="flex items-center gap-2">
+              <select onchange="state.adminFilter.category = this.value; renderAdminProductsTable();" class="bg-slate-900 border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none">
+                <option value="all">Tüm Kategoriler</option>
+                <option value="printers">3D Yazıcı &amp; Lazer</option>
+                <option value="filaments">Filament &amp; Sarf</option>
+                <option value="toners">Muadil Toner</option>
+                <option value="parts">Yedek Parça</option>
+              </select>
+
+              <select onchange="state.adminFilter.stockOnly = this.value; renderAdminProductsTable();" class="bg-slate-900 border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none">
+                <option value="all">Tüm Stoklar</option>
+                <option value="low">Sadece Kritik Stok (1-5)</option>
+                <option value="out">Sadece Tükenenler (0)</option>
+                <option value="in">Normal Stok (>5)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Product Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 text-[11px] font-mono uppercase text-slate-400 bg-slate-900/40">
+                  <th class="py-3 px-4">#</th>
+                  <th class="py-3 px-4">Ürün Bilgisi</th>
+                  <th class="py-3 px-4">Kategori</th>
+                  <th class="py-3 px-4">Fiyat</th>
+                  <th class="py-3 px-4">Stok Adedi (Hızlı Ayarla)</th>
+                  <th class="py-3 px-4">Durum</th>
+                  <th class="py-3 px-4 text-right">İşlemler</th>
+                </tr>
+              </thead>
+              <tbody id="admin-products-tbody">
+                <!-- Rendered dynamically by app.js -->
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <!-- Recent Customer Orders Section -->
+        <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+              <i data-lucide="shopping-bag" class="w-4 h-4 text-cyan-400"></i>
+              <span>Gelen Siparişler &amp; Stok Çıkışları</span>
+            </h4>
+            <span class="text-xs text-slate-500 font-mono">Otomatik Stok Düştü</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 text-[11px] font-mono uppercase text-slate-400">
+                  <th class="py-2.5 px-4">Sipariş No</th>
+                  <th class="py-2.5 px-4">Müşteri</th>
+                  <th class="py-2.5 px-4">Kalemler</th>
+                  <th class="py-2.5 px-4">Tutar</th>
+                  <th class="py-2.5 px-4">Tarih</th>
+                </tr>
+              </thead>
+              <tbody id="admin-orders-tbody">
+                <!-- Rendered dynamically by app.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 3. ADD / EDIT PRODUCT MODAL -->
+  <div id="edit-product-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div onclick="closeModal('edit-product-modal')" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+    <div class="relative w-full max-w-xl bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 z-10 shadow-2xl my-8">
+      <button onclick="closeModal('edit-product-modal')" class="absolute top-5 right-5 p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-2 text-cyan-400 mb-2">
+        <i data-lucide="box" class="w-5 h-5"></i>
+        <span class="text-xs font-mono font-bold uppercase">Ürün Editörü</span>
+      </div>
+      <h3 id="product-form-title" class="text-xl font-bold text-white mb-4">Ürün Bilgilerini Düzenle</h3>
+
+      <form id="product-form" onsubmit="handleSaveProductForm(event)" class="space-y-4">
+        <input type="hidden" id="edit-product-id">
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Ürün Adı *</label>
+          <input type="text" id="form-prod-name" required placeholder="Örn: Bambu Lab P1S Combo 3D Yazıcı" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Kategori *</label>
+            <select id="form-prod-category" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+              <option value="printers">3D Yazıcı &amp; Lazer</option>
+              <option value="filaments">Filament &amp; Sarf</option>
+              <option value="toners">Muadil &amp; Orijinal Toner</option>
+              <option value="parts">Yedek Parça &amp; Mekanik</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Marka</label>
+            <input type="text" id="form-prod-brand" placeholder="Örn: Creality, Bambu Lab, HP..." class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Fiyat (₺) *</label>
+            <input type="number" id="form-prod-price" required min="0" placeholder="1250" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Eski Fiyat (₺)</label>
+            <input type="number" id="form-prod-old-price" min="0" placeholder="1450" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Stok Miktarı *</label>
+            <input type="number" id="form-prod-stock" required min="0" placeholder="15" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none font-bold text-emerald-400">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Görsel Yolu veya URL *</label>
+          <input type="text" id="form-prod-image" placeholder="assets/products/prod_4873.png veya https://..." class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none font-mono">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Teknik Özellikler (Virgülle ayırın)</label>
+          <input type="text" id="form-prod-specs" placeholder="500 mm/s Hız, Otomatik Kalibrasyon, 1.75mm Çap" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Ürün Açıklaması</label>
+          <textarea id="form-prod-desc" rows="3" placeholder="Ürün açıklaması, uyumlu yazıcı modelleri veya kullanım alanı..." class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+          <i data-lucide="save" class="w-4 h-4"></i>
+          <span>Değişiklikleri Kaydet &amp; Yayınla</span>
         </button>
       </form>
     </div>

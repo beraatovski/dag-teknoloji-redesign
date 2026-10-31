@@ -1,274 +1,55 @@
 /**
- * DAĞ TEKNOLOJİ - MODERN WEB PLATFORM
- * Interactive 3D Engine, Slicing Cost Estimator, Catalog, and Cart
+ * DAĞ TEKNOLOJİ - MODERN WEB PLATFORM & E-COMMERCE ENGINE
+ * Real Products (132 Items), Multi-Filter, Stock System, Admin Panel & 3D Engine
  */
 
-// --- PRODUCT DATABASE ---
-// Loads all real scraped products from products.js (132 products from dagteknoloji.com.tr)
-const PRODUCTS = (window.DAG_PRODUCTS && window.DAG_PRODUCTS.length > 0) ? window.DAG_PRODUCTS : [
-  // 3D Yazıcılar
-  {
-    id: 'pr-1',
-    category: 'printers',
-    name: 'Bambu Lab P1S Combo (AMS 4 Renk)',
-    subtitle: 'Kapalı Kasa Çok Renkli Yüksek Hızlı 3D Yazıcı',
-    price: 38990,
-    oldPrice: 42500,
-    rating: 4.9,
-    reviews: 64,
-    badge: 'ÇOK SATAN',
-    badgeColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
-    icon: 'printer',
-    specs: ['500 mm/s Hız', 'Otomatik Kalibrasyon', 'Kapalı Gövde', '4 Renkli Baskı'],
-    desc: 'Endüstriyel seviye hassasiyet ve kutudan çıkar çıkmaz dakikalar içinde baskı deneyimi. Karbon hava filtreleme ve AMS çok renkli baskı sistemiyle profesyonellerin ilk tercihi.'
-  },
-  {
-    id: 'pr-2',
-    category: 'printers',
-    name: 'Creality K1C Carbon Flagship',
-    subtitle: 'Karbon Fiber Takviyeli Filament Uyumlu 600 mm/s',
-    price: 24490,
-    oldPrice: 26900,
-    rating: 4.8,
-    reviews: 42,
-    badge: 'KARBON ÖZEL',
-    badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-    icon: 'zap',
-    specs: ['600 mm/s Hız', 'Sertleştirilmiş Çelik Nozzle', 'AI Kamera', '300°C Hotend'],
-    desc: 'Aşındırıcı karbon fiber kompozit filamentlerle kesintisiz baskı için özel tasarlanmış unicorn nozzle ve dahili yapay zeka gözetleme kamerası.'
-  },
-  {
-    id: 'pr-3',
-    category: 'printers',
-    name: 'Anycubic Kobra 2 Max',
-    subtitle: 'Devasa Baskı Hacmi: 420 x 420 x 500 mm',
-    price: 21750,
-    oldPrice: 23900,
-    rating: 4.7,
-    reviews: 29,
-    badge: 'GENİŞ ALAN',
-    badgeColor: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
-    icon: 'maximize-2',
-    specs: ['420x420x500 mm Hacim', 'LeviQ 2.0 Otomatik Tesviye', 'Hızlı Soğutma', '500 mm/s Hız'],
-    desc: 'Mimarlık ofisleri, cosplay tasarımcıları ve büyük ölçekli prototip üretenler için devasa baskı alanı sunan uygun maliyetli canavar.'
-  },
-  {
-    id: 'pr-4',
-    category: 'printers',
-    name: 'Elegoo Saturn 3 Ultra 12K (SLA Reçine)',
-    subtitle: 'Mikron Hassasiyetinde Endüstriyel Reçine Yazıcı',
-    price: 27900,
-    oldPrice: 30500,
-    rating: 4.9,
-    reviews: 38,
-    badge: '12K EKRAN',
-    badgeColor: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-    icon: 'sparkles',
-    specs: ['12K Mono LCD', '19x24 Mikron Detay', 'ACF Hızlı Film', 'Dahili Hava Filtresi'],
-    desc: 'Diş hekimliği, kuyumculuk ve minyatür modellemede pürüzsüz yüzey kalitesi arayanlar için 12K çözünürlüklü amiral gemisi.'
-  },
-  {
-    id: 'pr-5',
-    category: 'printers',
-    name: 'Revopoint Inspire 3D El Tarayıcısı',
-    subtitle: 'Tersine Mühendislik & Metrik 0.02 mm Hassasiyet',
-    price: 18950,
-    oldPrice: 21000,
-    rating: 4.8,
-    reviews: 19,
-    badge: '3D TARAMA',
-    badgeColor: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-    icon: 'scan',
-    specs: ['0.02 mm Hassasiyet', 'Renk & Doku Desteği', 'Kablosuz Wi-Fi 6', 'Hafif 140g'],
-    desc: 'Fiziksel parçaları saniyeler içinde dijital CAD modellerine dönüştürün. Perpa teknik atölyemizde de aktif kullandığımız yüksek hassasiyetli tarayıcı.'
-  },
-
-  // Filamentler & Sarflar
-  {
-    id: 'fl-1',
-    category: 'filaments',
-    name: 'DağTech Hyper PLA+ Pro Filament (1kg)',
-    subtitle: '1.75mm Çap - 600 mm/s Yüksek Hız Formüllü',
-    price: 469,
-    oldPrice: 540,
-    rating: 4.9,
-    reviews: 142,
-    badge: 'YERLİ STOK',
-    badgeColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
-    icon: 'disc',
-    specs: ['±0.02mm Tolerans', 'Tıkanma Yapmaz', 'Yüksek Katman Yapışması', 'Saf Hammadde'],
-    desc: 'Dağ Teknoloji özel üretimi yüksek hızlı yazıcılarla tam senkronize, bükülme ve ipliklenme yapmayan üstün kalite PLA+ filament.'
-  },
-  {
-    id: 'fl-2',
-    category: 'filaments',
-    name: 'Sunlu PETG Dayanıklı Endüstriyel Filament',
-    subtitle: '1.75mm 1kg - UV, Kimyasal ve Su Dirençli',
-    price: 499,
-    oldPrice: 580,
-    rating: 4.8,
-    reviews: 95,
-    badge: 'DAYANIKLI',
-    badgeColor: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-    icon: 'shield-check',
-    specs: ['Yüksek Darbe Direnci', 'Gıda ile Uyumlu', 'Düşük Çekme Oranı', 'Suya Dayanıklı'],
-    desc: 'Mekanik parçalar ve dış ortam uygulamaları için ideal darbe ve kimyasal direnç sağlayan yüksek kaliteli PETG makara.'
-  },
-  {
-    id: 'fl-3',
-    category: 'filaments',
-    name: 'PA-CF Karbon Fiber Takviyeli Naylon',
-    subtitle: '1.75mm 500g - Metal Sertliğinde Mühendislik Malzemesi',
-    price: 1190,
-    oldPrice: 1350,
-    rating: 5.0,
-    reviews: 31,
-    badge: 'MÜHENDİSLİK',
-    badgeColor: 'bg-red-500/20 text-red-400 border-red-500/30',
-    icon: 'cpu',
-    specs: ['150°C Isı Dayanımı', 'Hafif & Süper Rijit', 'Mekanik Aşınmaz', '%20 Karbon Oranı'],
-    desc: 'İHA parçaları, otomotiv aparatları ve ağır sanayi prototipleri için alüminyuma alternatif süper sert karbon lifli filament.'
-  },
-  {
-    id: 'fl-4',
-    category: 'filaments',
-    name: 'eSUN TPU 95A Esnek Filament (1kg)',
-    subtitle: '1.75mm Esnek Kauçuk Benzeri Yapı',
-    price: 689,
-    oldPrice: 760,
-    rating: 4.7,
-    reviews: 44,
-    badge: 'ESNEK KAUÇUK',
-    badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-    icon: 'repeat',
-    specs: ['95A Shore Sertlik', '%400 Uzama Kapasitesi', 'Titreşim Emici', 'Aşınmaz'],
-    desc: 'Conta, telefon kılıfı, robot tekerleği ve titreşim takozları üretimi için mükemmel elastikiyete sahip TPU filament.'
-  },
-
-  // Muadil & Orijinal Tonerler
-  {
-    id: 'tn-1',
-    category: 'toners',
-    name: 'HP W1106A (106A) Muadil Lazer Toner',
-    subtitle: 'Yeni Nesil Akıllı Çipli - 1.000 Sayfa Net Baskı',
-    price: 339,
-    oldPrice: 390,
-    rating: 4.9,
-    reviews: 180,
-    badge: 'EN ÇOK SATAN',
-    badgeColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
-    icon: 'file-text',
-    specs: ['Çipli Tak-Çalıştır', 'Yoğun Siyah Formül', 'HP 107a / 107w / 135a Uyumlu', 'Birebir Değişim Garantisi'],
-    desc: 'Perpa stoklarımızdan hemen teslim, drum korumalı ve orijinal kalitesinde koyu siyah çıktı garantili muadil toner.'
-  },
-  {
-    id: 'tn-2',
-    category: 'toners',
-    name: 'Canon CRG-057 Yüksek Kapasiteli Toner',
-    subtitle: '3.100 Sayfa Garantili Muadil Toner Kartuşu',
-    price: 395,
-    oldPrice: 470,
-    rating: 4.8,
-    reviews: 73,
-    badge: 'YÜKSEK KAPASİTE',
-    badgeColor: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
-    icon: 'layers',
-    specs: ['3.100 Sayfa Baskı', 'LBP223dw / LBP226dw Uyumlu', 'Sıfır Atık Toz', 'Mükemmel Netlik'],
-    desc: 'Ofis ve kurumsal iş yükleri için tasarlanmış yüksek sayfa kapasiteli ve lekesiz pürüzsüz baskı veren ekonomik çözüm.'
-  },
-  {
-    id: 'tn-3',
-    category: 'toners',
-    name: 'Xerox Phaser 3020 / WorkCentre 3025 Toner',
-    subtitle: '106R02773 Çipli Muadil Siyah Toner (1.500 Sayfa)',
-    price: 320,
-    oldPrice: 380,
-    rating: 4.7,
-    reviews: 88,
-    badge: 'OFİS DOSTU',
-    badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-    icon: 'copy',
-    specs: ['1.500 Sayfa', 'Yeni Versiyon Çip', 'Xerox 3020/3025 Uyumlu', 'Homojen Toz'],
-    desc: 'Kompakt ofis yazıcıları için yüksek kontrastlı metin ve tablo baskıları sunan, drum dostu mikronize toner tozu.'
-  },
-  {
-    id: 'tn-4',
-    category: 'toners',
-    name: 'Pantum PA-210EV Çipli Muadil Toner',
-    subtitle: 'P2500 / M6500 Serisi Uyumlu 1.600 Sayfa',
-    price: 410,
-    oldPrice: 480,
-    rating: 4.8,
-    reviews: 51,
-    badge: 'GARANTİLİ',
-    badgeColor: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-    icon: 'archive',
-    specs: ['Yeni Akıllı Çip', '1.600 Sayfa', 'Korumalı Ambalaj', 'Sıfır Çizgi'],
-    desc: 'Pantum yazıcılar için takıldığında uyarı vermeyen sorunsuz akıllı çip donanımı ve net baskı sağlayan toner.'
-  },
-
-  // Yedek Parça & Nozzle
-  {
-    id: 'pt-1',
-    category: 'parts',
-    name: 'Hardened Steel Sertleştirilmiş Nozzle Seti',
-    subtitle: '0.4mm & 0.6mm Karbon Fiber ve Glow Filament Dayanımlı',
-    price: 349,
-    oldPrice: 420,
-    rating: 4.9,
-    reviews: 67,
-    badge: 'AŞINMAZ',
-    badgeColor: 'bg-red-500/20 text-red-400 border-red-500/30',
-    icon: 'tool',
-    specs: ['550°C Isı Dayanımı', 'Mohs 7.8 Sertlik', 'CNC Hassas İşleme', 'M6 / Bambu Uyumlu'],
-    desc: 'Aşındırıcı filament türlerinde pirinç nozzle gibi erimez ve genişlemez; pürüzsüz akışkanlık sunar.'
-  },
-  {
-    id: 'pt-2',
-    category: 'parts',
-    name: 'Çift Taraflı Dokulu PEI Manyetik Yay Çeliği Tabla',
-    subtitle: '235 x 235 mm - Ender / K1 / Neptune Uyumlu',
-    price: 520,
-    oldPrice: 610,
-    rating: 4.9,
-    reviews: 114,
-    badge: 'MÜKEMMEL YAPIŞMA',
-    badgeColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
-    icon: 'box',
-    specs: ['Tutkalsız Baskı', 'Bük ve Ayrıl Mekanizma', 'Çift Yüzey (Gold PEI)', 'Dayanıklı Yay Çeliği'],
-    desc: 'Isındığında parçayı güçlü tutar, soğuduğunda tablayı hafif bükerek parçayı sıfır çizikle elinize alırsınız.'
-  },
-  {
-    id: 'pt-3',
-    category: 'parts',
-    name: 'Bimetal Titanyum & Bakır All-Metal Boğaz (Heatbreak)',
-    subtitle: 'Tıkanma ve Isı Kaçağına Karşı Üstün Termal Bariyer',
-    price: 290,
-    oldPrice: 350,
-    rating: 4.8,
-    reviews: 43,
-    badge: 'HOTEND PRO',
-    badgeColor: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
-    icon: 'flame',
-    specs: ['300°C+ Yüksek Isı', 'Titanyum Alaşım', 'Ultra İnce Duvar', 'Isı İletim Ayrımı'],
-    desc: 'Isının soğutucu bloğa kaçmasını engelleyerek filament şişmesini ve nozzle tıkanmasını kökten çözer.'
+// --- STATE MANAGEMENT ---
+// 1. Initialize products from LocalStorage if user/admin made edits, else use window.DAG_PRODUCTS
+const initialProducts = (function() {
+  const saved = localStorage.getItem('dag_custom_products');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    } catch(e) { console.error('Error parsing stored products', e); }
   }
-];
+  return window.DAG_PRODUCTS || [];
+})();
 
-// --- APP STATE ---
 const state = {
+  products: initialProducts,
   cart: JSON.parse(localStorage.getItem('dag_cart') || '[]'),
-  activeCategory: 'all',
-  searchQuery: '',
+  orders: JSON.parse(localStorage.getItem('dag_orders') || '[]'),
+  isAdmin: sessionStorage.getItem('dag_is_admin') === 'true',
+  
+  // Catalog Filters
+  filters: {
+    category: 'all',
+    brand: 'all',
+    stockStatus: 'all', // 'all', 'in_stock', 'low_stock', 'out_of_stock'
+    searchQuery: '',
+    priceMax: 65000,
+    sortBy: 'default', // 'default', 'price_asc', 'price_desc', 'rating', 'stock_desc'
+    displayLimit: 24
+  },
+
+  // 3D Printing Calculator State
   calc: {
     material: 'pla',
-    modelSize: 60, // simulated size factor
+    modelSize: 60,
     infill: 20,
     layerHeight: 0.20,
     color: '#00f0ff',
     tech: 'fdm',
     fileName: 'ornek_disli_mekanizmasi.stl',
     fileSizeMb: 4.2
+  },
+
+  // Admin Search / Filter
+  adminFilter: {
+    query: '',
+    category: 'all',
+    stockOnly: 'all'
   }
 };
 
@@ -285,10 +66,12 @@ const MATERIAL_DATA = {
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
   initThreeJsViewport();
+  renderBrandFilters();
   renderProducts();
   updateCartBadge();
   setupEventListeners();
   updateCalculatorUI();
+  updateAdminUI();
   lucide.createIcons();
 });
 
@@ -340,16 +123,16 @@ function initThreeJsViewport() {
   // Build Plate Grid
   createBuildPlate();
 
-  // Create 3D Model Group (Extruder / Mechanical Core)
+  // Create 3D Model Group
   modelGroup = new THREE.Group();
   buildMechanicalPart(modelGroup);
   modelGroup.position.y = 1.2;
   scene.add(modelGroup);
 
-  // Simulated 3D Printing Laser / Toolhead
+  // Print Head Laser
   createPrintHead();
 
-  // Mouse Interaction (Orbit / Drag)
+  // Mouse / Touch Interaction
   let isDragging = false;
   let prevMousePos = { x: 0, y: 0 };
 
@@ -364,17 +147,12 @@ function initThreeJsViewport() {
     if (!isDragging) return;
     const deltaX = e.clientX - prevMousePos.x;
     const deltaY = e.clientY - prevMousePos.y;
-
     modelGroup.rotation.y += deltaX * 0.008;
     modelGroup.rotation.x += deltaY * 0.008;
-
-    // clamp X
     modelGroup.rotation.x = Math.max(-0.6, Math.min(0.6, modelGroup.rotation.x));
-
     prevMousePos = { x: e.clientX, y: e.clientY };
   });
 
-  // Touch Support
   container.addEventListener('touchstart', (e) => {
     if (e.touches.length === 1) {
       isDragging = true;
@@ -388,14 +166,11 @@ function initThreeJsViewport() {
     if (!isDragging || e.touches.length !== 1) return;
     const deltaX = e.touches[0].clientX - prevMousePos.x;
     const deltaY = e.touches[0].clientY - prevMousePos.y;
-
     modelGroup.rotation.y += deltaX * 0.008;
     modelGroup.rotation.x += deltaY * 0.008;
-
     prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
   });
 
-  // Window resize
   window.addEventListener('resize', () => {
     if (!container) return;
     const w = container.clientWidth;
@@ -405,26 +180,19 @@ function initThreeJsViewport() {
     renderer.setSize(w, h);
   });
 
-  // Animation Loop
   let clock = new THREE.Clock();
   function animate() {
     requestAnimationFrame(animate);
     const elapsedTime = clock.getElapsedTime();
-
     if (!isDragging) {
       modelGroup.rotation.y += 0.006;
     }
-
-    // Gentle float
     modelGroup.position.y = 1.2 + Math.sin(elapsedTime * 1.5) * 0.15;
-
-    // Print head laser oscillation
     if (printHead) {
       printHead.position.x = Math.sin(elapsedTime * 2.5) * 1.8;
       printHead.position.z = Math.cos(elapsedTime * 1.8) * 1.8;
       printHead.position.y = 3.6 + Math.sin(elapsedTime * 3) * 0.2;
     }
-
     renderer.render(scene, camera);
   }
   animate();
@@ -432,24 +200,18 @@ function initThreeJsViewport() {
 
 function createBuildPlate() {
   const plateGeo = new THREE.BoxGeometry(7, 0.2, 7);
-  const plateMat = new THREE.MeshStandardMaterial({
-    color: 0x121826,
-    roughness: 0.8,
-    metalness: 0.2
-  });
+  const plateMat = new THREE.MeshStandardMaterial({ color: 0x121826, roughness: 0.8, metalness: 0.2 });
   const plate = new THREE.Mesh(plateGeo, plateMat);
   plate.position.y = -1.5;
   plate.receiveShadow = true;
   scene.add(plate);
 
-  // Grid
   const gridHelper = new THREE.GridHelper(6.6, 22, 0x00f0ff, 0x1e293b);
   gridHelper.position.y = -1.39;
   scene.add(gridHelper);
 }
 
 function buildMechanicalPart(group) {
-  // Clear any existing children
   while (group.children.length > 0) {
     group.remove(group.children[0]);
   }
@@ -468,13 +230,11 @@ function buildMechanicalPart(group) {
     wireframe: isWireframe
   });
 
-  // Central Core Turbine / Gear
   const torusGeo = new THREE.TorusGeometry(1.6, 0.45, 16, 40);
   const torus = new THREE.Mesh(torusGeo, mat);
   torus.rotation.x = Math.PI / 2;
   group.add(torus);
 
-  // Mechanical Teeth / Blades
   const teethCount = 8;
   for (let i = 0; i < teethCount; i++) {
     const angle = (i / teethCount) * Math.PI * 2;
@@ -486,19 +246,16 @@ function buildMechanicalPart(group) {
     group.add(tooth);
   }
 
-  // Inner Hex Core
   const cylinderGeo = new THREE.CylinderGeometry(0.8, 0.8, 1.4, 6);
   const coreMesh = new THREE.Mesh(cylinderGeo, darkMat);
   group.add(coreMesh);
 
-  // Precision Nozzle Pin
   const coneGeo = new THREE.ConeGeometry(0.5, 0.9, 16);
   const coneMesh = new THREE.Mesh(coneGeo, mat);
   coneMesh.position.y = -1.1;
   coneMesh.rotation.x = Math.PI;
   group.add(coneMesh);
 
-  // Top Precision Collar
   const ringGeo = new THREE.TorusGeometry(0.6, 0.12, 12, 24);
   const ring = new THREE.Mesh(ringGeo, mat);
   ring.position.y = 0.8;
@@ -514,11 +271,7 @@ function createPrintHead() {
   tip.rotation.x = Math.PI;
 
   const beamGeo = new THREE.CylinderGeometry(0.015, 0.05, 1.8, 8);
-  const beamMat = new THREE.MeshBasicMaterial({
-    color: 0x00f0ff,
-    transparent: true,
-    opacity: 0.7
-  });
+  const beamMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.7 });
   const beam = new THREE.Mesh(beamGeo, beamMat);
   beam.position.y = -1.0;
 
@@ -547,29 +300,25 @@ function updateCalculatorUI() {
   const matKey = state.calc.material;
   const matInfo = MATERIAL_DATA[matKey] || MATERIAL_DATA.pla;
 
-  const sizeFactor = state.calc.modelSize / 60; // relative base size
+  const sizeFactor = state.calc.modelSize / 60;
   const infillRatio = state.calc.infill / 100;
-  const layerCoeff = 0.20 / state.calc.layerHeight; // thinner layers take longer
+  const layerCoeff = 0.20 / state.calc.layerHeight;
 
-  // Simulated weight: shell weight + infill volume
   const baseVolumeCm3 = 35 * Math.pow(sizeFactor, 3);
   const shellVolume = baseVolumeCm3 * 0.35;
   const internalVolume = baseVolumeCm3 * 0.65 * infillRatio;
   const totalVolume = shellVolume + internalVolume;
   const totalWeightGrams = Math.round(totalVolume * matInfo.density);
 
-  // Simulated print duration in hours
   const baseSpeedHours = (totalVolume * 0.09) * layerCoeff * matInfo.timeFactor;
   const hours = Math.floor(baseSpeedHours);
   const minutes = Math.round((baseSpeedHours - hours) * 60);
 
-  // Price calculation
   const materialCost = totalWeightGrams * matInfo.pricePerGram;
-  const machinePrepCost = 75; // Machine setup + slice prep fee
-  const printHourlyRate = 22; // Machine running cost / hr
+  const machinePrepCost = 75;
+  const printHourlyRate = 22;
   const totalPrice = Math.round(materialCost + machinePrepCost + (baseSpeedHours * printHourlyRate));
 
-  // Update DOM elements
   const weightEl = document.getElementById('calc-weight');
   const timeEl = document.getElementById('calc-time');
   const priceEl = document.getElementById('calc-price');
@@ -628,7 +377,6 @@ window.handleFileUpload = function(event) {
     return;
   }
 
-  // Simulate instant slicing analysis
   const statusBox = document.getElementById('upload-status-box');
   const fileNameDisplay = document.getElementById('uploaded-filename');
   const fileSizeDisplay = document.getElementById('uploaded-filesize');
@@ -657,122 +405,83 @@ window.handleFileUpload = function(event) {
 };
 
 // ==========================================================================
-// 3. PRODUCT CATALOG RENDERING & FILTERING
+// 3. MULTI-FACET FILTER SYSTEM & PRODUCT CATALOG
 // ==========================================================================
-function renderProducts() {
-  const container = document.getElementById('products-grid');
-  if (!container) return;
+function getFilteredProducts() {
+  const f = state.filters;
+  let items = state.products.filter(p => {
+    // 1. Category Filter
+    if (f.category !== 'all' && p.category !== f.category) return false;
 
-  let filtered = PRODUCTS.filter(p => {
-    const matchesCat = state.activeCategory === 'all' || p.category === state.activeCategory;
-    const matchesSearch = p.name.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
-                          p.subtitle.toLowerCase().includes(state.searchQuery.toLowerCase());
-    return matchesCat && matchesSearch;
+    // 2. Brand Filter
+    if (f.brand !== 'all' && (p.brand || 'Diğer') !== f.brand) return false;
+
+    // 3. Stock Status Filter
+    const stock = Number(p.stock !== undefined ? p.stock : 10);
+    if (f.stockStatus === 'in_stock' && stock <= 0) return false;
+    if (f.stockStatus === 'low_stock' && (stock <= 0 || stock > 5)) return false;
+    if (f.stockStatus === 'out_of_stock' && stock > 0) return false;
+
+    // 4. Price Max Filter
+    if (f.priceMax && p.price > f.priceMax) return false;
+
+    // 5. Search Query
+    if (f.searchQuery) {
+      const q = f.searchQuery.toLowerCase();
+      const nameMatch = p.name.toLowerCase().includes(q);
+      const descMatch = (p.desc || '').toLowerCase().includes(q);
+      const skuMatch = (p.sku || '').toLowerCase().includes(q);
+      const brandMatch = (p.brand || '').toLowerCase().includes(q);
+      if (!nameMatch && !descMatch && !skuMatch && !brandMatch) return false;
+    }
+
+    return true;
   });
 
-  if (filtered.length === 0) {
-    container.innerHTML = `
-      <div class="col-span-full py-16 text-center text-slate-400">
-        <i data-lucide="package-search" class="w-16 h-16 mx-auto mb-4 text-slate-600"></i>
-        <h4 class="text-xl font-bold text-white mb-2">Aradığınız Ürün Bulunamadı</h4>
-        <p class="text-sm">Filtreleri sıfırlayabilir veya farklı bir arama terimi deneyebilirsiniz.</p>
-        <button onclick="resetFilters()" class="mt-4 px-4 py-2 text-sm bg-slate-800 hover:bg-slate-700 text-cyan-400 rounded-lg border border-slate-700">Filtreleri Sıfırla</button>
-      </div>
-    `;
-    lucide.createIcons();
-    return;
+  // Sorting
+  if (f.sortBy === 'price_asc') {
+    items.sort((a, b) => a.price - b.price);
+  } else if (f.sortBy === 'price_desc') {
+    items.sort((a, b) => b.price - a.price);
+  } else if (f.sortBy === 'rating') {
+    items.sort((a, b) => (b.rating || 5) - (a.rating || 5));
+  } else if (f.sortBy === 'stock_desc') {
+    items.sort((a, b) => (b.stock || 0) - (a.stock || 0));
   }
 
-  container.innerHTML = filtered.map(p => `
-    <div class="glass-panel rounded-2xl overflow-hidden flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300">
-      <!-- Product Header & Visual Representation -->
-      <div class="p-6 relative bg-gradient-to-b from-white/[0.04] to-transparent">
-        <div class="flex items-center justify-between mb-4">
-          <span class="text-xs font-semibold px-2.5 py-1 rounded-full border ${p.badgeColor}">${p.badge}</span>
-          <div class="flex items-center gap-1 text-amber-400 text-xs font-bold">
-            <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
-            <span>${p.rating}</span>
-            <span class="text-slate-500 font-normal">(${p.reviews})</span>
-          </div>
-        </div>
-
-        <!-- Real Product Image Display with Graceful Fallback -->
-        <div class="w-full h-48 rounded-xl bg-slate-950/70 border border-slate-800/80 p-3 flex items-center justify-center relative overflow-hidden group-hover:border-cyan-500/40 transition-all">
-          <img 
-            src="${p.image || p.remoteImage}" 
-            alt="${p.name}" 
-            class="max-h-full max-w-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-            onerror="if(this.src!=='${p.remoteImage}' && '${p.remoteImage}'){this.src='${p.remoteImage}';}else{this.style.display='none';this.nextElementSibling.classList.remove('hidden');}"
-          />
-          <div class="hidden w-20 h-20 rounded-2xl bg-slate-800/90 border border-slate-700/80 flex items-center justify-center text-cyan-400">
-            <i data-lucide="${p.icon}" class="w-10 h-10"></i>
-          </div>
-          <span class="absolute bottom-2 right-2 text-[9px] tracking-wider font-mono text-slate-400 bg-slate-900/90 px-1.5 py-0.5 rounded border border-slate-800 uppercase">Perpa Stok</span>
-        </div>
-      </div>
-
-      <!-- Content -->
-      <div class="p-6 pt-0 flex-1 flex flex-col justify-between">
-        <div>
-          <span class="text-[11px] font-mono tracking-wider uppercase text-cyan-400/80 font-bold block mb-1">
-            ${getCategoryName(p.category)}
-          </span>
-          <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors mb-1 line-clamp-1">
-            ${p.name}
-          </h3>
-          <p class="text-xs text-slate-400 line-clamp-2 mb-4">
-            ${p.subtitle}
-          </p>
-
-          <!-- Key Features Pills -->
-          <div class="flex flex-wrap gap-1.5 mb-6">
-            ${p.specs.slice(0, 3).map(s => `
-              <span class="text-[11px] bg-slate-800/80 border border-slate-700/60 text-slate-300 px-2 py-0.5 rounded">
-                ${s}
-              </span>
-            `).join('')}
-          </div>
-        </div>
-
-        <!-- Pricing & Action Row -->
-        <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-          <div>
-            ${p.oldPrice ? `<span class="text-xs text-slate-500 line-through block">${p.oldPrice.toLocaleString('tr-TR')} ₺</span>` : ''}
-            <div class="text-xl font-extrabold text-white">
-              ${p.price.toLocaleString('tr-TR')} <span class="text-xs text-cyan-400 font-normal">₺</span>
-            </div>
-          </div>
-          
-          <div class="flex items-center gap-2">
-            <button onclick="openProductModal('${p.id}')" title="Hızlı İncele" class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700">
-              <i data-lucide="eye" class="w-4 h-4"></i>
-            </button>
-            <button onclick="addToCart('${p.id}')" class="px-3.5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-lg shadow-cyan-500/20 active:scale-95">
-              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-              <span>Ekle</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `).join('');
-
-  lucide.createIcons();
+  return items;
 }
 
-function getCategoryName(cat) {
-  switch (cat) {
-    case 'printers': return '3D Yazıcı & Tarayıcı';
-    case 'filaments': return 'Filament & Sarf';
-    case 'toners': return 'Muadil & Orijinal Toner';
-    case 'parts': return 'Yedek Parça & Nozzle';
-    default: return 'Teknoloji';
-  }
+function renderBrandFilters() {
+  const container = document.getElementById('brand-filters-container');
+  if (!container) return;
+
+  const brandsSet = new Set();
+  state.products.forEach(p => {
+    if (p.brand) brandsSet.add(p.brand);
+  });
+  const brandsList = Array.from(brandsSet).sort();
+
+  container.innerHTML = `
+    <button onclick="setBrandFilter('all')" class="brand-chip px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${state.filters.brand === 'all' ? 'bg-cyan-500 text-slate-950 font-bold' : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700'}">
+      Tüm Markalar
+    </button>
+    ${brandsList.map(b => `
+      <button onclick="setBrandFilter('${b}')" class="brand-chip px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${state.filters.brand === b ? 'bg-cyan-500 text-slate-950 font-bold' : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700'}">
+        ${b}
+      </button>
+    `).join('')}
+  `;
 }
+
+window.setBrandFilter = function(brand) {
+  state.filters.brand = brand;
+  renderBrandFilters();
+  renderProducts();
+};
 
 window.filterCategory = function(cat) {
-  state.activeCategory = cat;
+  state.filters.category = cat;
   document.querySelectorAll('.cat-tab').forEach(tab => {
     const isActive = tab.dataset.category === cat;
     tab.classList.toggle('bg-cyan-500', isActive);
@@ -783,27 +492,246 @@ window.filterCategory = function(cat) {
   renderProducts();
 };
 
+window.handleStockFilter = function(status) {
+  state.filters.stockStatus = status;
+  renderProducts();
+};
+
+window.handleSortChange = function(sortValue) {
+  state.filters.sortBy = sortValue;
+  renderProducts();
+};
+
+window.handlePriceFilter = function(val) {
+  state.filters.priceMax = parseInt(val);
+  const display = document.getElementById('price-filter-display');
+  if (display) display.innerText = `Maks: ${parseInt(val).toLocaleString('tr-TR')} ₺`;
+  renderProducts();
+};
+
 window.handleProductSearch = function(query) {
-  state.searchQuery = query;
+  state.filters.searchQuery = query;
+  renderProducts();
+};
+
+window.loadMoreProducts = function() {
+  state.filters.displayLimit += 24;
+  renderProducts();
+};
+
+window.showAllProducts = function() {
+  state.filters.displayLimit = 9999;
   renderProducts();
 };
 
 window.resetFilters = function() {
-  state.activeCategory = 'all';
-  state.searchQuery = '';
+  state.filters.category = 'all';
+  state.filters.brand = 'all';
+  state.filters.stockStatus = 'all';
+  state.filters.searchQuery = '';
+  state.filters.priceMax = 65000;
+  state.filters.sortBy = 'default';
+  state.filters.displayLimit = 24;
+
   const searchInput = document.getElementById('product-search-input');
   if (searchInput) searchInput.value = '';
+  const priceSlider = document.getElementById('price-filter-slider');
+  if (priceSlider) priceSlider.value = 65000;
+  const priceDisplay = document.getElementById('price-filter-display');
+  if (priceDisplay) priceDisplay.innerText = 'Maks: 65.000 ₺';
+  const sortSelect = document.getElementById('sort-select');
+  if (sortSelect) sortSelect.value = 'default';
+  const stockSelect = document.getElementById('stock-filter-select');
+  if (stockSelect) stockSelect.value = 'all';
+
+  renderBrandFilters();
   filterCategory('all');
 };
 
+function renderProducts() {
+  const container = document.getElementById('products-grid');
+  const countDisplay = document.getElementById('filtered-count-display');
+  const loadMoreBox = document.getElementById('load-more-container');
+  if (!container) return;
+
+  const allFiltered = getFilteredProducts();
+  const visibleItems = allFiltered.slice(0, state.filters.displayLimit);
+
+  if (countDisplay) {
+    countDisplay.innerHTML = `
+      <span class="text-white font-bold">${allFiltered.length}</span> ürün listeleniyor
+      ${allFiltered.length !== state.products.length ? `<span class="text-slate-500 text-xs">(${state.products.length} ürün arasından)</span>` : ''}
+    `;
+  }
+
+  if (loadMoreBox) {
+    if (allFiltered.length > visibleItems.length) {
+      loadMoreBox.classList.remove('hidden');
+      const countBtn = document.getElementById('load-more-btn-text');
+      if (countBtn) countBtn.innerText = `Daha Fazla Göster (${visibleItems.length} / ${allFiltered.length})`;
+    } else {
+      loadMoreBox.classList.add('hidden');
+    }
+  }
+
+  if (allFiltered.length === 0) {
+    container.innerHTML = `
+      <div class="col-span-full py-16 text-center text-slate-400">
+        <i data-lucide="package-search" class="w-16 h-16 mx-auto mb-4 text-slate-600"></i>
+        <h4 class="text-xl font-bold text-white mb-2">Filtreye Uygun Ürün Bulunamadı</h4>
+        <p class="text-sm">Filtre kriterlerinizi genişletebilir veya arama terimini temizleyebilirsiniz.</p>
+        <button onclick="resetFilters()" class="mt-4 px-5 py-2.5 text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-xl transition-all shadow-lg shadow-cyan-500/20">Filtreleri Sıfırla</button>
+      </div>
+    `;
+    lucide.createIcons();
+    return;
+  }
+
+  container.innerHTML = visibleItems.map(p => {
+    const stock = Number(p.stock !== undefined ? p.stock : 10);
+    const isOutOfStock = stock <= 0;
+    const isLowStock = stock > 0 && stock <= 5;
+
+    // Stock Badge HTML
+    let stockBadgeHtml = '';
+    if (isOutOfStock) {
+      stockBadgeHtml = `
+        <span class="stock-badge-out px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Tükendi
+        </span>
+      `;
+    } else if (isLowStock) {
+      stockBadgeHtml = `
+        <span class="stock-badge-low px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span> Son ${stock} Adet!
+        </span>
+      `;
+    } else {
+      stockBadgeHtml = `
+        <span class="stock-badge-in px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Stokta (${stock})
+        </span>
+      `;
+    }
+
+    return `
+      <div class="glass-panel rounded-2xl overflow-hidden flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300 ${isOutOfStock ? 'opacity-85' : ''}">
+        <!-- Product Header & Visual -->
+        <div class="p-5 pb-3 relative bg-gradient-to-b from-white/[0.03] to-transparent">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${p.badgeColor}">${p.badge}</span>
+            ${stockBadgeHtml}
+          </div>
+
+          <!-- Real Product Image Display -->
+          <div class="w-full h-44 rounded-xl bg-slate-950/70 border border-slate-800/80 p-3 flex items-center justify-center relative overflow-hidden group-hover:border-cyan-500/40 transition-all">
+            <img 
+              src="${p.image || p.remoteImage}" 
+              alt="${p.name}" 
+              class="max-h-full max-w-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300 ${isOutOfStock ? 'grayscale-[60%]' : ''}"
+              loading="lazy"
+              onerror="if(this.src!=='${p.remoteImage}' && '${p.remoteImage}'){this.src='${p.remoteImage}';}else{this.style.display='none';this.nextElementSibling.classList.remove('hidden');}"
+            />
+            <div class="hidden w-20 h-20 rounded-2xl bg-slate-800/90 border border-slate-700/80 flex items-center justify-center text-cyan-400">
+              <i data-lucide="${p.icon || 'box'}" class="w-10 h-10"></i>
+            </div>
+            
+            ${p.brand ? `<span class="absolute top-2 left-2 text-[9px] tracking-wider font-mono text-cyan-400/90 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800">${p.brand}</span>` : ''}
+            <span class="absolute bottom-2 right-2 text-[9px] tracking-wider font-mono text-slate-400 bg-slate-900/90 px-1.5 py-0.5 rounded border border-slate-800 uppercase">Perpa Stok</span>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-5 pt-0 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-[11px] font-mono tracking-wider text-slate-400 mb-1">
+              <span class="uppercase text-cyan-400 font-semibold">${getCategoryName(p.category)}</span>
+              ${p.sku ? `<span class="text-slate-500 font-mono text-[10px]">${p.sku}</span>` : ''}
+            </div>
+
+            <h3 class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors mb-1.5 line-clamp-2" title="${p.name}">
+              ${p.name}
+            </h3>
+            
+            <p class="text-xs text-slate-400 line-clamp-2 mb-4 leading-relaxed">
+              ${p.subtitle || p.desc}
+            </p>
+
+            <!-- Specs Pills -->
+            <div class="flex flex-wrap gap-1 mb-5">
+              ${(p.specs || []).slice(0, 2).map(s => `
+                <span class="text-[10px] bg-slate-800/80 border border-slate-700/60 text-slate-300 px-2 py-0.5 rounded">
+                  ${s}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Pricing & Stock Action Row -->
+          <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between">
+            <div>
+              ${p.oldPrice ? `<span class="text-[11px] text-slate-500 line-through block">${p.oldPrice.toLocaleString('tr-TR')} ₺</span>` : ''}
+              <div class="text-lg font-extrabold text-white">
+                ${p.price.toLocaleString('tr-TR')} <span class="text-xs text-cyan-400 font-normal">₺</span>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-1.5">
+              <button onclick="openProductModal('${p.id}')" title="Hızlı İncele" class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700">
+                <i data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+              
+              ${isOutOfStock ? `
+                <button disabled class="px-3.5 py-2.5 rounded-xl bg-slate-800/80 text-slate-500 font-bold text-xs cursor-not-allowed border border-slate-700">
+                  <span>Tükendi</span>
+                </button>
+              ` : `
+                <button onclick="addToCart('${p.id}')" class="px-3.5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-lg shadow-cyan-500/20 active:scale-95">
+                  <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                  <span>Ekle</span>
+                </button>
+              `}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  lucide.createIcons();
+}
+
+function getCategoryName(cat) {
+  switch (cat) {
+    case 'printers': return '3D Yazıcı & Lazer';
+    case 'filaments': return 'Filament & Sarf';
+    case 'toners': return 'Muadil & Orijinal Toner';
+    case 'parts': return 'Yedek Parça & Mekanik';
+    default: return 'Teknoloji';
+  }
+}
+
 // ==========================================================================
-// 4. SHOPPING CART ENGINE
+// 4. E-COMMERCE SHOPPING CART & REAL STOCK RESERVATION
 // ==========================================================================
 window.addToCart = function(productId, qty = 1) {
-  const prod = PRODUCTS.find(p => p.id === productId);
+  const prod = state.products.find(p => p.id === productId);
   if (!prod) return;
 
+  const currentStock = Number(prod.stock !== undefined ? prod.stock : 10);
+  if (currentStock <= 0) {
+    showToast(`${prod.name} şu an stokta tükenmiştir!`, 'error');
+    return;
+  }
+
   const existing = state.cart.find(item => item.id === productId);
+  const currentInCart = existing ? existing.quantity : 0;
+
+  if (currentInCart + qty > currentStock) {
+    showToast(`Maksimum stok limitine ulaştınız! Mevcut stok: ${currentStock} adet`, 'error');
+    return;
+  }
+
   if (existing) {
     existing.quantity += qty;
   } else {
@@ -811,6 +739,7 @@ window.addToCart = function(productId, qty = 1) {
       id: prod.id,
       name: prod.name,
       price: prod.price,
+      image: prod.image || prod.remoteImage,
       subtitle: prod.subtitle,
       quantity: qty
     });
@@ -819,7 +748,7 @@ window.addToCart = function(productId, qty = 1) {
   saveCart();
   updateCartBadge();
   renderCartDrawer();
-  showToast(`${prod.name} sepete eklendi!`, 'success');
+  showToast(`${prod.name} sepete eklendi! (Kalan Stok: ${currentStock - (currentInCart + qty)})`, 'success');
 };
 
 function saveCart() {
@@ -852,9 +781,7 @@ window.toggleCartDrawer = function(forceOpen) {
   } else {
     drawer.classList.add('translate-x-full');
     backdrop.classList.add('opacity-0');
-    setTimeout(() => {
-      backdrop.classList.add('hidden');
-    }, 300);
+    setTimeout(() => { backdrop.classList.add('hidden'); }, 300);
   }
 };
 
@@ -883,18 +810,27 @@ function renderCartDrawer() {
 
   container.innerHTML = state.cart.map(item => {
     subtotal += item.price * item.quantity;
+    const prod = state.products.find(p => p.id === item.id);
+    const maxStock = prod ? (prod.stock || 0) : 10;
+
     return `
       <div class="flex items-center justify-between p-3.5 bg-slate-800/40 rounded-xl border border-slate-800">
-        <div class="flex-1 pr-3">
-          <h4 class="text-sm font-semibold text-white line-clamp-1">${item.name}</h4>
-          <span class="text-xs text-cyan-400 font-bold">${item.price.toLocaleString('tr-TR')} ₺</span>
+        <div class="flex items-center gap-3 flex-1 pr-2">
+          ${item.image ? `<img src="${item.image}" class="w-10 h-10 object-contain rounded bg-slate-900 p-1 border border-slate-700/60" onerror="this.style.display='none'" />` : ''}
+          <div class="flex-1">
+            <h4 class="text-xs font-semibold text-white line-clamp-1">${item.name}</h4>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-xs text-cyan-400 font-bold">${item.price.toLocaleString('tr-TR')} ₺</span>
+              <span class="text-[10px] text-slate-500">Stok: ${maxStock}</span>
+            </div>
+          </div>
         </div>
         
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5">
           <button onclick="changeCartQty('${item.id}', -1)" class="w-6 h-6 rounded bg-slate-700 hover:bg-slate-600 text-white flex items-center justify-center text-xs">-</button>
           <span class="text-xs font-bold text-white px-1.5">${item.quantity}</span>
-          <button onclick="changeCartQty('${item.id}', 1)" class="w-6 h-6 rounded bg-slate-700 hover:bg-slate-600 text-white flex items-center justify-center text-xs">+</button>
-          <button onclick="removeFromCart('${item.id}')" class="text-slate-500 hover:text-red-400 ml-2 p-1">
+          <button onclick="changeCartQty('${item.id}', 1)" class="w-6 h-6 rounded bg-slate-700 hover:bg-slate-600 text-white flex items-center justify-center text-xs" ${item.quantity >= maxStock ? 'disabled opacity-50' : ''}>+</button>
+          <button onclick="removeFromCart('${item.id}')" class="text-slate-500 hover:text-red-400 ml-1.5 p-1">
             <i data-lucide="trash-2" class="w-4 h-4"></i>
           </button>
         </div>
@@ -911,6 +847,14 @@ function renderCartDrawer() {
 window.changeCartQty = function(id, delta) {
   const item = state.cart.find(i => i.id === id);
   if (!item) return;
+
+  const prod = state.products.find(p => p.id === id);
+  const maxStock = prod ? (prod.stock || 0) : 10;
+
+  if (delta > 0 && item.quantity >= maxStock) {
+    showToast(`Bu ürün için maksimum stok adedine (${maxStock}) ulaştınız!`, 'error');
+    return;
+  }
 
   item.quantity += delta;
   if (item.quantity <= 0) {
@@ -936,7 +880,411 @@ window.processCheckout = function() {
 };
 
 // ==========================================================================
-// 5. MODAL SYSTEM
+// 5. PRODUCT DETAIL MODAL (QUICK-VIEW)
+// ==========================================================================
+window.openProductModal = function(productId) {
+  const p = state.products.find(item => item.id === productId);
+  if (!p) return;
+
+  const content = document.getElementById('product-modal-content');
+  if (!content) return;
+
+  const stock = Number(p.stock !== undefined ? p.stock : 10);
+  const isOutOfStock = stock <= 0;
+
+  content.innerHTML = `
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Visual Column -->
+      <div class="p-6 rounded-2xl bg-slate-950/90 border border-slate-800 flex flex-col items-center justify-center text-center">
+        <div class="w-full h-64 rounded-2xl bg-slate-900/60 p-4 flex items-center justify-center mb-4">
+          <img 
+            src="${p.image || p.remoteImage}" 
+            alt="${p.name}" 
+            class="max-h-full max-w-full object-contain filter drop-shadow-lg" 
+            onerror="if(this.src!=='${p.remoteImage}' && '${p.remoteImage}'){this.src='${p.remoteImage}';}" 
+          />
+        </div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xs font-semibold px-3 py-1 rounded-full border ${p.badgeColor}">${p.badge}</span>
+          ${isOutOfStock ? `
+            <span class="stock-badge-out px-2.5 py-0.5 rounded-full text-xs font-bold">Stok Tükendi</span>
+          ` : `
+            <span class="stock-badge-in px-2.5 py-0.5 rounded-full text-xs font-bold">Stokta (${stock} adet)</span>
+          `}
+        </div>
+        <span class="text-xs text-slate-400 font-mono">Perpa Ticaret Merkezi B Blok No:825 Stok Teslim</span>
+      </div>
+
+      <!-- Details Column -->
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-xs font-mono uppercase text-cyan-400 font-bold">${getCategoryName(p.category)}</span>
+          ${p.brand ? `<span class="text-xs bg-slate-800 px-2.5 py-0.5 rounded-md text-slate-300 font-mono">${p.brand}</span>` : ''}
+        </div>
+        
+        <h3 class="text-xl font-extrabold text-white mt-1 mb-2">${p.name}</h3>
+        <p class="text-xs text-slate-300 leading-relaxed mb-4">${p.desc}</p>
+
+        <div class="space-y-2 mb-6">
+          <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Teknik Özellikler:</h5>
+          <div class="grid grid-cols-2 gap-2">
+            ${(p.specs || ['Orijinal Perpa Tedariği', 'Garantili Kalite', 'Aynı Gün Sevkiyat', 'Teknik Destek']).map(s => `
+              <div class="text-xs bg-slate-800/80 p-2 rounded-lg border border-slate-700/60 text-slate-200 flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i>
+                <span>${s}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="flex items-baseline gap-3 mb-6">
+          <span class="text-3xl font-extrabold text-white">${p.price.toLocaleString('tr-TR')} ₺</span>
+          ${p.oldPrice ? `<span class="text-sm text-slate-500 line-through">${p.oldPrice.toLocaleString('tr-TR')} ₺</span>` : ''}
+          <span class="text-xs text-emerald-400 font-medium">KDV Dahil</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          ${isOutOfStock ? `
+            <button disabled class="flex-1 py-3 px-6 rounded-xl bg-slate-800 text-slate-500 font-bold text-sm cursor-not-allowed">
+              Ürün Şu Anda Tükendi
+            </button>
+          ` : `
+            <button onclick="addToCart('${p.id}'); closeModal('product-modal');" class="flex-1 py-3 px-6 rounded-xl glow-cyan-btn text-slate-950 font-bold text-sm flex items-center justify-center gap-2">
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+              <span>Hemen Sepete Ekle</span>
+            </button>
+          `}
+          
+          <a href="https://wa.me/905070201198?text=Merhaba,%20${encodeURIComponent(p.name)}%20(SKU:%20${p.sku || p.id})%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" class="p-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 transition-colors" title="WhatsApp ile Sor">
+            <i data-lucide="message-circle" class="w-5 h-5"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  openModal('product-modal');
+  lucide.createIcons();
+};
+
+// ==========================================================================
+// 6. ADMIN PANEL SYSTEM (YÖNETİCİ PANELİ - CRUD & STOK)
+// ==========================================================================
+window.openAdminLogin = function() {
+  if (state.isAdmin) {
+    openAdminDashboard();
+  } else {
+    openModal('admin-login-modal');
+  }
+};
+
+window.handleAdminLogin = function(e) {
+  e.preventDefault();
+  const pinInput = document.getElementById('admin-pin-input');
+  if (pinInput && pinInput.value === '1234') {
+    state.isAdmin = true;
+    sessionStorage.setItem('dag_is_admin', 'true');
+    closeModal('admin-login-modal');
+    pinInput.value = '';
+    showToast('Yönetici girişi başarılı!', 'success');
+    updateAdminUI();
+    openAdminDashboard();
+  } else {
+    showToast('Hatalı PIN kodu! (Varsayılan PIN: 1234)', 'error');
+  }
+};
+
+window.adminLogout = function() {
+  state.isAdmin = false;
+  sessionStorage.removeItem('dag_is_admin');
+  closeModal('admin-panel-modal');
+  updateAdminUI();
+  showToast('Yönetici oturumu kapatıldı.');
+};
+
+function updateAdminUI() {
+  const adminBadge = document.getElementById('admin-status-badge');
+  if (adminBadge) {
+    adminBadge.classList.toggle('hidden', !state.isAdmin);
+  }
+}
+
+window.openAdminDashboard = function() {
+  renderAdminStats();
+  renderAdminProductsTable();
+  renderAdminOrdersTable();
+  openModal('admin-panel-modal');
+};
+
+function renderAdminStats() {
+  const totalProductsEl = document.getElementById('admin-stat-total-products');
+  const totalStockEl = document.getElementById('admin-stat-total-stock');
+  const lowStockEl = document.getElementById('admin-stat-low-stock');
+  const totalValueEl = document.getElementById('admin-stat-total-value');
+
+  const totalProducts = state.products.length;
+  const totalStock = state.products.reduce((sum, p) => sum + Number(p.stock || 0), 0);
+  const lowStockCount = state.products.filter(p => Number(p.stock || 0) <= 5).length;
+  const totalValue = state.products.reduce((sum, p) => sum + (p.price * Number(p.stock || 0)), 0);
+
+  if (totalProductsEl) totalProductsEl.innerText = totalProducts;
+  if (totalStockEl) totalStockEl.innerText = `${totalStock.toLocaleString('tr-TR')} Adet`;
+  if (lowStockEl) lowStockEl.innerText = `${lowStockCount} Ürün`;
+  if (totalValueEl) totalValueEl.innerText = `${totalValue.toLocaleString('tr-TR')} ₺`;
+}
+
+function renderAdminProductsTable() {
+  const tbody = document.getElementById('admin-products-tbody');
+  if (!tbody) return;
+
+  const q = state.adminFilter.query.toLowerCase();
+  const cat = state.adminFilter.category;
+  const stockFilter = state.adminFilter.stockOnly;
+
+  let items = state.products.filter(p => {
+    if (cat !== 'all' && p.category !== cat) return false;
+    const stk = Number(p.stock || 0);
+    if (stockFilter === 'low' && (stk > 5 || stk <= 0)) return false;
+    if (stockFilter === 'out' && stk > 0) return false;
+    if (stockFilter === 'in' && stk <= 0) return false;
+
+    if (q) {
+      const matchName = p.name.toLowerCase().includes(q);
+      const matchSku = (p.sku || '').toLowerCase().includes(q);
+      const matchBrand = (p.brand || '').toLowerCase().includes(q);
+      if (!matchName && !matchSku && !matchBrand) return false;
+    }
+    return true;
+  });
+
+  if (items.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-500">Aramaya uygun ürün bulunamadı.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = items.slice(0, 100).map((p, idx) => {
+    const stock = Number(p.stock !== undefined ? p.stock : 10);
+    let stockStatusHtml = '';
+    if (stock <= 0) {
+      stockStatusHtml = `<span class="stock-badge-out px-2 py-0.5 rounded text-[10px] font-bold">Tükendi</span>`;
+    } else if (stock <= 5) {
+      stockStatusHtml = `<span class="stock-badge-low px-2 py-0.5 rounded text-[10px] font-bold">Kritik (${stock})</span>`;
+    } else {
+      stockStatusHtml = `<span class="stock-badge-in px-2 py-0.5 rounded text-[10px] font-bold">Normal (${stock})</span>`;
+    }
+
+    return `
+      <tr class="admin-table-row border-b border-slate-800/80 transition-colors">
+        <td class="py-3 px-4 text-xs font-mono text-slate-500">${idx + 1}</td>
+        
+        <td class="py-3 px-4">
+          <div class="flex items-center gap-3">
+            <img src="${p.image || p.remoteImage}" class="w-10 h-10 object-contain rounded-lg bg-slate-900 border border-slate-800 p-1 flex-shrink-0" onerror="this.src='assets/logo.svg';" />
+            <div>
+              <div class="text-xs font-bold text-white line-clamp-1 max-w-[220px]" title="${p.name}">${p.name}</div>
+              <div class="text-[10px] text-slate-500 font-mono">${p.sku || p.id} • ${p.brand || 'Dağ Tech'}</div>
+            </div>
+          </div>
+        </td>
+
+        <td class="py-3 px-4 text-xs text-slate-300 font-mono">${getCategoryName(p.category)}</td>
+        
+        <td class="py-3 px-4 text-xs font-bold text-cyan-400 font-mono">${p.price.toLocaleString('tr-TR')} ₺</td>
+        
+        <!-- Live Quick Stock Adjustment -->
+        <td class="py-3 px-4">
+          <div class="flex items-center gap-1.5">
+            <button onclick="adminAdjustStock('${p.id}', -1)" class="w-6 h-6 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center text-xs font-bold">-</button>
+            <input type="number" min="0" value="${stock}" onchange="adminSetStock('${p.id}', this.value)" class="w-14 text-center py-0.5 rounded bg-slate-900 border border-slate-700 text-xs text-white font-mono font-bold focus:border-cyan-400 focus:outline-none" />
+            <button onclick="adminAdjustStock('${p.id}', 1)" class="w-6 h-6 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center text-xs font-bold">+</button>
+          </div>
+        </td>
+
+        <td class="py-3 px-4">${stockStatusHtml}</td>
+
+        <td class="py-3 px-4 text-right">
+          <div class="flex items-center justify-end gap-1.5">
+            <button onclick="openEditProductModal('${p.id}')" title="Ürünü Düzenle" class="p-1.5 rounded-lg bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-slate-300 transition-colors">
+              <i data-lucide="edit-3" class="w-4 h-4"></i>
+            </button>
+            <button onclick="adminDeleteProduct('${p.id}')" title="Ürünü Sil" class="p-1.5 rounded-lg bg-slate-800 hover:bg-red-500 hover:text-white text-slate-400 transition-colors">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  lucide.createIcons();
+}
+
+function renderAdminOrdersTable() {
+  const container = document.getElementById('admin-orders-tbody');
+  if (!container) return;
+
+  if (state.orders.length === 0) {
+    container.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-slate-500">Henüz kaydedilmiş sipariş bulunmuyor.</td></tr>`;
+    return;
+  }
+
+  container.innerHTML = state.orders.map((o, idx) => `
+    <tr class="border-b border-slate-800/80">
+      <td class="py-3 px-4 text-xs font-mono text-cyan-400">#ORD-${o.id || (1000 + idx)}</td>
+      <td class="py-3 px-4 text-xs font-bold text-white">${o.customer || 'İsimsiz Müşteri'}</td>
+      <td class="py-3 px-4 text-xs text-slate-300">${o.itemsCount || 1} Ürün (${o.itemsSummary || 'Detay'})</td>
+      <td class="py-3 px-4 text-xs font-mono font-bold text-emerald-400">${(o.total || 0).toLocaleString('tr-TR')} ₺</td>
+      <td class="py-3 px-4 text-xs text-slate-500">${o.date || 'Bugün'}</td>
+    </tr>
+  `).join('');
+}
+
+window.adminSetStock = function(productId, newQty) {
+  const p = state.products.find(item => item.id === productId);
+  if (!p) return;
+  p.stock = Math.max(0, parseInt(newQty) || 0);
+  saveProductsState();
+  renderAdminStats();
+  renderAdminProductsTable();
+  renderProducts();
+  showToast(`${p.name} stok adedi ${p.stock} olarak güncellendi.`);
+};
+
+window.adminAdjustStock = function(productId, delta) {
+  const p = state.products.find(item => item.id === productId);
+  if (!p) return;
+  const current = Number(p.stock || 0);
+  p.stock = Math.max(0, current + delta);
+  saveProductsState();
+  renderAdminStats();
+  renderAdminProductsTable();
+  renderProducts();
+};
+
+window.adminDeleteProduct = function(productId) {
+  const p = state.products.find(item => item.id === productId);
+  if (!p) return;
+  if (confirm(`'${p.name}' adlı ürünü silmek istediğinize emin misiniz?`)) {
+    state.products = state.products.filter(item => item.id !== productId);
+    saveProductsState();
+    renderBrandFilters();
+    renderAdminStats();
+    renderAdminProductsTable();
+    renderProducts();
+    showToast(`'${p.name}' katalogdan silindi!`, 'success');
+  }
+};
+
+window.openNewProductModal = function() {
+  document.getElementById('product-form-title').innerText = 'Yeni Ürün Ekle';
+  document.getElementById('edit-product-id').value = '';
+  document.getElementById('product-form').reset();
+  openModal('edit-product-modal');
+};
+
+window.openEditProductModal = function(productId) {
+  const p = state.products.find(item => item.id === productId);
+  if (!p) return;
+
+  document.getElementById('product-form-title').innerText = 'Ürünü Düzenle';
+  document.getElementById('edit-product-id').value = p.id;
+  document.getElementById('form-prod-name').value = p.name;
+  document.getElementById('form-prod-category').value = p.category;
+  document.getElementById('form-prod-brand').value = p.brand || '';
+  document.getElementById('form-prod-price').value = p.price;
+  document.getElementById('form-prod-old-price').value = p.oldPrice || '';
+  document.getElementById('form-prod-stock').value = p.stock !== undefined ? p.stock : 10;
+  document.getElementById('form-prod-image').value = p.image || p.remoteImage || '';
+  document.getElementById('form-prod-desc').value = p.desc || '';
+  document.getElementById('form-prod-specs').value = (p.specs || []).join(', ');
+
+  openModal('edit-product-modal');
+};
+
+window.handleSaveProductForm = function(e) {
+  e.preventDefault();
+  const editId = document.getElementById('edit-product-id').value;
+  const name = document.getElementById('form-prod-name').value.trim();
+  const category = document.getElementById('form-prod-category').value;
+  const brand = document.getElementById('form-prod-brand').value.trim() || 'Dağ Tech';
+  const price = parseInt(document.getElementById('form-prod-price').value) || 0;
+  const oldPrice = parseInt(document.getElementById('form-prod-old-price').value) || 0;
+  const stock = parseInt(document.getElementById('form-prod-stock').value) || 0;
+  const image = document.getElementById('form-prod-image').value.trim() || 'assets/logo.svg';
+  const desc = document.getElementById('form-prod-desc').value.trim();
+  const rawSpecs = document.getElementById('form-prod-specs').value;
+  const specs = rawSpecs.split(',').map(s => s.trim()).filter(Boolean);
+
+  if (editId) {
+    // Update existing
+    const p = state.products.find(item => item.id === editId);
+    if (p) {
+      p.name = name;
+      p.category = category;
+      p.brand = brand;
+      p.price = price;
+      p.oldPrice = oldPrice;
+      p.stock = stock;
+      p.image = image;
+      p.desc = desc;
+      p.subtitle = desc.length > 75 ? desc.substring(0, 72) + '...' : desc;
+      p.specs = specs.length > 0 ? specs : p.specs;
+      showToast(`${p.name} başarıyla güncellendi!`, 'success');
+    }
+  } else {
+    // Create new
+    const newId = 'dt-custom-' + Date.now();
+    const newProduct = {
+      id: newId,
+      sku: 'DT-' + Math.floor(1000 + Math.random() * 9000),
+      name: name,
+      category: category,
+      brand: brand,
+      price: price,
+      oldPrice: oldPrice,
+      stock: stock,
+      rating: 5.0,
+      reviews: 1,
+      badge: 'YENİ ÜRÜN',
+      badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+      icon: category === 'printers' ? 'printer' : category === 'filaments' ? 'disc' : category === 'toners' ? 'file-text' : 'tool',
+      image: image,
+      remoteImage: image,
+      desc: desc,
+      subtitle: desc.length > 75 ? desc.substring(0, 72) + '...' : desc,
+      specs: specs.length > 0 ? specs : ['Orijinal Garanti', 'Perpa Stok', 'Hızlı Teslimat']
+    };
+    state.products.unshift(newProduct);
+    showToast(`'${name}' başarıyla kataloğa eklendi!`, 'success');
+  }
+
+  saveProductsState();
+  closeModal('edit-product-modal');
+  renderBrandFilters();
+  renderAdminStats();
+  renderAdminProductsTable();
+  renderProducts();
+};
+
+window.resetToDefaultProducts = function() {
+  if (confirm('Tüm ürünleri ve stokları orijinal fabrika ayarlarına (132 ürün) sıfırlamak istediğinize emin misiniz?')) {
+    localStorage.removeItem('dag_custom_products');
+    state.products = window.DAG_PRODUCTS ? JSON.parse(JSON.stringify(window.DAG_PRODUCTS)) : [];
+    saveProductsState();
+    renderBrandFilters();
+    renderAdminStats();
+    renderAdminProductsTable();
+    renderProducts();
+    showToast('Katalog orijinal ayarlara sıfırlandı!', 'success');
+  }
+};
+
+function saveProductsState() {
+  localStorage.setItem('dag_custom_products', JSON.stringify(state.products));
+}
+
+// ==========================================================================
+// 7. TOAST NOTIFICATIONS & MODALS
 // ==========================================================================
 window.openModal = function(modalId) {
   const modal = document.getElementById(modalId);
@@ -954,73 +1302,6 @@ window.closeModal = function(modalId) {
   }
 };
 
-window.openProductModal = function(productId) {
-  const p = PRODUCTS.find(item => item.id === productId);
-  if (!p) return;
-
-  const content = document.getElementById('product-modal-content');
-  if (!content) return;
-
-  content.innerHTML = `
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Visual Column -->
-      <div class="p-6 rounded-2xl bg-slate-950/90 border border-slate-800 flex flex-col items-center justify-center text-center">
-        <div class="w-full h-64 rounded-2xl bg-slate-900/60 p-4 flex items-center justify-center mb-4">
-          <img 
-            src="${p.image || p.remoteImage}" 
-            alt="${p.name}" 
-            class="max-h-full max-w-full object-contain filter drop-shadow-lg" 
-            onerror="if(this.src!=='${p.remoteImage}' && '${p.remoteImage}'){this.src='${p.remoteImage}';}" 
-          />
-        </div>
-        <span class="text-xs font-semibold px-3 py-1 rounded-full border ${p.badgeColor} mb-2">${p.badge}</span>
-        <span class="text-xs text-slate-400 font-mono">Perpa Ticaret Merkezi B Blok No:825 Stok Teslim</span>
-      </div>
-
-      <!-- Details Column -->
-      <div>
-        <span class="text-xs font-mono uppercase text-cyan-400 font-bold">${getCategoryName(p.category)}</span>
-        <h3 class="text-2xl font-extrabold text-white mt-1 mb-2">${p.name}</h3>
-        <p class="text-sm text-slate-300 mb-4">${p.desc}</p>
-
-        <div class="space-y-2 mb-6">
-          <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Teknik Özellikler:</h5>
-          <div class="grid grid-cols-2 gap-2">
-            ${p.specs.map(s => `
-              <div class="text-xs bg-slate-800/80 p-2 rounded-lg border border-slate-700/60 text-slate-200 flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i>
-                <span>${s}</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-
-        <div class="flex items-baseline gap-3 mb-6">
-          <span class="text-3xl font-extrabold text-white">${p.price.toLocaleString('tr-TR')} ₺</span>
-          ${p.oldPrice ? `<span class="text-sm text-slate-500 line-through">${p.oldPrice.toLocaleString('tr-TR')} ₺</span>` : ''}
-          <span class="text-xs text-emerald-400 font-medium">KDV Dahil</span>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <button onclick="addToCart('${p.id}'); closeModal('product-modal');" class="flex-1 py-3 px-6 rounded-xl glow-cyan-btn text-slate-950 font-bold text-sm flex items-center justify-center gap-2">
-            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-            <span>Hemen Sepete Ekle</span>
-          </button>
-          <a href="https://wa.me/905070201198?text=Merhaba,%20${encodeURIComponent(p.name)}%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" class="p-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 transition-colors" title="WhatsApp ile Sor">
-            <i data-lucide="message-circle" class="w-5 h-5"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-  `;
-
-  openModal('product-modal');
-  lucide.createIcons();
-};
-
-// ==========================================================================
-// 6. TOAST NOTIFICATIONS & FORMS
-// ==========================================================================
 function showToast(message, type = 'info') {
   const container = document.getElementById('toast-container');
   if (!container) return;
@@ -1040,15 +1321,11 @@ function showToast(message, type = 'info') {
   container.appendChild(toast);
   lucide.createIcons();
 
-  requestAnimationFrame(() => {
-    toast.classList.add('show');
-  });
+  requestAnimationFrame(() => { toast.classList.add('show'); });
 
   setTimeout(() => {
     toast.classList.remove('show');
-    setTimeout(() => {
-      toast.remove();
-    }, 300);
+    setTimeout(() => { toast.remove(); }, 300);
   }, 3500);
 }
 
@@ -1062,7 +1339,7 @@ function setupEventListeners() {
     });
   }
 
-  // Quote / Contact Form
+  // Contact Form
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
@@ -1072,16 +1349,55 @@ function setupEventListeners() {
     });
   }
 
-  // Checkout Form
+  // Checkout Form - Real Stock Deduction
   const checkoutForm = document.getElementById('checkout-form');
   if (checkoutForm) {
     checkoutForm.addEventListener('submit', (e) => {
       e.preventDefault();
+      
+      const nameInput = checkoutForm.querySelector('input[type="text"]');
+      const customerName = nameInput ? nameInput.value : 'Müşteri';
+
+      // Deduct purchased quantities from stock
+      let totalAmount = 0;
+      const itemsSummaryList = [];
+
+      state.cart.forEach(cartItem => {
+        const prod = state.products.find(p => p.id === cartItem.id);
+        if (prod) {
+          prod.stock = Math.max(0, (prod.stock || 0) - cartItem.quantity);
+          totalAmount += cartItem.price * cartItem.quantity;
+          itemsSummaryList.push(`${cartItem.quantity}x ${cartItem.name}`);
+        }
+      });
+
+      // Save order record
+      const newOrder = {
+        id: Math.floor(10000 + Math.random() * 90000),
+        customer: customerName,
+        itemsCount: state.cart.reduce((s, i) => s + i.quantity, 0),
+        itemsSummary: itemsSummaryList.slice(0, 2).join(', '),
+        total: totalAmount,
+        date: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+      };
+      state.orders.unshift(newOrder);
+      localStorage.setItem('dag_orders', JSON.stringify(state.orders));
+
+      // Persist new stock
+      saveProductsState();
+
+      // Clear cart
       state.cart = [];
       saveCart();
       updateCartBadge();
       closeModal('checkout-modal');
-      showToast('Siparişiniz alındı! Perpa ekibimiz hazırlanıyor.', 'success');
+
+      // Refresh product cards and admin table
+      renderProducts();
+      renderAdminStats();
+      renderAdminProductsTable();
+
+      showToast(`Tebrikler ${customerName}! Siparişiniz alındı ve stoktan ayrıldı.`, 'success');
     });
   }
 }
