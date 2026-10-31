@@ -107,6 +107,37 @@ const MATERIAL_DATA = {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
+  // Parse URL search parameters if any (e.g. urunler.html?cat=printers or ?search=ender)
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const catParam = urlParams.get('cat') || urlParams.get('category');
+    const brandParam = urlParams.get('brand');
+    const searchParam = urlParams.get('search') || urlParams.get('q');
+
+    if (catParam) {
+      state.filters.category = catParam;
+      document.querySelectorAll('.cat-tab').forEach(tab => {
+        const isActive = tab.dataset.category === catParam;
+        tab.classList.toggle('bg-cyan-500', isActive);
+        tab.classList.toggle('text-slate-950', isActive);
+        tab.classList.toggle('bg-slate-800/60', !isActive);
+        tab.classList.toggle('text-slate-300', !isActive);
+      });
+    }
+
+    if (brandParam) {
+      state.filters.brand = brandParam;
+    }
+
+    if (searchParam) {
+      state.filters.searchQuery = searchParam;
+      const searchInput = document.getElementById('product-search-input');
+      if (searchInput) searchInput.value = searchParam;
+    }
+  } catch (err) {
+    console.error('URL param parsing error:', err);
+  }
+
   initThreeJsViewport();
   renderUserNav();
   renderBrandFilters();

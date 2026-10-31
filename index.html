@@ -66,14 +66,26 @@
   <header class="sticky top-0 z-50 glass-nav transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
-      <!-- LOGO -->
-      <a href="#" class="flex items-center gap-3 group">
-        <img src="assets/logo.svg" alt="Dağ Teknoloji" class="h-11 w-auto brand-logo-img">
-      </a>
+      <!-- LOGO & BRAND SECTION WITH PRODUCTS BUTTON -->
+      <div class="flex items-center gap-3 sm:gap-5">
+        <a href="index.html" class="flex items-center gap-3 group" title="Dağ Teknoloji Ana Sayfa">
+          <img src="assets/logo.svg" alt="Dağ Teknoloji" class="h-11 w-auto brand-logo-img">
+        </a>
+
+        <!-- Ürünler Butonu (Logo Barında) -->
+        <a href="urunler.html" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500/20 via-blue-600/20 to-cyan-500/20 hover:from-cyan-500/30 hover:via-blue-600/30 hover:to-cyan-500/30 text-cyan-300 hover:text-white border border-cyan-500/40 hover:border-cyan-400 font-bold text-xs sm:text-sm transition-all shadow-[0_0_15px_rgba(0,240,255,0.15)] hover:shadow-[0_0_20px_rgba(0,240,255,0.35)] group" title="Tüm Ürünler Sayfasına Git">
+          <i data-lucide="layout-grid" class="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform"></i>
+          <span>Ürünler</span>
+          <span class="px-1.5 py-0.2 text-[10px] bg-cyan-400 text-slate-950 font-extrabold rounded-full">132</span>
+        </a>
+      </div>
 
       <!-- DESKTOP NAV LINKS -->
       <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-300">
-        <a href="#products-section" class="hover:text-cyan-400 transition-colors">Katalog & Stok</a>
+        <a href="urunler.html" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5 font-semibold">
+          <i data-lucide="package" class="w-4 h-4 text-cyan-400"></i>
+          <span>Katalog &amp; Stok</span>
+        </a>
         <a href="#calc-section" class="hover:text-cyan-400 transition-colors flex items-center gap-1">
           <span>3D Maliyet Hesapla</span>
           <span class="px-1.5 py-0.2 text-[10px] bg-cyan-500/20 text-cyan-400 rounded-full border border-cyan-500/30">Canlı</span>
@@ -122,11 +134,17 @@
 
     <!-- MOBILE DROPDOWN MENU -->
     <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-800 bg-slate-950/95 px-6 py-6 space-y-4">
-      <a href="#products-section" class="block text-base font-medium text-slate-200 hover:text-cyan-400">Ürünler</a>
+      <a href="urunler.html" class="flex items-center justify-between p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold text-sm">
+        <span class="flex items-center gap-2">
+          <i data-lucide="layout-grid" class="w-4 h-4"></i>
+          <span>Ürünler Kataloğu &amp; Stok</span>
+        </span>
+        <span class="px-2 py-0.5 text-xs bg-cyan-400 text-slate-950 rounded-full font-extrabold">132 Ürün</span>
+      </a>
       <a href="#calc-section" class="block text-base font-medium text-slate-200 hover:text-cyan-400">3D Maliyet Hesapla</a>
       <a href="#services-section" class="block text-base font-medium text-slate-200 hover:text-cyan-400">Hizmetlerimiz</a>
       <a href="#about-section" class="block text-base font-medium text-slate-200 hover:text-cyan-400">Hakkımızda</a>
-      <a href="#contact-section" class="block text-base font-medium text-slate-200 hover:text-cyan-400">İletişim & Perpa Konum</a>
+      <a href="#contact-section" class="block text-base font-medium text-slate-200 hover:text-cyan-400">İletişim &amp; Perpa Konum</a>
       <div class="pt-4 border-t border-slate-800 flex flex-col gap-3">
         <div id="mobile-user-nav-container"></div>
         <a href="https://wa.me/905070201198" target="_blank" class="w-full py-2.5 text-center text-sm font-semibold rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
@@ -163,9 +181,9 @@
               <i data-lucide="calculator" class="w-4 h-4"></i>
               <span>3D Modelini Yükle & Fiyat Al</span>
             </a>
-            <a href="#products-section" class="px-6 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 border border-slate-700/80 font-bold text-sm flex items-center gap-2 transition-all">
-              <i data-lucide="box" class="w-4 h-4"></i>
-              <span>Ürün Kataloğunu İncele</span>
+            <a href="urunler.html" class="px-6 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 border border-slate-700/80 font-bold text-sm flex items-center gap-2 transition-all">
+              <i data-lucide="layout-grid" class="w-4 h-4 text-cyan-400"></i>
+              <span>Tüm Ürünleri İncele (132 Ürün)</span>
             </a>
           </div>
 
@@ -497,9 +515,15 @@
           </p>
         </div>
 
-        <!-- Filtered Product Counter -->
-        <div id="filtered-count-display" class="text-xs text-slate-400 font-mono bg-slate-900/80 px-3.5 py-2 rounded-xl border border-slate-800 self-start lg:self-auto">
-          Yükleniyor...
+        <!-- Filtered Product Counter & Open Dedicated Page Link -->
+        <div class="flex items-center gap-3 self-start lg:self-auto flex-wrap">
+          <div id="filtered-count-display" class="text-xs text-slate-400 font-mono bg-slate-900/80 px-3.5 py-2 rounded-xl border border-slate-800">
+            Yükleniyor...
+          </div>
+          <a href="urunler.html" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-bold transition-all shadow-md">
+            <span>Ayrı Sayfada Aç</span>
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          </a>
         </div>
       </div>
 
@@ -999,11 +1023,11 @@
         <div>
           <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Ürün Kategorileri</h4>
           <ul class="space-y-2">
-            <li><a href="#products-section" onclick="filterCategory('printers')" class="hover:text-cyan-400 transition-colors">3D Yazıcı Modelleri</a></li>
-            <li><a href="#products-section" onclick="filterCategory('filaments')" class="hover:text-cyan-400 transition-colors">PLA+, PETG & TPU Filament</a></li>
-            <li><a href="#products-section" onclick="filterCategory('toners')" class="hover:text-cyan-400 transition-colors">Muadil Lazer Tonerler</a></li>
-            <li><a href="#products-section" onclick="filterCategory('parts')" class="hover:text-cyan-400 transition-colors">Nozzle & Manyetik Tablalar</a></li>
-            <li><a href="#products-section" onclick="filterCategory('printers')" class="hover:text-cyan-400 transition-colors">3D El Tarayıcıları</a></li>
+            <li><a href="urunler.html?cat=printers" class="hover:text-cyan-400 transition-colors">3D Yazıcı Modelleri</a></li>
+            <li><a href="urunler.html?cat=filaments" class="hover:text-cyan-400 transition-colors">PLA+, PETG &amp; TPU Filament</a></li>
+            <li><a href="urunler.html?cat=toners" class="hover:text-cyan-400 transition-colors">Muadil Lazer Tonerler</a></li>
+            <li><a href="urunler.html?cat=parts" class="hover:text-cyan-400 transition-colors">Nozzle &amp; Manyetik Tablalar</a></li>
+            <li><a href="urunler.html?cat=printers" class="hover:text-cyan-400 transition-colors">3D El Tarayıcıları</a></li>
           </ul>
         </div>
 
