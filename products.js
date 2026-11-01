@@ -1,4 +1,4 @@
-﻿/**
+/**
  * DAĞ TEKNOLOJİ - GERÇEK ÜRÜN VERİ TABANI (132 Ürün + Stok Entegrasyonu)
  * Kaynak: https://dagteknoloji.com.tr/
  */
@@ -30,7 +30,7 @@ window.DAG_PRODUCTS = [
     },
     {
         "id":  "dt-4871",
-        "category":  "printers",
+        "category":  "filaments",
         "name":  "Ender 1.75mm PLA 3D YAZICI FİLAMENT 1 KG | RAİNBOW - GÖKKUŞAĞI",
         "subtitle":  "Kırılmadan Daha Güçlü Dayanıklılık Yüksek stabilite, daha yüksek baskı k...",
         "price":  650,
@@ -255,7 +255,7 @@ window.DAG_PRODUCTS = [
     },
     {
         "id":  "dt-4886",
-        "category":  "printers",
+        "category":  "filaments",
         "name":  "Creality Ender Fast PLA Filament Açık Mavi 1.75mm 1kg",
         "subtitle":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu ...",
         "price":  749,
@@ -280,7 +280,7 @@ window.DAG_PRODUCTS = [
     },
     {
         "id":  "dt-4885",
-        "category":  "printers",
+        "category":  "filaments",
         "name":  "Creality Ender Fast PLA Filament Beyaz 1.75mm 1kg",
         "subtitle":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu ...",
         "price":  749,
@@ -305,7 +305,7 @@ window.DAG_PRODUCTS = [
     },
     {
         "id":  "dt-4883",
-        "category":  "printers",
+        "category":  "filaments",
         "name":  "Creality Ender Fast PLA Filament Gümüş 1.75mm 1kg",
         "subtitle":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu ...",
         "price":  749,
@@ -330,7 +330,7 @@ window.DAG_PRODUCTS = [
     },
     {
         "id":  "dt-4879",
-        "category":  "printers",
+        "category":  "filaments",
         "name":  "Creality Ender Fast PLA Filament Siyah 1.75mm 1kg",
         "subtitle":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu ...",
         "price":  749,
@@ -355,7 +355,7 @@ window.DAG_PRODUCTS = [
     },
     {
         "id":  "dt-4878",
-        "category":  "printers",
+        "category":  "filaments",
         "name":  "Creality Ender Fast PLA Filament Turuncu 1.75mm 1kg",
         "subtitle":  "Ender Fast PLA, standart plalardan daha fazla akış oranına sahiptir. Bu ...",
         "price":  749,

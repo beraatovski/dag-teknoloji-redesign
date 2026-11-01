@@ -228,7 +228,7 @@ function initThreeJsViewport() {
   createBuildPlate();
 
   modelGroup = new THREE.Group();
-  modelGroup.position.y = 1.2;
+  modelGroup.position.set(0, 0.2, 0);
   scene.add(modelGroup);
 
   renderActive3dModel();
@@ -288,11 +288,11 @@ function initThreeJsViewport() {
     if (!isDragging && is3dAutoRotating) {
       modelGroup.rotation.y += 0.007;
     }
-    modelGroup.position.y = 1.2 + Math.sin(elapsedTime * 1.5) * 0.12;
+    modelGroup.position.y = 0.2 + Math.sin(elapsedTime * 1.5) * 0.08;
     if (printHead) {
       printHead.position.x = Math.sin(elapsedTime * 2.5) * 1.8;
       printHead.position.z = Math.cos(elapsedTime * 1.8) * 1.8;
-      printHead.position.y = 3.6 + Math.sin(elapsedTime * 3) * 0.2;
+      printHead.position.y = 2.4 + Math.sin(elapsedTime * 3) * 0.15;
     }
     renderer.render(scene, camera);
   }
@@ -303,12 +303,12 @@ function createBuildPlate() {
   const plateGeo = new THREE.BoxGeometry(7, 0.2, 7);
   const plateMat = new THREE.MeshStandardMaterial({ color: 0x121826, roughness: 0.8, metalness: 0.2 });
   const plate = new THREE.Mesh(plateGeo, plateMat);
-  plate.position.y = -1.5;
+  plate.position.y = -1.9;
   plate.receiveShadow = true;
   scene.add(plate);
 
   const gridHelper = new THREE.GridHelper(6.6, 22, 0x00f0ff, 0x1e293b);
-  gridHelper.position.y = -1.39;
+  gridHelper.position.y = -1.79;
   scene.add(gridHelper);
 }
 
@@ -730,7 +730,7 @@ function renderUserNav() {
       <div class="relative">
         <button onclick="toggleUserDropdown()" class="flex items-center gap-2 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-slate-900/90 border ${isAdmin ? 'border-amber-400/60 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'border-cyan-500/40'} hover:border-cyan-400 text-xs text-white font-semibold transition-all shadow-md shrink-0">
           <span class="w-6 h-6 rounded-lg ${isAdmin ? 'bg-amber-400/20 text-amber-300' : 'bg-cyan-500/20 text-cyan-400'} flex items-center justify-center font-bold text-[11px]">${initials}</span>
-          <span class="max-w-[75px] truncate hidden md:inline">${displayName}</span>
+          <span class="max-w-[70px] truncate hidden xl:inline">${displayName}</span>
           ${isAdmin ? `<span class="px-1.5 py-0.2 text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 rounded font-mono font-bold">ADMIN</span>` : ''}
           <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400"></i>
         </button>
