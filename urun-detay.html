@@ -51,7 +51,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=20261101v13">
+  <link rel="stylesheet" href="styles.css?v=20261101v14">
 </head>
 <body class="bg-[#07090e] text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950 w-full max-w-full">
 
@@ -504,9 +504,9 @@
   <!-- ========================================================================== -->
 
   <!-- 1. ADMIN LOGIN MODAL -->
-  <div id="admin-login-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div id="admin-login-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
     <div onclick="closeModal('admin-login-modal')" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
-    <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 z-10 shadow-2xl">
+    <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 z-10 shadow-2xl my-auto">
       <button onclick="closeModal('admin-login-modal')" class="absolute top-5 right-5 p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
@@ -778,9 +778,9 @@
   <!-- ========================================================================== -->
 
   <!-- 1. AUTH MODAL (Giriş Yap / Üye Ol) -->
-  <div id="auth-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div id="auth-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
     <div onclick="closeModal('auth-modal')" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
-    <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 z-10 shadow-2xl">
+    <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 z-10 shadow-2xl my-auto">
       <button onclick="closeModal('auth-modal')" class="absolute top-5 right-5 p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
@@ -1013,6 +1013,6 @@
 
   <!-- PRODUCTS DATABASE & MAIN SCRIPT -->
   <script src="products.js?v=20261101v7"></script>
-  <script src="app.js?v=20261101v13"></script>
+  <script src="app.js?v=20261101v14"></script>
 </body>
 </html>
