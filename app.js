@@ -378,9 +378,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==========================================================================
 let scene, camera, renderer, modelGroup, printHead;
 let currentMaterialColor = 0x00f0ff;
-let active3dModel = 'gear'; // 'gear', 'nozzle', 'cube', 'drone'
+let active3dModel = 'gear'; // 'gear', 'nozzle', 'cube', 'drone', 'rocket', 'gripper', 'custom'
 let active3dRenderMode = 'solid'; // 'solid', 'wireframe', 'xray'
 let is3dAutoRotating = true;
+let customUploadedGeometry = null;
+let customModelSpec = null;
 
 const MODEL_SPECS = {
   gear: 'Model: Mekanik Dişli & Türbin (Ø 80mm - Tolerans: ±0.05mm)',
@@ -388,7 +390,8 @@ const MODEL_SPECS = {
   cube: 'Model: Voronoi Kalibrasyon Test Küpü (20x20x20mm)',
   drone: 'Model: Karbon Takviyeli Aero Pervane (3 Kanatlı)',
   rocket: 'Model: Havacılık & Uzay Roket Prototipi (Aero Burun & Nozzle)',
-  gripper: 'Model: Endüstriyel Robotik Servo Tutucu (2 Kademeli Gripper)'
+  gripper: 'Model: Endüstriyel Robotik Servo Tutucu (2 Kademeli Gripper)',
+  custom: 'Model: Özel Yüklenen 3D Model'
 };
 
 function initThreeJsViewport() {
@@ -484,6 +487,8 @@ function initThreeJsViewport() {
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
   });
+
+  setup3dCanvasDragAndDrop(container);
 
   let clock = new THREE.Clock();
   function animate() {
@@ -768,6 +773,16 @@ function renderActive3dModel() {
     case 'gripper':
       buildGripperModel(modelGroup, mat, darkMat);
       break;
+    case 'custom':
+      if (customUploadedGeometry) {
+        const customMesh = new THREE.Mesh(customUploadedGeometry, mat);
+        customMesh.castShadow = true;
+        customMesh.receiveShadow = true;
+        modelGroup.add(customMesh);
+      } else {
+        buildGearModel(modelGroup, mat, darkMat);
+      }
+      break;
     default:
       buildGearModel(modelGroup, mat, darkMat);
   }
@@ -782,20 +797,37 @@ window.switch3dModel = function(modelType) {
   active3dModel = modelType;
   renderActive3dModel();
 
-  ['gear', 'nozzle', 'cube', 'drone', 'rocket', 'gripper'].forEach(type => {
+  ['gear', 'nozzle', 'cube', 'drone', 'rocket', 'gripper', 'custom'].forEach(type => {
     const btn = document.getElementById(`btn-model-${type}`);
     if (btn) {
       const isActive = (type === modelType);
-      btn.classList.toggle('bg-cyan-500', isActive);
-      btn.classList.toggle('text-slate-950', isActive);
-      btn.classList.toggle('font-bold', isActive);
-      btn.classList.toggle('shadow-sm', isActive);
-      btn.classList.toggle('text-slate-400', !isActive);
-      btn.classList.toggle('font-medium', !isActive);
+      if (type === 'custom') {
+        btn.classList.toggle('bg-amber-400', isActive);
+        btn.classList.toggle('text-slate-950', isActive);
+        btn.classList.toggle('font-bold', isActive);
+        btn.classList.toggle('shadow-sm', isActive);
+        btn.classList.toggle('text-amber-300', !isActive);
+        btn.classList.toggle('font-medium', !isActive);
+      } else {
+        btn.classList.toggle('bg-cyan-500', isActive);
+        btn.classList.toggle('text-slate-950', isActive);
+        btn.classList.toggle('font-bold', isActive);
+        btn.classList.toggle('shadow-sm', isActive);
+        btn.classList.toggle('text-slate-400', !isActive);
+        btn.classList.toggle('font-medium', !isActive);
+      }
     }
   });
 
-  const names = { gear: 'Mekanik Dişli Çark', nozzle: '3D Hotend Nozzle', cube: 'Kalibrasyon Test Küpü', drone: 'Aero Drone Pervanesi' };
+  const names = { 
+    gear: 'Mekanik Dişli Çark', 
+    nozzle: '3D Hotend Nozzle', 
+    cube: 'Kalibrasyon Test Küpü', 
+    drone: 'Aero Drone Pervanesi',
+    rocket: 'Havacılık Roket Prototipi',
+    gripper: 'Endüstriyel Robot Gripper',
+    custom: (customModelSpec ? customModelSpec.name : 'Özel Yüklenen Model')
+  };
   showToast(`3D Model: ${names[modelType] || modelType}`);
 };
 
@@ -887,6 +919,225 @@ window.toggle3dWireframe = function() {
 };
 
 // ==========================================================================
+// 3D FILE PARSER & LOADER (.STL / .OBJ)
+// ==========================================================================
+function parseSTL(buffer) {
+  const reader = new DataView(buffer);
+  const isBinary = (buffer.byteLength > 84);
+
+  if (isBinary) {
+    const numTriangles = reader.getUint32(80, true);
+    const expectedByteLength = 84 + numTriangles * 50;
+    if (Math.abs(buffer.byteLength - expectedByteLength) <= 2) {
+      return parseBinarySTL(reader, numTriangles);
+    }
+  }
+
+  const text = new TextDecoder('utf-8').decode(buffer);
+  if (text.includes('facet normal') || text.includes('vertex')) {
+    return parseAsciiSTL(text);
+  }
+
+  if (isBinary) {
+    const numTriangles = reader.getUint32(80, true);
+    if (numTriangles > 0 && numTriangles < 1000000) {
+      return parseBinarySTL(reader, numTriangles);
+    }
+  }
+
+  throw new Error('Dosya geçerli bir Binary veya ASCII STL formatında değil.');
+}
+
+function parseBinarySTL(reader, numTriangles) {
+  const positions = new Float32Array(numTriangles * 3 * 3);
+  let posIdx = 0;
+  let offset = 84;
+
+  for (let i = 0; i < numTriangles; i++) {
+    offset += 12; // Normal vector
+    for (let v = 0; v < 3; v++) {
+      positions[posIdx++] = reader.getFloat32(offset, true);
+      positions[posIdx++] = reader.getFloat32(offset + 4, true);
+      positions[posIdx++] = reader.getFloat32(offset + 8, true);
+      offset += 12;
+    }
+    offset += 2; // Attribute byte count
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.computeVertexNormals();
+  return geometry;
+}
+
+function parseAsciiSTL(text) {
+  const vertexPattern = /vertex\s+([-\d.eE+]+)\s+([-\d.eE+]+)\s+([-\d.eE+]+)/g;
+  const positions = [];
+  let match;
+  while ((match = vertexPattern.exec(text)) !== null) {
+    positions.push(parseFloat(match[1]), parseFloat(match[2]), parseFloat(match[3]));
+  }
+  if (positions.length === 0) {
+    throw new Error('ASCII STL dosyasında köşe verisi bulunamadı.');
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
+  geometry.computeVertexNormals();
+  return geometry;
+}
+
+function parseOBJ(text) {
+  const lines = text.split('\n');
+  const vertices = [];
+  const positions = [];
+
+  for (let line of lines) {
+    line = line.trim();
+    if (!line || line.startsWith('#')) continue;
+    const parts = line.split(/\s+/);
+    if (parts[0] === 'v') {
+      vertices.push([parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3])]);
+    } else if (parts[0] === 'f') {
+      const faceIndices = [];
+      for (let i = 1; i < parts.length; i++) {
+        const seg = parts[i].split('/')[0];
+        const idx = parseInt(seg, 10);
+        faceIndices.push(idx > 0 ? idx - 1 : vertices.length + idx);
+      }
+      for (let i = 1; i < faceIndices.length - 1; i++) {
+        const v0 = vertices[faceIndices[0]];
+        const v1 = vertices[faceIndices[i]];
+        const v2 = vertices[faceIndices[i + 1]];
+        if (v0 && v1 && v2) {
+          positions.push(...v0, ...v1, ...v2);
+        }
+      }
+    }
+  }
+
+  if (positions.length === 0) {
+    throw new Error('OBJ dosyasında geçerli poligon veya köşe bulunamadı.');
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
+  geometry.computeVertexNormals();
+  return geometry;
+}
+
+function mountCustomGeometry(geometry, fileName) {
+  geometry.computeBoundingBox();
+  const box = geometry.boundingBox;
+  const size = new THREE.Vector3();
+  box.getSize(size);
+
+  const dx = Math.max(1, Math.round(size.x));
+  const dy = Math.max(1, Math.round(size.y));
+  const dz = Math.max(1, Math.round(size.z));
+  const maxDim = Math.max(size.x, size.y, size.z) || 1;
+
+  geometry.center();
+  const targetScale = 3.2 / maxDim;
+  geometry.scale(targetScale, targetScale, targetScale);
+
+  customUploadedGeometry = geometry;
+  customModelSpec = {
+    name: fileName,
+    dx: dx,
+    dy: dy,
+    dz: dz,
+    maxDim: maxDim
+  };
+
+  const specLabel = `Yüklendi: ${fileName} (${dx} × ${dy} × ${dz} mm)`;
+  MODEL_SPECS.custom = specLabel;
+
+  const customBtn = document.getElementById('btn-model-custom');
+  const customBtnName = document.getElementById('btn-model-custom-name');
+  if (customBtn) {
+    customBtn.classList.remove('hidden');
+    customBtn.title = specLabel;
+  }
+  if (customBtnName) {
+    customBtnName.textContent = fileName.length > 10 ? fileName.substring(0, 9) + '…' : fileName;
+  }
+
+  switch3dModel('custom');
+
+  // Sync to Slicer Calculator
+  state.calc.fileName = fileName;
+  state.calc.modelSize = Math.max(30, Math.min(220, Math.round(maxDim)));
+  const sizeSlider = document.querySelector('input[oninput*="handleModelSizeChange"]');
+  if (sizeSlider) sizeSlider.value = state.calc.modelSize;
+  const sizeDisplay = document.getElementById('size-value-display');
+  if (sizeDisplay) sizeDisplay.innerText = `${state.calc.modelSize} mm`;
+
+  updateCalculatorUI();
+  showToast(`3D Dosya Başarıyla Yüklendi: ${fileName} (${dx}×${dy}×${dz} mm)`, 'success');
+}
+
+window.handleViewer3dFileUpload = function(file) {
+  if (!file) return;
+  const ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+  if (ext !== '.stl' && ext !== '.obj') {
+    showToast('Lütfen geçerli bir .STL veya .OBJ 3D dosya seçin.', 'error');
+    return;
+  }
+
+  showToast(`3D Dosya okunuyor: ${file.name}...`);
+  const specEl = document.getElementById('active-model-spec');
+  if (specEl) specEl.textContent = `Yükleniyor ve ayrıştırılıyor: ${file.name}...`;
+
+  if (ext === '.stl') {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const buffer = e.target.result;
+        const geometry = parseSTL(buffer);
+        mountCustomGeometry(geometry, file.name);
+      } catch (err) {
+        console.error('STL Parse Error:', err);
+        showToast('STL dosyası okunamadı: ' + err.message, 'error');
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  } else if (ext === '.obj') {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const text = e.target.result;
+        const geometry = parseOBJ(text);
+        mountCustomGeometry(geometry, file.name);
+      } catch (err) {
+        console.error('OBJ Parse Error:', err);
+        showToast('OBJ dosyası okunamadı: ' + err.message, 'error');
+      }
+    };
+    reader.readAsText(file);
+  }
+};
+
+function setup3dCanvasDragAndDrop(container) {
+  if (!container) return;
+  container.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    container.classList.add('ring-2', 'ring-cyan-400', 'bg-cyan-950/20');
+  });
+  container.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    container.classList.remove('ring-2', 'ring-cyan-400', 'bg-cyan-950/20');
+  });
+  container.addEventListener('drop', (e) => {
+    e.preventDefault();
+    container.classList.remove('ring-2', 'ring-cyan-400', 'bg-cyan-950/20');
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleViewer3dFileUpload(e.dataTransfer.files[0]);
+    }
+  });
+}
+
+// ==========================================================================
 // 2. 3D BASKI FİYAT & SÜRE HESAPLAYICI (SLICER ENGINE)
 // ==========================================================================
 function updateCalculatorUI() {
@@ -917,21 +1168,35 @@ function updateCalculatorUI() {
   const priceEl = document.getElementById('calc-price');
   const strengthEl = document.getElementById('calc-strength');
   const matNameEl = document.getElementById('calc-mat-name');
+  const layerValEl = document.getElementById('calc-layer-val');
 
   if (weightEl) weightEl.innerText = `${totalWeightGrams} gr`;
   if (timeEl) timeEl.innerText = `${hours} sa ${minutes} dk`;
   if (priceEl) priceEl.innerText = `${totalPrice} ₺`;
   if (strengthEl) strengthEl.innerText = matInfo.strength;
   if (matNameEl) matNameEl.innerText = matInfo.name;
+  if (layerValEl) {
+    const lh = state.calc.layerHeight;
+    let desc = `${lh.toFixed(2)} mm (Standart Kalite)`;
+    if (lh <= 0.12) desc = `${lh.toFixed(2)} mm (Hassas / 120µm)`;
+    else if (lh >= 0.28) desc = `${lh.toFixed(2)} mm (Hızlı Kaba / 280µm)`;
+    layerValEl.innerText = desc;
+  }
 }
 
 window.handleMaterialSelect = function(matKey) {
   state.calc.material = matKey;
+  const matInfo = MATERIAL_DATA[matKey] || MATERIAL_DATA.pla;
   document.querySelectorAll('.mat-pill').forEach(btn => {
-    btn.classList.toggle('border-cyan-400', btn.dataset.mat === matKey);
-    btn.classList.toggle('bg-cyan-500/10', btn.dataset.mat === matKey);
+    const isSelected = (btn.dataset.mat === matKey);
+    if (isSelected) {
+      btn.className = 'mat-pill p-3 rounded-xl border border-cyan-400 bg-cyan-500/20 text-left ring-1 ring-cyan-400/50 shadow-[0_0_15px_rgba(0,240,255,0.2)] transition-all';
+    } else {
+      btn.className = 'mat-pill p-3 rounded-xl border border-slate-700 bg-slate-800/60 hover:border-slate-600 text-left transition-all';
+    }
   });
   updateCalculatorUI();
+  showToast(`Malzeme Seçildi: ${matInfo.name}`);
 };
 
 window.handleInfillChange = function(val) {
@@ -943,7 +1208,16 @@ window.handleInfillChange = function(val) {
 
 window.handleLayerChange = function(val) {
   state.calc.layerHeight = parseFloat(val);
+  document.querySelectorAll('.layer-pill').forEach(btn => {
+    const isSelected = (btn.dataset.layer === String(val));
+    if (isSelected) {
+      btn.className = 'layer-pill py-2 px-2 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400 text-xs font-semibold text-cyan-300 ring-1 ring-cyan-400/40 transition-all';
+    } else {
+      btn.className = 'layer-pill py-2 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition-all';
+    }
+  });
   updateCalculatorUI();
+  showToast(`Katman Kalınlığı: ${val} mm`);
 };
 
 window.handleModelSizeChange = function(val) {
@@ -989,12 +1263,17 @@ window.handleFileUpload = function(event) {
     if (progress >= 100) {
       clearInterval(interval);
       if (sliceText) sliceText.innerText = '✓ Model geometrisi ve hacmi başarıyla doğrulandı!';
-      showToast(`${file.name} başarıyla analiz edildi. Fiyat hesaplandı!`, 'success');
-      state.calc.fileName = file.name;
-      state.calc.modelSize = Math.floor(Math.random() * 40) + 70;
-      updateCalculatorUI();
+      showToast(`${file.name} başarıyla analiz edildi ve 3D görünüme aktarıldı!`, 'success');
+      
+      if (ext === '.stl' || ext === '.obj') {
+        handleViewer3dFileUpload(file);
+      } else {
+        state.calc.fileName = file.name;
+        state.calc.modelSize = Math.floor(Math.random() * 40) + 70;
+        updateCalculatorUI();
+      }
     }
-  }, 200);
+  }, 100);
 };
 
 // ==========================================================================
@@ -1581,6 +1860,26 @@ window.resetFilters = function() {
 // ==========================================================================
 // UNIFIED PRODUCT VISUAL & SCHEMATIC SYSTEM
 // ==========================================================================
+function getProductImageUrl(p) {
+  if (!p) return null;
+  var img = p.image || p.remoteImage;
+  if (img && typeof img === 'string' && !img.includes('no_image') && !img.includes('placeholder')) {
+    return img;
+  }
+  // Authentic category & brand visual graphics for products without database photos
+  if (p.category === 'toners') {
+    const brand = ((p.brand || '') + ' ' + (p.name || '')).toLowerCase();
+    if (brand.includes('canon')) return 'assets/placeholders/toner_canon.svg';
+    if (brand.includes('xerox')) return 'assets/placeholders/toner_xerox.svg';
+    if (brand.includes('kyocera')) return 'assets/placeholders/toner_kyocera.svg';
+    if (brand.includes('brother')) return 'assets/placeholders/toner_brother.svg';
+    return 'assets/placeholders/toner_hp.svg';
+  } else if (p.category === 'parts') {
+    return 'assets/placeholders/part_drum.svg';
+  }
+  return null;
+}
+
 function isLocalProductImage(url) {
   if (!url || typeof url !== 'string') return false;
   return url.startsWith('assets/products/') || url.startsWith('./assets/products/');
@@ -1638,14 +1937,14 @@ function getCategorySchematicSvg(cat, className) {
 }
 
 function renderProductCardVisualHtml(p, isOutOfStock) {
-  var hasLocal = isLocalProductImage(p.image);
+  var imgUrl = getProductImageUrl(p);
   var brandLabel = p.brand ? '<span class="absolute top-2.5 left-2.5 text-[9px] tracking-wider font-mono text-cyan-300 bg-slate-900/95 px-2 py-0.5 rounded border border-slate-800 z-10 shadow-sm">' + p.brand + '</span>' : '';
   var perpaLabel = '<span class="absolute bottom-2.5 right-2.5 text-[9px] tracking-wider font-mono text-slate-400 bg-slate-900/95 px-1.5 py-0.5 rounded border border-slate-800 uppercase z-10 shadow-sm">Perpa Stok</span>';
-  var safeName = (p.name || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  var safeName = (p.name || '').replace(/<[^>]*>/g, ' ').replace(/"/g, '&quot;').replace(/\s+/g, ' ').trim();
 
-  if (hasLocal) {
+  if (imgUrl) {
     return '<a href="urun-detay.html?id=' + p.id + '" class="w-full h-44 rounded-xl bg-slate-950/70 border border-slate-800/80 p-3 flex items-center justify-center relative overflow-hidden group-hover:border-cyan-500/40 transition-all block cursor-pointer" title="' + safeName + ' - Detaylı Sayfaya Git">' +
-      '<img src="' + p.image + '" alt="' + safeName + '" class="max-h-full max-w-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300 ' + (isOutOfStock ? 'grayscale-[60%]' : '') + '" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML = getFallbackSchematicHtml(\'' + p.category + '\', \'' + encodeURIComponent(p.brand || '') + '\', \'' + encodeURIComponent(p.sku || '') + '\', \'' + p.id + '\');" />' +
+      '<img src="' + imgUrl + '" alt="' + safeName + '" class="max-h-full max-w-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300 ' + (isOutOfStock ? 'grayscale-[60%]' : '') + '" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML = getFallbackSchematicHtml(\'' + p.category + '\', \'' + encodeURIComponent(p.brand || '') + '\', \'' + encodeURIComponent(p.sku || '') + '\', \'' + p.id + '\');" />' +
       brandLabel +
       perpaLabel +
     '</a>';
@@ -1686,9 +1985,10 @@ window.getFallbackSchematicHtml = function(category, brandEnc, skuEnc, id) {
 
 function getProductThumbHtml(p, sizeClass) {
   sizeClass = sizeClass || "w-10 h-10";
-  var safeName = (p.name || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-  if (isLocalProductImage(p.image)) {
-    return '<img src="' + p.image + '" alt="' + safeName + '" class="' + sizeClass + ' object-contain rounded-lg bg-slate-900 border border-slate-800 p-1 flex-shrink-0" onerror="this.onerror=null; this.src=\'assets/logo.svg\';" />';
+  var safeName = (p.name || '').replace(/<[^>]*>/g, ' ').replace(/"/g, '&quot;').replace(/\s+/g, ' ').trim();
+  var imgUrl = getProductImageUrl(p);
+  if (imgUrl) {
+    return '<img src="' + imgUrl + '" alt="' + safeName + '" class="' + sizeClass + ' object-contain rounded-lg bg-slate-900 border border-slate-800 p-1 flex-shrink-0" loading="lazy" onerror="this.onerror=null; this.src=\'assets/logo.svg\';" />';
   }
   return '<div class="' + sizeClass + ' rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center p-1.5 text-cyan-400 flex-shrink-0" title="' + (p.brand || '') + ' ' + (p.sku || '') + '">' + getCategorySchematicSvg(p.category || 'parts', "w-full h-full") + '</div>';
 }
@@ -2133,9 +2433,9 @@ window.openProductModal = function(productId) {
       <!-- Visual Column -->
       <div class="p-6 rounded-2xl bg-slate-950/90 border border-slate-800 flex flex-col items-center justify-center text-center">
         <div class="w-full h-64 rounded-2xl bg-slate-900/60 p-4 flex items-center justify-center mb-4 relative overflow-hidden">
-          ${isLocalProductImage(p.image) ? `
+          ${getProductImageUrl(p) ? `
             <img 
-              src="${p.image}" 
+              src="${getProductImageUrl(p)}" 
               alt="${(p.name || '').replace(/<[^>]*>/g, ' ')}" 
               class="max-h-full max-w-full object-contain filter drop-shadow-lg" 
               onerror="this.onerror=null; this.parentElement.innerHTML = getFallbackSchematicHtml('${p.category}', '${encodeURIComponent(p.brand || '')}', '${encodeURIComponent(p.sku || '')}', '${p.id}');" 
@@ -3045,10 +3345,10 @@ function initProductDetailPage() {
     `;
   }
 
-    const hasLocal = isLocalProductImage(p.image);
+  const imgUrl = getProductImageUrl(p);
   let mainVisualHtml = '';
-  if (hasLocal) {
-    mainVisualHtml = '<img id="detail-main-image" src="' + p.image + '" alt="' + p.name + '" class="max-h-full max-w-full object-contain filter drop-shadow-2xl transition-transform duration-500 group-hover:scale-105 ' + (isOutOfStock ? 'grayscale-[50%]' : '') + '" />';
+  if (imgUrl) {
+    mainVisualHtml = '<img id="detail-main-image" src="' + imgUrl + '" alt="' + p.name + '" class="max-h-full max-w-full object-contain filter drop-shadow-2xl transition-transform duration-500 group-hover:scale-105 ' + (isOutOfStock ? 'grayscale-[50%]' : '') + '" onerror="this.onerror=null; this.src=\'assets/logo.svg\';" />';
   } else {
     mainVisualHtml = '<div class="w-full h-full flex flex-col items-center justify-center relative py-8">' +
       '<div class="absolute inset-0 bg-[radial-gradient(#00f0ff_1px,transparent_1px)] [background-size:20px_20px] opacity-10 pointer-events-none"></div>' +
@@ -3065,13 +3365,11 @@ function initProductDetailPage() {
   }
 
   let thumbsStripHtml = '';
-  if (hasLocal) {
-    const localGallery = (p.images || [p.image]).filter(img => isLocalProductImage(img));
-    if (localGallery.length > 1) {
-      thumbsStripHtml = '<div class="flex items-center gap-3">' +
-        localGallery.map((imgUrl, idx) => '<button onclick="switchDetailMainImage(\'' + imgUrl + '\', this)" class="detail-thumb-btn w-20 h-20 rounded-2xl bg-slate-900/80 border ' + (idx === 0 ? 'border-cyan-400 ring-1 ring-cyan-400' : 'border-slate-800') + ' p-2 hover:border-cyan-400 transition-all flex items-center justify-center overflow-hidden" title="Görsel ' + (idx + 1) + '"><img src="' + imgUrl + '" alt="' + p.name + '" class="max-h-full max-w-full object-contain" /></button>').join('') +
-      '</div>';
-    }
+  const validImages = (p.images || [imgUrl]).filter(img => img && typeof img === 'string' && !img.includes('no_image'));
+  if (validImages.length > 1) {
+    thumbsStripHtml = '<div class="flex items-center gap-3 overflow-x-auto py-1 max-w-full">' +
+      validImages.map((u, idx) => '<button onclick="switchDetailMainImage(\'' + u + '\', this)" class="detail-thumb-btn w-20 h-20 rounded-2xl bg-slate-900/80 border ' + (idx === 0 ? 'border-cyan-400 ring-1 ring-cyan-400' : 'border-slate-800') + ' p-2 hover:border-cyan-400 transition-all flex items-center justify-center overflow-hidden shrink-0" title="Görsel ' + (idx + 1) + '"><img src="' + u + '" alt="' + p.name + '" class="max-h-full max-w-full object-contain" onerror="this.onerror=null; this.src=\'assets/logo.svg\';" /></button>').join('') +
+    '</div>';
   }
   if (!thumbsStripHtml) {
     thumbsStripHtml = '<div class="grid grid-cols-3 gap-2 text-center">' +

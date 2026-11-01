@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGlowHP" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#0284c7" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#020617" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bodyGradHP" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="40%" stop-color="#1e293b"/>
+      <stop offset="85%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="drumRoller" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="35%" stop-color="#38bdf8"/>
+      <stop offset="70%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+    <linearGradient id="orangeTab" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="300" fill="#030712" rx="16"/>
+  <rect width="400" height="300" fill="url(#bgGlowHP)" rx="16"/>
+
+  <!-- Subtle Blueprint Tech Grid -->
+  <g stroke="#00f0ff" stroke-width="0.5" opacity="0.12">
+    <line x1="40" y1="0" x2="40" y2="300"/>
+    <line x1="120" y1="0" x2="120" y2="300"/>
+    <line x1="200" y1="0" x2="200" y2="300"/>
+    <line x1="280" y1="0" x2="280" y2="300"/>
+    <line x1="360" y1="0" x2="360" y2="300"/>
+    <line x1="0" y1="60" x2="400" y2="60"/>
+    <line x1="0" y1="120" x2="400" y2="120"/>
+    <line x1="0" y1="180" x2="400" y2="180"/>
+    <line x1="0" y1="240" x2="400" y2="240"/>
+  </g>
+
+  <!-- Laser Toner Cartridge Body -->
+  <g transform="translate(45, 70)">
+    <!-- Shadow -->
+    <ellipse cx="155" cy="148" rx="145" ry="16" fill="#000000" opacity="0.6"/>
+
+    <!-- OPC Drum Cylinder (Bottom) -->
+    <rect x="25" y="105" width="260" height="18" rx="9" fill="url(#drumRoller)"/>
+    <ellipse cx="285" cy="114" rx="4" ry="9" fill="#0284c7"/>
+
+    <!-- Main Cartridge Chamber -->
+    <rect x="20" y="32" width="270" height="80" rx="12" fill="url(#bodyGradHP)" stroke="#38bdf8" stroke-width="1.2" stroke-opacity="0.4"/>
+
+    <!-- Top Handle Grip -->
+    <path d="M70,32 L95,12 L215,12 L240,32 Z" fill="#1e293b" stroke="#475569" stroke-width="1.2"/>
+    <rect x="110" y="18" width="90" height="6" rx="3" fill="#0f172a"/>
+
+    <!-- Side End Caps & Gears -->
+    <rect x="10" y="42" width="16" height="64" rx="5" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+    <circle cx="16" cy="74" r="8" fill="#334155" stroke="#00f0ff" stroke-width="1.5"/>
+    <circle cx="16" cy="74" r="3" fill="#00f0ff"/>
+
+    <!-- Right Side Contact & Cams -->
+    <rect x="284" y="42" width="16" height="64" rx="5" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+    <circle cx="294" cy="62" r="6" fill="#334155" stroke="#f59e0b" stroke-width="1.2"/>
+    <rect x="288" y="78" width="10" height="18" rx="2" fill="#eab308"/>
+
+    <!-- Orange Safety Pull Tab -->
+    <path d="M280,24 L305,24 L305,42 L290,42 Z" fill="url(#orangeTab)"/>
+    <circle cx="295" cy="30" r="2.5" fill="#ffffff"/>
+
+    <!-- Ribbed Casing Texture -->
+    <g stroke="#334155" stroke-width="1.5">
+      <line x1="50" y1="52" x2="260" y2="52"/>
+      <line x1="50" y1="62" x2="260" y2="62"/>
+      <line x1="50" y1="72" x2="260" y2="72"/>
+      <line x1="50" y1="82" x2="260" y2="82"/>
+      <line x1="50" y1="92" x2="260" y2="92"/>
+    </g>
+
+    <!-- Product Label Badge -->
+    <rect x="95" y="56" width="120" height="36" rx="6" fill="#0b1329" stroke="#0284c7" stroke-width="1.2"/>
+    <text x="155" y="73" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" letter-spacing="1">HP MUADİL LAZER</text>
+    <text x="155" y="86" fill="#94a3b8" font-family="monospace" font-size="8" text-anchor="middle">A+ PREMIUM TONER</text>
+  </g>
+
+  <!-- Status Chip -->
+  <g transform="translate(20, 20)">
+    <rect width="115" height="22" rx="11" fill="#0284c7" fill-opacity="0.15" stroke="#0284c7" stroke-width="1" stroke-opacity="0.4"/>
+    <circle cx="12" cy="11" r="3.5" fill="#38bdf8"/>
+    <text x="24" y="14.5" fill="#e0f2fe" font-family="system-ui, sans-serif" font-size="9" font-weight="600">YÜKSEK KAPASİTE</text>
+  </g>
+</svg>
