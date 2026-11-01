@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3435';
+const DAG_CATALOG_VERSION = '2026.11.02.v3440';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
