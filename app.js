@@ -502,7 +502,7 @@ function buildDroneModel(group, mat, darkMat) {
   }
 }
 
-// MODEL 5: HavacÄ±lÄ±k & Uzay Roket Prototipi
+// MODEL 5: Havacılık & Uzay Roket Prototipi
 function buildRocketModel(group, mat, darkMat) {
   const bodyGeo = new THREE.CylinderGeometry(0.7, 0.7, 2.0, 24);
   const body = new THREE.Mesh(bodyGeo, mat);
@@ -530,7 +530,7 @@ function buildRocketModel(group, mat, darkMat) {
   }
 }
 
-// MODEL 6: EndÃ¼striyel Robotik Tutucu Gripper
+// MODEL 6: Endüstriyel Robotik Tutucu Gripper
 function buildGripperModel(group, mat, darkMat) {
   const baseGeo = new THREE.CylinderGeometry(0.9, 1.0, 0.55, 24);
   const base = new THREE.Mesh(baseGeo, darkMat);
@@ -660,14 +660,14 @@ window.toggle3dAutoRotate = function() {
 window.zoom3dIn = function() {
   if (camera) {
     camera.position.z = Math.max(4.2, camera.position.z - 0.8);
-    showToast('3D YakÄ±nlaÅŸtÄ±rÄ±ldÄ±');
+    showToast('3D Yakınlaştırıldı');
   }
 };
 
 window.zoom3dOut = function() {
   if (camera) {
     camera.position.z = Math.min(11.5, camera.position.z + 0.8);
-    showToast('3D UzaklaÅŸtÄ±rÄ±ldÄ±');
+    showToast('3D Uzaklaştırıldı');
   }
 };
 
@@ -1194,7 +1194,7 @@ window.openWishlistModal = function() {
         return `
           <div class="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/80 flex items-center justify-between gap-3">
             <div class="flex items-center gap-3 flex-1 pr-2">
-              <img src="${p.image || p.remoteImage}" class="w-12 h-12 object-contain rounded-lg bg-slate-900 p-1 border border-slate-700/60" onerror="this.src='assets/logo.svg';" />
+              ${getProductThumbHtml(p, "w-12 h-12")}
               <div>
                 <h4 class="text-xs font-bold text-white line-clamp-1">${p.name}</h4>
                 <div class="flex items-center gap-2 mt-0.5">
@@ -1403,6 +1403,121 @@ window.resetFilters = function() {
   filterCategory('all');
 };
 
+// ==========================================================================
+// UNIFIED PRODUCT VISUAL & SCHEMATIC SYSTEM
+// ==========================================================================
+function isLocalProductImage(url) {
+  if (!url || typeof url !== 'string') return false;
+  return url.startsWith('assets/products/') || url.startsWith('./assets/products/');
+}
+
+function getCategorySchematicSvg(cat, className) {
+  className = className || "w-16 h-16";
+  switch (cat) {
+    case 'printers':
+      return '<svg class="' + className + '" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<rect x="10" y="8" width="44" height="48" rx="4" stroke="#00f0ff" stroke-width="2" stroke-dasharray="3 2" opacity="0.6"/>' +
+        '<line x1="8" y1="16" x2="56" y2="16" stroke="#38bdf8" stroke-width="2.5"/>' +
+        '<rect x="26" y="12" width="12" height="8" rx="2" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5"/>' +
+        '<rect x="28" y="22" width="8" height="10" rx="1.5" fill="#00f0ff"/>' +
+        '<polygon points="30,32 34,32 32,37" fill="#f59e0b"/>' +
+        '<line x1="32" y1="37" x2="32" y2="44" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="1 2"/>' +
+        '<rect x="16" y="44" width="32" height="6" rx="2" fill="#1e293b" stroke="#00f0ff" stroke-width="2"/>' +
+        '<polygon points="26,44 32,38 38,44" fill="#0284c7" opacity="0.7"/>' +
+        '<rect x="6" y="50" width="52" height="8" rx="2" fill="#0f172a" stroke="#475569" stroke-width="2"/>' +
+        '<circle cx="16" cy="54" r="1.5" fill="#00f0ff"/>' +
+        '<line x1="24" y1="54" x2="48" y2="54" stroke="#334155" stroke-width="2"/>' +
+      '</svg>';
+    case 'filaments':
+      return '<svg class="' + className + '" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<circle cx="32" cy="32" r="24" stroke="#00f0ff" stroke-width="2" stroke-dasharray="4 2"/>' +
+        '<circle cx="32" cy="32" r="20" stroke="#38bdf8" stroke-width="1.5" opacity="0.4"/>' +
+        '<circle cx="32" cy="32" r="16" stroke="#06b6d4" stroke-width="3" stroke-dasharray="2 1"/>' +
+        '<circle cx="32" cy="32" r="12" stroke="#0284c7" stroke-width="2.5"/>' +
+        '<circle cx="32" cy="32" r="6" fill="#0f172a" stroke="#00f0ff" stroke-width="2"/>' +
+        '<line x1="32" y1="16" x2="32" y2="26" stroke="#475569" stroke-width="1.5"/>' +
+        '<line x1="32" y1="38" x2="32" y2="48" stroke="#475569" stroke-width="1.5"/>' +
+        '<line x1="16" y1="32" x2="26" y2="32" stroke="#475569" stroke-width="1.5"/>' +
+        '<line x1="38" y1="32" x2="48" y2="32" stroke="#475569" stroke-width="1.5"/>' +
+        '<path d="M48 32 Q54 22 46 14" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" fill="none"/>' +
+      '</svg>';
+    case 'toners':
+      return '<svg class="' + className + '" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<rect x="8" y="20" width="48" height="24" rx="4" fill="#0f172a" stroke="#00f0ff" stroke-width="2"/>' +
+        '<rect x="12" y="14" width="40" height="6" rx="3" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5"/>' +
+        '<rect x="22" y="24" width="20" height="5" rx="2" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>' +
+        '<circle cx="8" cy="32" r="4" fill="#1e293b" stroke="#00f0ff" stroke-width="2"/>' +
+        '<rect x="44" y="26" width="6" height="4" rx="1" fill="#f59e0b" stroke="#b45309" stroke-width="1"/>' +
+        '<line x1="14" y1="37" x2="50" y2="37" stroke="#334155" stroke-width="2" stroke-dasharray="3 2"/>' +
+      '</svg>';
+    default: // parts
+      return '<svg class="' + className + '" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<circle cx="28" cy="28" r="14" stroke="#00f0ff" stroke-width="2" fill="#0f172a"/>' +
+        '<path d="M28 10v4M28 42v4M10 28h4M42 28h4M15 15l3 3M38 38l3 3M15 41l3-3M38 17l3-3" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round"/>' +
+        '<circle cx="28" cy="28" r="5" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>' +
+        '<circle cx="45" cy="45" r="9" stroke="#38bdf8" stroke-width="1.5" fill="#0f172a"/>' +
+        '<path d="M45 33v3M45 54v3M33 45h3M54 45h3" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>' +
+        '<circle cx="45" cy="45" r="3" fill="#1e293b" stroke="#00f0ff" stroke-width="1.5"/>' +
+      '</svg>';
+  }
+}
+
+function renderProductCardVisualHtml(p, isOutOfStock) {
+  var hasLocal = isLocalProductImage(p.image);
+  var brandLabel = p.brand ? '<span class="absolute top-2.5 left-2.5 text-[9px] tracking-wider font-mono text-cyan-300 bg-slate-900/95 px-2 py-0.5 rounded border border-slate-800 z-10 shadow-sm">' + p.brand + '</span>' : '';
+  var perpaLabel = '<span class="absolute bottom-2.5 right-2.5 text-[9px] tracking-wider font-mono text-slate-400 bg-slate-900/95 px-1.5 py-0.5 rounded border border-slate-800 uppercase z-10 shadow-sm">Perpa Stok</span>';
+  var safeName = (p.name || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+
+  if (hasLocal) {
+    return '<a href="urun-detay.html?id=' + p.id + '" class="w-full h-44 rounded-xl bg-slate-950/70 border border-slate-800/80 p-3 flex items-center justify-center relative overflow-hidden group-hover:border-cyan-500/40 transition-all block cursor-pointer" title="' + safeName + ' - Detaylı Sayfaya Git">' +
+      '<img src="' + p.image + '" alt="' + safeName + '" class="max-h-full max-w-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300 ' + (isOutOfStock ? 'grayscale-[60%]' : '') + '" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML = getFallbackSchematicHtml(\'' + p.category + '\', \'' + encodeURIComponent(p.brand || '') + '\', \'' + encodeURIComponent(p.sku || '') + '\', \'' + p.id + '\');" />' +
+      brandLabel +
+      perpaLabel +
+    '</a>';
+  }
+
+  // Industrial Technical Component Schematic Display for products without local photography
+  return '<a href="urun-detay.html?id=' + p.id + '" class="w-full h-44 rounded-xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-slate-800/90 p-3 flex flex-col items-center justify-center relative overflow-hidden group-hover:border-cyan-500/50 transition-all block cursor-pointer group/schematic" title="' + safeName + ' - Teknik Özellikleri İncele">' +
+    '<div class="absolute inset-0 bg-[radial-gradient(#00f0ff_1px,transparent_1px)] [background-size:14px_14px] opacity-10 pointer-events-none"></div>' +
+    '<div class="absolute w-24 h-24 rounded-full bg-cyan-500/5 filter blur-xl pointer-events-none group-hover/schematic:bg-cyan-500/10 transition-colors"></div>' +
+    '<div class="relative z-10 flex flex-col items-center justify-center my-auto transition-transform duration-300 group-hover/schematic:scale-105">' +
+      getCategorySchematicSvg(p.category, "w-14 h-14 drop-shadow-[0_0_8px_rgba(0,240,255,0.2)]") +
+      '<div class="mt-2 text-center">' +
+        '<span class="block text-[10px] font-mono font-bold tracking-wider text-cyan-400 uppercase leading-none">' + (p.brand || 'DAĞ TEKNOLOJİ') + '</span>' +
+        '<span class="block text-[9px] font-mono text-slate-400 mt-1 leading-none line-clamp-1 max-w-[140px]">' + (p.sku || 'YEDEK PARÇA') + '</span>' +
+      '</div>' +
+    '</div>' +
+    brandLabel +
+    perpaLabel +
+  '</a>';
+}
+
+window.getFallbackSchematicHtml = function(category, brandEnc, skuEnc, id) {
+  var brand = decodeURIComponent(brandEnc || '');
+  var sku = decodeURIComponent(skuEnc || '');
+  return '<div class="w-full h-full flex flex-col items-center justify-center relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">' +
+    '<div class="absolute inset-0 bg-[radial-gradient(#00f0ff_1px,transparent_1px)] [background-size:14px_14px] opacity-10 pointer-events-none"></div>' +
+    '<div class="relative z-10 flex flex-col items-center justify-center my-auto">' +
+      getCategorySchematicSvg(category, "w-14 h-14 drop-shadow-[0_0_8px_rgba(0,240,255,0.2)]") +
+      '<div class="mt-2 text-center">' +
+        '<span class="block text-[10px] font-mono font-bold tracking-wider text-cyan-400 uppercase leading-none">' + (brand || 'DAĞ TEKNOLOJİ') + '</span>' +
+        '<span class="block text-[9px] font-mono text-slate-400 mt-1 leading-none">' + (sku || 'PERPA DEPO') + '</span>' +
+      '</div>' +
+    '</div>' +
+    (brand ? '<span class="absolute top-2.5 left-2.5 text-[9px] tracking-wider font-mono text-cyan-300 bg-slate-900/95 px-2 py-0.5 rounded border border-slate-800 z-10">' + brand + '</span>' : '') +
+    '<span class="absolute bottom-2.5 right-2.5 text-[9px] tracking-wider font-mono text-slate-400 bg-slate-900/95 px-1.5 py-0.5 rounded border border-slate-800 uppercase z-10">Perpa Stok</span>' +
+  '</div>';
+};
+
+function getProductThumbHtml(p, sizeClass) {
+  sizeClass = sizeClass || "w-10 h-10";
+  var safeName = (p.name || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  if (isLocalProductImage(p.image)) {
+    return '<img src="' + p.image + '" alt="' + safeName + '" class="' + sizeClass + ' object-contain rounded-lg bg-slate-900 border border-slate-800 p-1 flex-shrink-0" onerror="this.onerror=null; this.src=\'assets/logo.svg\';" />';
+  }
+  return '<div class="' + sizeClass + ' rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center p-1.5 text-cyan-400 flex-shrink-0" title="' + (p.brand || '') + ' ' + (p.sku || '') + '">' + getCategorySchematicSvg(p.category || 'parts', "w-full h-full") + '</div>';
+}
+
 function renderProducts() {
   const container = document.getElementById('products-grid');
   const countDisplay = document.getElementById('filtered-count-display');
@@ -1488,22 +1603,8 @@ function renderProducts() {
             ${stockBadgeHtml}
           </div>
 
-          <!-- Real Product Image Display (Kendi Sayfasına Bağlantı) -->
-          <a href="urun-detay.html?id=${p.id}" class="w-full h-44 rounded-xl bg-slate-950/70 border border-slate-800/80 p-3 flex items-center justify-center relative overflow-hidden group-hover:border-cyan-500/40 transition-all block cursor-pointer" title="${safeName} - Detaylı Sayfaya Git">
-            <img 
-              src="${p.image || p.remoteImage}" 
-              alt="${safeName}" 
-              class="max-h-full max-w-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300 ${isOutOfStock ? 'grayscale-[60%]' : ''}"
-              loading="lazy"
-              onerror="if(this.src!=='${p.remoteImage}' && '${p.remoteImage}'){this.src='${p.remoteImage}';}else{this.style.display='none';this.nextElementSibling.classList.remove('hidden');}"
-            />
-            <div class="hidden w-20 h-20 rounded-2xl bg-slate-800/90 border border-slate-700/80 flex items-center justify-center text-cyan-400">
-              <i data-lucide="${p.icon || 'box'}" class="w-10 h-10"></i>
-            </div>
-            
-            ${p.brand ? `<span class="absolute top-2 left-2 text-[9px] tracking-wider font-mono text-cyan-400/90 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800">${p.brand}</span>` : ''}
-            <span class="absolute bottom-2 right-2 text-[9px] tracking-wider font-mono text-slate-400 bg-slate-900/90 px-1.5 py-0.5 rounded border border-slate-800 uppercase">Perpa Stok</span>
-          </a>
+          <!-- Real Product Image or High-Tech Schematic Visual -->
+          ${renderProductCardVisualHtml(p, isOutOfStock)}
         </div>
 
         <!-- Content -->
@@ -1637,7 +1738,7 @@ function updateCartBadge() {
     badge.classList.toggle('hidden', count === 0);
   }
   document.querySelectorAll('.mobile-cart-badge').forEach(el => {
-    el.innerText = count > 0 ? count + ' ÃœrÃ¼n' : '0 ÃœrÃ¼n';
+    el.innerText = count > 0 ? count + ' Ürün' : '0 Ürün';
     el.classList.toggle('bg-cyan-400', count > 0);
     el.classList.toggle('text-slate-950', count > 0);
     el.classList.toggle('bg-slate-800', count === 0);
@@ -1664,7 +1765,7 @@ function ensureCartDrawerElements() {
       <div class="p-5 border-b border-slate-800 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i data-lucide="shopping-bag" class="w-5 h-5 text-cyan-400"></i>
-          <h3 class="text-base font-bold text-white">AlÄ±ÅŸveriÅŸ Sepetiniz</h3>
+          <h3 class="text-base font-bold text-white">Alışveriş Sepetiniz</h3>
         </div>
         <button onclick="toggleCartDrawer(false)" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white" title="Kapat">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -1674,27 +1775,27 @@ function ensureCartDrawerElements() {
         <div id="cart-items-container" class="space-y-3"></div>
         <div id="cart-empty-message" class="hidden text-center py-16 text-slate-400">
           <i data-lucide="shopping-cart" class="w-12 h-12 mx-auto text-slate-600 mb-3"></i>
-          <h4 class="text-sm font-bold text-white mb-1">Sepetiniz BoÅŸ</h4>
-          <p class="text-xs text-slate-500 mb-4">ÃœrÃ¼nlerimizi inceleyerek sepete Ã¼rÃ¼n ekleyebilirsiniz.</p>
-          <button onclick="toggleCartDrawer(false)" class="px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 font-bold text-xs">AlÄ±ÅŸveriÅŸe BaÅŸla</button>
+          <h4 class="text-sm font-bold text-white mb-1">Sepetiniz Boş</h4>
+          <p class="text-xs text-slate-500 mb-4">Ürünlerimizi inceleyerek sepete ürün ekleyebilirsiniz.</p>
+          <button onclick="toggleCartDrawer(false)" class="px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 font-bold text-xs">Alışverişe Başla</button>
         </div>
       </div>
       <div class="p-5 border-t border-slate-800 bg-slate-950/80 space-y-3">
         <div class="flex justify-between items-center text-xs text-slate-400">
           <span>Ara Toplam:</span>
-          <span id="cart-subtotal" class="font-bold text-white text-sm">0 â‚º</span>
+          <span id="cart-subtotal" class="font-bold text-white text-sm">0 ₺</span>
         </div>
         <div class="flex justify-between items-center text-xs text-slate-400">
-          <span>Kargo Ãœcreti:</span>
-          <span class="text-emerald-400 font-semibold">1.000 â‚º Ãœzeri Ãœcretsiz</span>
+          <span>Kargo Ücreti:</span>
+          <span class="text-emerald-400 font-semibold">1.000 ₺ Üzeri Ücretsiz</span>
         </div>
         <div class="flex justify-between items-center text-sm font-bold text-white pt-2 border-t border-slate-800">
           <span>Genel Toplam:</span>
-          <span id="cart-total" class="text-cyan-400 text-lg font-mono">0 â‚º</span>
+          <span id="cart-total" class="text-cyan-400 text-lg font-mono">0 ₺</span>
         </div>
         <button id="cart-checkout-btn" onclick="processCheckout()" class="w-full py-3 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
           <i data-lucide="check" class="w-4 h-4"></i>
-          <span>SipariÅŸi Tamamla</span>
+          <span>Siparişi Tamamla</span>
         </button>
       </div>
     `;
@@ -1761,7 +1862,7 @@ function renderCartDrawer() {
     return `
       <div class="flex items-center justify-between p-3.5 bg-slate-800/40 rounded-xl border border-slate-800">
         <div class="flex items-center gap-3 flex-1 pr-2">
-          ${item.image ? `<img src="${item.image}" class="w-10 h-10 object-contain rounded bg-slate-900 p-1 border border-slate-700/60" onerror="this.style.display='none'" />` : ''}
+          ${getProductThumbHtml(prod || item, "w-10 h-10")}
           <div class="flex-1">
             <h4 class="text-xs font-semibold text-white line-clamp-1">${item.name}</h4>
             <div class="flex items-center gap-2 mt-0.5">
@@ -1856,13 +1957,24 @@ window.openProductModal = function(productId) {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- Visual Column -->
       <div class="p-6 rounded-2xl bg-slate-950/90 border border-slate-800 flex flex-col items-center justify-center text-center">
-        <div class="w-full h-64 rounded-2xl bg-slate-900/60 p-4 flex items-center justify-center mb-4">
-          <img 
-            src="${p.image || p.remoteImage}" 
-            alt="${p.name}" 
-            class="max-h-full max-w-full object-contain filter drop-shadow-lg" 
-            onerror="if(this.src!=='${p.remoteImage}' && '${p.remoteImage}'){this.src='${p.remoteImage}';}" 
-          />
+        <div class="w-full h-64 rounded-2xl bg-slate-900/60 p-4 flex items-center justify-center mb-4 relative overflow-hidden">
+          ${isLocalProductImage(p.image) ? `
+            <img 
+              src="${p.image}" 
+              alt="${(p.name || '').replace(/<[^>]*>/g, ' ')}" 
+              class="max-h-full max-w-full object-contain filter drop-shadow-lg" 
+              onerror="this.onerror=null; this.parentElement.innerHTML = getFallbackSchematicHtml('${p.category}', '${encodeURIComponent(p.brand || '')}', '${encodeURIComponent(p.sku || '')}', '${p.id}');" 
+            />
+          ` : `
+            <div class="w-full h-full flex flex-col items-center justify-center relative">
+              <div class="absolute inset-0 bg-[radial-gradient(#00f0ff_1px,transparent_1px)] [background-size:16px_16px] opacity-10 pointer-events-none"></div>
+              <div class="relative z-10 flex flex-col items-center justify-center">
+                ${getCategorySchematicSvg(p.category, "w-20 h-20 drop-shadow-[0_0_12px_rgba(0,240,255,0.25)]")}
+                <span class="text-xs font-mono font-bold text-cyan-400 uppercase mt-3">${p.brand || 'DAĞ TEKNOLOJİ'}</span>
+                <span class="text-[11px] font-mono text-slate-400 mt-0.5">${p.sku || p.id}</span>
+              </div>
+            </div>
+          `}
         </div>
         <div class="flex items-center gap-2 mb-2">
           <span class="text-xs font-semibold px-3 py-1 rounded-full border ${p.badgeColor}">${p.badge}</span>
@@ -2091,7 +2203,7 @@ function renderAdminProductsTable() {
         
         <td class="py-3 px-4">
           <div class="flex items-center gap-3">
-            <img src="${p.image || p.remoteImage}" class="w-10 h-10 object-contain rounded-lg bg-slate-900 border border-slate-800 p-1 flex-shrink-0" onerror="this.src='assets/logo.svg';" />
+            ${getProductThumbHtml(p, "w-10 h-10")}
             <div>
               <div class="text-xs font-bold text-white line-clamp-1 max-w-[220px]" title="${p.name}">${p.name}</div>
               <div class="text-[10px] text-slate-500 font-mono">${p.sku || p.id} • ${p.brand || 'Dağ Tech'}</div>
@@ -2741,12 +2853,41 @@ function initProductDetailPage() {
     `;
   }
 
-  const mainImgUrl = p.image || p.remoteImage;
-  const thumbs = [
-    { label: 'Ana Görsel', src: mainImgUrl },
-    { label: 'Detay', src: mainImgUrl },
-    { label: 'Açı', src: mainImgUrl }
-  ];
+    const hasLocal = isLocalProductImage(p.image);
+  let mainVisualHtml = '';
+  if (hasLocal) {
+    mainVisualHtml = '<img id="detail-main-image" src="' + p.image + '" alt="' + p.name + '" class="max-h-full max-w-full object-contain filter drop-shadow-2xl transition-transform duration-500 group-hover:scale-105 ' + (isOutOfStock ? 'grayscale-[50%]' : '') + '" />';
+  } else {
+    mainVisualHtml = '<div class="w-full h-full flex flex-col items-center justify-center relative py-8">' +
+      '<div class="absolute inset-0 bg-[radial-gradient(#00f0ff_1px,transparent_1px)] [background-size:20px_20px] opacity-10 pointer-events-none"></div>' +
+      '<div class="w-32 h-32 rounded-full bg-cyan-500/10 filter blur-2xl pointer-events-none"></div>' +
+      '<div class="relative z-10 flex flex-col items-center justify-center text-center">' +
+        getCategorySchematicSvg(p.category, "w-28 h-28 drop-shadow-[0_0_15px_rgba(0,240,255,0.25)]") +
+        '<div class="mt-4 px-4 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">' +
+          '<span class="text-xs font-mono font-bold tracking-wider text-cyan-300 uppercase">' + (p.brand || 'DAĞ TEKNOLOJİ') + '</span>' +
+          '<span class="text-xs font-mono text-slate-400 ml-2">SKU: ' + (p.sku || p.id) + '</span>' +
+        '</div>' +
+        '<p class="text-[11px] text-slate-400 mt-2 max-w-xs">Endüstriyel Teknik Parça Şeması • Orijinal / A+ Muadil Ambalajında Sevk Edilir</p>' +
+      '</div>' +
+    '</div>';
+  }
+
+  let thumbsStripHtml = '';
+  if (hasLocal) {
+    const localGallery = (p.images || [p.image]).filter(img => isLocalProductImage(img));
+    if (localGallery.length > 1) {
+      thumbsStripHtml = '<div class="flex items-center gap-3">' +
+        localGallery.map((imgUrl, idx) => '<button onclick="switchDetailMainImage(\'' + imgUrl + '\', this)" class="detail-thumb-btn w-20 h-20 rounded-2xl bg-slate-900/80 border ' + (idx === 0 ? 'border-cyan-400 ring-1 ring-cyan-400' : 'border-slate-800') + ' p-2 hover:border-cyan-400 transition-all flex items-center justify-center overflow-hidden" title="Görsel ' + (idx + 1) + '"><img src="' + imgUrl + '" alt="' + p.name + '" class="max-h-full max-w-full object-contain" /></button>').join('') +
+      '</div>';
+    }
+  }
+  if (!thumbsStripHtml) {
+    thumbsStripHtml = '<div class="grid grid-cols-3 gap-2 text-center">' +
+      '<div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80"><span class="block text-[10px] font-mono font-bold text-cyan-400 uppercase">Perpa Depo</span><span class="block text-[9px] text-slate-500 mt-0.5">Stoktan Teslim</span></div>' +
+      '<div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80"><span class="block text-[10px] font-mono font-bold text-cyan-400 uppercase">Test Edilmiş</span><span class="block text-[9px] text-slate-500 mt-0.5">Teknik Kontrol</span></div>' +
+      '<div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80"><span class="block text-[10px] font-mono font-bold text-cyan-400 uppercase">Hızlı Kargo</span><span class="block text-[9px] text-slate-500 mt-0.5">Aynı Gün 16:00</span></div>' +
+    '</div>';
+  }
 
   heroEl.innerHTML = `
     <!-- Left Column: Visual Gallery (Col 5) -->
@@ -2761,31 +2902,12 @@ function initProductDetailPage() {
 
         <!-- Large Main Image View -->
         <div class="w-full h-80 sm:h-96 rounded-2xl bg-slate-900/50 p-6 flex items-center justify-center relative overflow-hidden">
-          <img 
-            id="detail-main-image"
-            src="` + mainImgUrl + `" 
-            alt="` + p.name + `" 
-            class="max-h-full max-w-full object-contain filter drop-shadow-2xl transition-transform duration-500 group-hover:scale-105 ` + (isOutOfStock ? 'grayscale-[50%]' : '') + `"
-            onerror="if(this.src!=='` + p.remoteImage + `' && '` + p.remoteImage + `'){this.src='` + p.remoteImage + `';}else{this.style.display='none';this.nextElementSibling.classList.remove('hidden');}"
-          />
-          <div class="hidden w-24 h-24 rounded-3xl bg-slate-800 flex items-center justify-center text-cyan-400">
-            <i data-lucide="` + (p.icon || 'box') + `" class="w-12 h-12"></i>
-          </div>
+          ` + mainVisualHtml + `
         </div>
       </div>
 
-      <!-- Thumbnail Strip -->
-      <div class="flex items-center gap-3">
-        ` + thumbs.map((t, idx) => `
-          <button 
-            onclick="switchDetailMainImage('` + t.src + `', this)"
-            class="detail-thumb-btn w-20 h-20 rounded-2xl bg-slate-900/80 border ` + (idx === 0 ? 'border-cyan-400 ring-1 ring-cyan-400' : 'border-slate-800') + ` p-2 hover:border-cyan-400 transition-all flex items-center justify-center overflow-hidden"
-            title="` + t.label + `"
-          >
-            <img src="` + t.src + `" alt="` + t.label + `" class="max-h-full max-w-full object-contain" />
-          </button>
-        `).join('') + `
-      </div>
+      <!-- Thumbnail Strip or Assurance Badges -->
+      ` + thumbsStripHtml + `
 
       <!-- Quick Trust Badges Under Image -->
       <div class="grid grid-cols-2 gap-3 pt-2">
@@ -2985,17 +3107,9 @@ function initProductDetailPage() {
     relatedContainer.innerHTML = relatedItems.map(rel => {
       return `
         <div class="glass-panel rounded-2xl overflow-hidden flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300">
-          <a href="urun-detay.html?id=` + rel.id + `" class="block p-4 relative bg-slate-950/60">
-            <div class="w-full h-36 rounded-xl bg-slate-900/60 p-3 flex items-center justify-center overflow-hidden">
-              <img 
-                src="` + (rel.image || rel.remoteImage) + `" 
-                alt="` + rel.name + `" 
-                class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform" 
-                onerror="this.src='assets/logo.svg';"
-              />
-            </div>
-            <span class="absolute top-2 left-2 text-[9px] font-mono text-cyan-400 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800">` + (rel.brand || 'Dağ Tech') + `</span>
-          </a>
+          <div class="p-3 pb-0">
+            ` + renderProductCardVisualHtml(rel, false) + `
+          </div>
           <div class="p-4 pt-2 flex-1 flex flex-col justify-between">
             <a href="urun-detay.html?id=` + rel.id + `" class="block">
               <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors line-clamp-2 mb-2">` + rel.name + `</h5>
