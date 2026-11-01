@@ -823,9 +823,9 @@ function renderUserNav() {
   } else {
     // Misafir Durumu - Ayrı bir yönetici butonu yok; tek giriş kapısı normal giriş
     container.innerHTML = `
-      <button onclick="openAuthModal('login')" class="flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-400 text-xs text-slate-300 hover:text-white transition-all font-semibold shadow-sm shrink-0">
+      <button onclick="openAuthModal('login')" class="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-400 text-xs text-slate-300 hover:text-white transition-all font-semibold shadow-sm shrink-0">
         <i data-lucide="user" class="w-4 h-4 text-cyan-400"></i>
-        <span>Giriş Yap</span>
+        <span class="hidden sm:inline">Giriş Yap</span>
       </button>
     `;
 
