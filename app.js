@@ -3685,6 +3685,12 @@ function initProductDetailPage() {
     }).join('');
   }
 
+  // Deep-link initial tab if provided in URL (?tab=desc or #desc)
+  const initialTab = urlParams.get('tab') || window.location.hash.replace('#', '');
+  if (initialTab && ['specs', 'desc', 'box', 'delivery'].includes(initialTab)) {
+    switchDetailTab(initialTab);
+  }
+
   if (window.lucide) lucide.createIcons();
 }
 
