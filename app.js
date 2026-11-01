@@ -550,9 +550,9 @@ function renderUserNav() {
   } else {
     // Guest state
     container.innerHTML = `
-      <button onclick="openAuthModal('login')" class="flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-400 text-xs text-slate-300 hover:text-white transition-all font-semibold shadow-sm">
+      <button onclick="openAuthModal('login')" class="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-400 text-xs text-slate-300 hover:text-white transition-all font-semibold shadow-sm shrink-0">
         <i data-lucide="user" class="w-4 h-4 text-cyan-400"></i>
-        <span class="hidden md:inline">Giriş Yap / Üye Ol</span>
+        <span class="hidden sm:inline">Giriş Yap</span>
       </button>
     `;
 
