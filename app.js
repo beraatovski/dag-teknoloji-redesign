@@ -1826,7 +1826,7 @@ function renderAdminStats() {
 }
 
 function renderAdminProductsTable() {
-  const tbody = document.getElementById('admin-products-tbody');
+  const tbody = document.getElementById('admin-products-tbody') || document.getElementById('admin-products-table-body');
   if (!tbody) return;
 
   const q = state.adminFilter.query.toLowerCase();
@@ -1854,7 +1854,12 @@ function renderAdminProductsTable() {
     return;
   }
 
-  tbody.innerHTML = items.slice(0, 100).map((p, idx) => {
+  const countBadge = document.getElementById('admin-table-count');
+  if (countBadge) {
+    countBadge.innerText = `${items.length} Ürün`;
+  }
+
+  tbody.innerHTML = items.map((p, idx) => {
     const stock = Number(p.stock !== undefined ? p.stock : 10);
     let stockStatusHtml = '';
     if (stock <= 0) {
