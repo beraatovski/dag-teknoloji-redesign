@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.01.v3429';
+const DAG_CATALOG_VERSION = '2026.11.02.v3435';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -21,7 +21,7 @@ const initialProducts = (function() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed) && parsed.length >= 3428) {
           products = parsed;
         }
       } catch(e) { console.error('Error parsing stored products', e); }
@@ -29,12 +29,172 @@ const initialProducts = (function() {
   }
 
   // Load fresh canonical 3,428 products from window.DAG_PRODUCTS
-  if (products.length === 0 && window.DAG_PRODUCTS) {
+  if ((products.length < 3428 || products.length === 0) && window.DAG_PRODUCTS) {
     products = JSON.parse(JSON.stringify(window.DAG_PRODUCTS));
   }
 
   return products;
 })();
+
+// ==========================================================================
+// DYNAMIC USD/TRY EXCHANGE RATE PRICING ENGINE (SAATLİK OTOMATİK KONTROL)
+// ==========================================================================
+const EXCHANGE_RATE_CONFIG = {
+  CACHE_KEY: 'dag_usd_exchange_rate',
+  CACHE_TTL_MS: 60 * 60 * 1000, // 1 hour (saat saat piyasa kontrolü)
+  DEFAULT_BASE: 34.50, // Reference USD/TRY rate used for catalogue TL prices
+  DEFAULT_CURRENT: 34.50,
+  APIS: [
+    'https://open.er-api.com/v6/latest/USD',
+    'https://api.exchangerate-api.com/v4/latest/USD'
+  ]
+};
+
+function loadStoredExchangeRate() {
+  try {
+    const raw = localStorage.getItem(EXCHANGE_RATE_CONFIG.CACHE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed.current === 'number' && parsed.current > 0) {
+        return parsed;
+      }
+    }
+  } catch(e) {
+    console.warn('Error reading stored exchange rate', e);
+  }
+  return {
+    enabled: true,
+    base: EXCHANGE_RATE_CONFIG.DEFAULT_BASE,
+    current: EXCHANGE_RATE_CONFIG.DEFAULT_CURRENT,
+    lastUpdated: 0,
+    source: 'Piyasa TCMB/Serbest Piyasa (Saatlik)',
+    hasCustomBase: false
+  };
+}
+
+function saveExchangeRateState() {
+  try {
+    localStorage.setItem(EXCHANGE_RATE_CONFIG.CACHE_KEY, JSON.stringify(state.exchangeRate));
+  } catch(e) {}
+}
+
+async function fetchLiveUsdRate(force = false) {
+  const now = Date.now();
+  const timeSinceLast = now - (state.exchangeRate.lastUpdated || 0);
+
+  // If not forced and last updated under 1 hour ago, use cached value
+  if (!force && timeSinceLast < EXCHANGE_RATE_CONFIG.CACHE_TTL_MS && state.exchangeRate.current > 0) {
+    updateExchangeRateUI();
+    return state.exchangeRate.current;
+  }
+
+  let fetchedRate = null;
+  for (const apiUrl of EXCHANGE_RATE_CONFIG.APIS) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const resp = await fetch(apiUrl, { signal: controller.signal });
+      clearTimeout(timeoutId);
+
+      if (resp.ok) {
+        const data = await resp.json();
+        const tryVal = (data.rates && data.rates.TRY) ? Number(data.rates.TRY) : null;
+        if (tryVal && tryVal > 0) {
+          fetchedRate = Math.round(tryVal * 100) / 100;
+          break;
+        }
+      }
+    } catch(err) {
+      console.warn(`[Döviz Kuru] ${apiUrl} yanıt vermedi:`, err.message);
+    }
+  }
+
+  if (fetchedRate) {
+    console.log(`[Döviz Kuru] Güncel USD/TRY kuru başarıyla çekildi: ${fetchedRate} ₺`);
+    state.exchangeRate.current = fetchedRate;
+    state.exchangeRate.lastUpdated = now;
+    saveExchangeRateState();
+    updateExchangeRateUI();
+
+    // Re-render catalog and details to reflect live prices
+    renderProducts();
+    if (document.getElementById('product-detail-hero')) {
+      initProductDetailPage();
+    }
+    renderAdminStats();
+    renderAdminProductsTable();
+    return fetchedRate;
+  } else {
+    updateExchangeRateUI();
+    return state.exchangeRate.current;
+  }
+}
+
+function getProductPrice(p) {
+  if (!p || typeof p.price !== 'number') return 0;
+  if (!state.exchangeRate || !state.exchangeRate.enabled) return p.price;
+  const base = state.exchangeRate.base || EXCHANGE_RATE_CONFIG.DEFAULT_BASE;
+  const current = state.exchangeRate.current || base;
+  const ratio = current / base;
+  return Math.max(1, Math.round(p.price * ratio));
+}
+
+function getProductOldPrice(p) {
+  if (!p || !p.oldPrice) return 0;
+  if (!state.exchangeRate || !state.exchangeRate.enabled) return p.oldPrice;
+  const base = state.exchangeRate.base || EXCHANGE_RATE_CONFIG.DEFAULT_BASE;
+  const current = state.exchangeRate.current || base;
+  const ratio = current / base;
+  return Math.max(1, Math.round(p.oldPrice * ratio));
+}
+
+function updateExchangeRateUI() {
+  if (!state.exchangeRate) return;
+  const current = state.exchangeRate.current || EXCHANGE_RATE_CONFIG.DEFAULT_CURRENT;
+  const base = state.exchangeRate.base || EXCHANGE_RATE_CONFIG.DEFAULT_BASE;
+  const ratio = current / base;
+  const pctChange = ((ratio - 1) * 100).toFixed(1);
+  const sign = pctChange > 0 ? '+' : '';
+
+  // Top announcement bar live rate badge
+  const topbarVal = document.getElementById('topbar-usd-val');
+  if (topbarVal) {
+    topbarVal.innerText = `${current.toFixed(2)} ₺`;
+  }
+
+  // Admin panel indicators
+  const adminCurr = document.getElementById('admin-rate-current');
+  const adminBase = document.getElementById('admin-rate-base');
+  const adminRatio = document.getElementById('admin-rate-ratio');
+
+  if (adminCurr) adminCurr.innerText = `${current.toFixed(2)} ₺`;
+  if (adminBase) adminBase.innerText = `${base.toFixed(2)} ₺`;
+  if (adminRatio) adminRatio.innerText = `x${ratio.toFixed(3)} (${sign}${pctChange}%)`;
+
+  if (window.lucide) lucide.createIcons();
+}
+
+window.forceRefreshExchangeRate = async function() {
+  showToast('Canlı dolar kuru piyasadan sorgulanıyor...', 'info');
+  const rate = await fetchLiveUsdRate(true);
+  if (rate) {
+    showToast(`Dolar Kuru Güncellendi: 1 USD = ${rate.toFixed(2)} ₺. Fiyatlar otomatik eşitlendi!`, 'success');
+  } else {
+    showToast('Döviz kuru servisine ulaşılamadı. Kayıtlı son kur kullanılıyor.', 'error');
+  }
+};
+
+window.setBaseRateToCurrent = function() {
+  state.exchangeRate.base = state.exchangeRate.current;
+  state.exchangeRate.hasCustomBase = true;
+  saveExchangeRateState();
+  updateExchangeRateUI();
+  renderProducts();
+  if (document.getElementById('product-detail-hero')) initProductDetailPage();
+  renderAdminStats();
+  renderAdminProductsTable();
+  showToast(`Mevcut kur (${state.exchangeRate.current.toFixed(2)} ₺) referans baz kur olarak ayarlandı. Değişim oranı %0.0 olarak sıfırlandı.`, 'success');
+};
 
 // Default registered users (Yönetici ve Müşteri)
 const defaultUsers = [
@@ -107,6 +267,7 @@ const state = {
   cart: JSON.parse(localStorage.getItem('dag_cart') || '[]'),
   orders: JSON.parse(localStorage.getItem('dag_orders') || '[]'),
   isAdmin: sessionStorage.getItem('dag_is_admin') === 'true',
+  exchangeRate: loadStoredExchangeRate(),
   
   // Catalog Filters
   filters: {
@@ -139,6 +300,11 @@ const state = {
     displayLimit: 100
   }
 };
+
+window.state = state;
+window.getProductPrice = getProductPrice;
+window.getProductOldPrice = getProductOldPrice;
+window.fetchLiveUsdRate = fetchLiveUsdRate;
 
 // Material calculation metrics
 const MATERIAL_DATA = {
@@ -192,6 +358,15 @@ document.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
   updateCalculatorUI();
   updateAdminUI();
+  updateExchangeRateUI();
+  fetchLiveUsdRate(false); // Check/fetch live exchange rate (with 1-hour cache)
+  
+  // Saat saat kontrol: Every 60 minutes, automatically refresh market USD rate & prices
+  setInterval(() => {
+    console.log('[Döviz Kuru] Saatlik otomatik USD kontrolü çalıştırılıyor...');
+    fetchLiveUsdRate(false);
+  }, 60 * 60 * 1000);
+
   if (window.location.pathname.includes('urun-detay.html')) {
     initProductDetailPage();
   }
@@ -1198,7 +1373,7 @@ window.openWishlistModal = function() {
               <div>
                 <h4 class="text-xs font-bold text-white line-clamp-1">${p.name}</h4>
                 <div class="flex items-center gap-2 mt-0.5">
-                  <span class="text-xs font-bold text-cyan-400">${p.price.toLocaleString('tr-TR')} ₺</span>
+                  <span class="text-xs font-bold text-cyan-400">${getProductPrice(p).toLocaleString('tr-TR')} ₺</span>
                   ${isOutOfStock ? `<span class="text-[10px] text-rose-400">Tükendi</span>` : `<span class="text-[10px] text-emerald-400">Stokta (${stock})</span>`}
                 </div>
               </div>
@@ -1638,9 +1813,9 @@ function renderProducts() {
           <!-- Pricing & Stock Action Row -->
           <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
             <div>
-              ${p.oldPrice ? `<span class="text-[11px] text-slate-500 line-through block">${p.oldPrice.toLocaleString('tr-TR')} ₺</span>` : ''}
+              ${p.oldPrice ? `<span class="text-[11px] text-slate-500 line-through block">${getProductOldPrice(p).toLocaleString('tr-TR')} ₺</span>` : ''}
               <div class="text-lg font-extrabold text-white">
-                ${p.price.toLocaleString('tr-TR')} <span class="text-xs text-cyan-400 font-normal">₺</span>
+                ${getProductPrice(p).toLocaleString('tr-TR')} <span class="text-xs text-cyan-400 font-normal">₺</span>
               </div>
             </div>
             
@@ -1713,7 +1888,7 @@ window.addToCart = function(productId, qty = 1) {
     state.cart.push({
       id: prod.id,
       name: prod.name,
-      price: prod.price,
+      price: getProductPrice(prod),
       image: prod.image || prod.remoteImage,
       subtitle: prod.subtitle,
       quantity: qty
@@ -2010,9 +2185,14 @@ window.openProductModal = function(productId) {
         </div>
 
         <div class="flex items-baseline gap-3 mb-6">
-          <span class="text-3xl font-extrabold text-white">${p.price.toLocaleString('tr-TR')} ₺</span>
-          ${p.oldPrice ? `<span class="text-sm text-slate-500 line-through">${p.oldPrice.toLocaleString('tr-TR')} ₺</span>` : ''}
+          <span class="text-3xl font-extrabold text-white">${getProductPrice(p).toLocaleString('tr-TR')} ₺</span>
+          ${p.oldPrice ? `<span class="text-sm text-slate-500 line-through">${getProductOldPrice(p).toLocaleString('tr-TR')} ₺</span>` : ''}
           <span class="text-xs text-emerald-400 font-medium">KDV Dahil</span>
+          ${state.exchangeRate && state.exchangeRate.current ? `
+            <span class="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+              ~ ${(getProductPrice(p) / state.exchangeRate.current).toFixed(2)} USD
+            </span>
+          ` : ''}
         </div>
 
         <div class="flex items-center gap-2.5">
@@ -2031,7 +2211,7 @@ window.openProductModal = function(productId) {
             <i data-lucide="heart" class="w-5 h-5 ${isFavorited ? 'fill-rose-500' : ''}"></i>
           </button>
 
-          <a href="https://wa.me/905070201198?text=Merhaba,%20${encodeURIComponent(p.name)}%20(SKU:%20${p.sku || p.id})%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" class="p-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 transition-colors" title="WhatsApp ile Sor">
+          <a href="https://wa.me/905070201198?text=Merhaba,%20${encodeURIComponent(p.name)}%20(SKU:%20${p.sku || p.id},%20Fiyat:%20${getProductPrice(p)}%20TL)%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" class="p-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 transition-colors" title="WhatsApp ile Sor">
             <i data-lucide="message-circle" class="w-5 h-5"></i>
           </a>
         </div>
@@ -2139,11 +2319,11 @@ function renderAdminStats() {
   const totalProducts = state.products.length;
   const totalStock = state.products.reduce((sum, p) => sum + Number(p.stock || 0), 0);
   const lowStockCount = state.products.filter(p => Number(p.stock || 0) <= 5).length;
-  const totalValue = state.products.reduce((sum, p) => sum + (p.price * Number(p.stock || 0)), 0);
+  const totalValue = state.products.reduce((sum, p) => sum + (getProductPrice(p) * Number(p.stock || 0)), 0);
 
-  if (totalProductsEl) totalProductsEl.innerText = totalProducts;
+  if (totalProductsEl) totalProductsEl.innerText = totalProducts.toLocaleString('tr-TR');
   if (totalStockEl) totalStockEl.innerText = `${totalStock.toLocaleString('tr-TR')} Adet`;
-  if (lowStockEl) lowStockEl.innerText = `${lowStockCount} Ürün`;
+  if (lowStockEl) lowStockEl.innerText = `${lowStockCount.toLocaleString('tr-TR')} Ürün`;
   if (totalValueEl) totalValueEl.innerText = `${totalValue.toLocaleString('tr-TR')} ₺`;
 }
 
@@ -2163,10 +2343,11 @@ function renderAdminProductsTable() {
     if (stockFilter === 'in' && stk <= 0) return false;
 
     if (q) {
-      const matchName = p.name.toLowerCase().includes(q);
+      const matchName = (p.name || '').toLowerCase().includes(q);
       const matchSku = (p.sku || '').toLowerCase().includes(q);
       const matchBrand = (p.brand || '').toLowerCase().includes(q);
-      if (!matchName && !matchSku && !matchBrand) return false;
+      const matchId = (p.id || '').toLowerCase().includes(q);
+      if (!matchName && !matchSku && !matchBrand && !matchId) return false;
     }
     return true;
   });
@@ -2182,12 +2363,13 @@ function renderAdminProductsTable() {
   const countBadge = document.getElementById('admin-table-count');
   if (countBadge) {
     countBadge.innerText = items.length > displayItems.length 
-      ? `${displayItems.length} / ${items.length} Ürün` 
-      : `${items.length} Ürün`;
+      ? `${displayItems.length} / ${items.length.toLocaleString('tr-TR')} Ürün` 
+      : `${items.length.toLocaleString('tr-TR')} Ürün`;
   }
 
   let tableHtml = displayItems.map((p, idx) => {
     const stock = Number(p.stock !== undefined ? p.stock : 10);
+    const dynPrice = getProductPrice(p);
     let stockStatusHtml = '';
     if (stock <= 0) {
       stockStatusHtml = `<span class="stock-badge-out px-2 py-0.5 rounded text-[10px] font-bold">Tükendi</span>`;
@@ -2201,19 +2383,25 @@ function renderAdminProductsTable() {
       <tr class="admin-table-row border-b border-slate-800/80 transition-colors">
         <td class="py-3 px-4 text-xs font-mono text-slate-500">${idx + 1}</td>
         
+        <!-- Clickable Product Info (Opens urun-detay.html?id=...) -->
         <td class="py-3 px-4">
-          <div class="flex items-center gap-3">
-            ${getProductThumbHtml(p, "w-10 h-10")}
+          <a href="urun-detay.html?id=${p.id}" target="_blank" class="flex items-center gap-3 group/prod hover:opacity-95 transition-opacity" title="Ürünün Sayfasını Aç (Yeni Sekme)">
+            <div class="relative shrink-0">
+              ${getProductThumbHtml(p, "w-10 h-10 group-hover/prod:ring-2 ring-cyan-400 rounded-lg transition-all")}
+            </div>
             <div>
-              <div class="text-xs font-bold text-white line-clamp-1 max-w-[220px]" title="${p.name}">${p.name}</div>
+              <div class="text-xs font-bold text-white group-hover/prod:text-cyan-400 transition-colors line-clamp-1 max-w-[240px] flex items-center gap-1.5" title="${p.name}">
+                <span>${p.name}</span>
+                <i data-lucide="external-link" class="w-3 h-3 text-cyan-400 opacity-60 group-hover/prod:opacity-100 transition-opacity shrink-0"></i>
+              </div>
               <div class="text-[10px] text-slate-500 font-mono">${p.sku || p.id} • ${p.brand || 'Dağ Tech'}</div>
             </div>
-          </div>
+          </a>
         </td>
 
         <td class="py-3 px-4 text-xs text-slate-300 font-mono">${getCategoryName(p.category)}</td>
         
-        <td class="py-3 px-4 text-xs font-bold text-cyan-400 font-mono">${p.price.toLocaleString('tr-TR')} ₺</td>
+        <td class="py-3 px-4 text-xs font-bold text-cyan-400 font-mono">${dynPrice.toLocaleString('tr-TR')} ₺</td>
         
         <!-- Live Quick Stock Adjustment -->
         <td class="py-3 px-4">
@@ -2228,6 +2416,10 @@ function renderAdminProductsTable() {
 
         <td class="py-3 px-4 text-right">
           <div class="flex items-center justify-end gap-1.5">
+            <!-- Dedicated Button to View Dedicated Product Page -->
+            <a href="urun-detay.html?id=${p.id}" target="_blank" title="Ürünün Sayfasına Git (Yeni Sekme)" class="p-1.5 rounded-lg bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-cyan-300 transition-colors border border-slate-700/80">
+              <i data-lucide="external-link" class="w-4 h-4"></i>
+            </a>
             <button onclick="openEditProductModal('${p.id}')" title="Ürünü Düzenle" class="p-1.5 rounded-lg bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-slate-300 transition-colors">
               <i data-lucide="edit-3" class="w-4 h-4"></i>
             </button>
@@ -2952,16 +3144,23 @@ function initProductDetailPage() {
       <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/90 flex flex-wrap items-baseline justify-between gap-4">
         <div>
           <div class="flex items-baseline gap-3">
-            <span class="text-3xl sm:text-4xl font-extrabold text-white font-mono">` + p.price.toLocaleString('tr-TR') + `</span>
+            <span class="text-3xl sm:text-4xl font-extrabold text-white font-mono">` + getProductPrice(p).toLocaleString('tr-TR') + `</span>
             <span class="text-lg text-cyan-400 font-bold">₺</span>
             ` + (p.oldPrice ? `
-              <span class="text-sm sm:text-base text-slate-500 line-through font-mono ml-2">` + p.oldPrice.toLocaleString('tr-TR') + ` ₺</span>
+              <span class="text-sm sm:text-base text-slate-500 line-through font-mono ml-2">` + getProductOldPrice(p).toLocaleString('tr-TR') + ` ₺</span>
               <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 rounded-full">
-                %` + Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100) + ` İndirim
+                %` + Math.round(((getProductOldPrice(p) - getProductPrice(p)) / getProductOldPrice(p)) * 100) + ` İndirim
               </span>
             ` : '') + `
           </div>
-          <div class="text-[11px] text-slate-400 mt-1">Fiyatlara KDV dahildir • Kurumsal fatura düzenlenir.</div>
+          <div class="text-[11px] text-slate-400 mt-1 flex items-center gap-2 flex-wrap">
+            <span>Fiyatlara KDV dahildir • Kurumsal fatura düzenlenir.</span>
+            ` + (state.exchangeRate && state.exchangeRate.current ? `
+              <span class="text-emerald-400/90 font-mono text-[10px] bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                (~ ` + (getProductPrice(p) / state.exchangeRate.current).toFixed(2) + ` USD • Canlı Kur: ` + state.exchangeRate.current.toFixed(2) + ` ₺)
+              </span>
+            ` : '') + `
+          </div>
         </div>
 
         <div class="text-right">
@@ -3028,7 +3227,7 @@ function initProductDetailPage() {
 
         <!-- WhatsApp Quick Order Button -->
         <a 
-          href="https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizden%20` + encodeURIComponent(p.name) + `%20(SKU:%20` + (p.sku || p.id) + `,%20Fiyat:%20` + p.price + `%20TL)%20hakk%C4%B1nda%20bilgi%20almak%20ve%20sipari%C5%9F%20vermek%20istiyorum." 
+          href="https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizden%20` + encodeURIComponent(p.name) + `%20(SKU:%20` + (p.sku || p.id) + `,%20Fiyat:%20` + getProductPrice(p) + `%20TL)%20hakk%C4%B1nda%20bilgi%20almak%20ve%20sipari%C5%9F%20vermek%20istiyorum." 
           target="_blank" 
           class="w-full py-3.5 px-4 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-sm"
         >
@@ -3115,7 +3314,7 @@ function initProductDetailPage() {
               <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors line-clamp-2 mb-2">` + rel.name + `</h5>
             </a>
             <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between">
-              <span class="text-sm font-extrabold text-white font-mono">` + rel.price.toLocaleString('tr-TR') + ` ₺</span>
+              <span class="text-sm font-extrabold text-white font-mono">` + getProductPrice(rel).toLocaleString('tr-TR') + ` ₺</span>
               <a href="urun-detay.html?id=` + rel.id + `" class="px-2.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 text-[11px] font-bold transition-all">
                 İncele
               </a>

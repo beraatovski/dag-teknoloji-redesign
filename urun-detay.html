@@ -55,19 +55,27 @@
 </head>
 <body class="bg-[#07090e] text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950 w-full max-w-full">
 
-  <!-- TOP ANNOUNCEMENT BAR (Adres, Telefon, Perpa Merkezli Canlı Bilgi Şeridi) -->
-  <div class="bg-gradient-to-r from-slate-950 via-cyan-950/40 to-slate-950 border-b border-cyan-500/20 py-2 px-4 text-xs overflow-hidden w-full">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-2 text-slate-300 w-full">
-      <div class="flex items-center gap-2">
+  <!-- TOP ANNOUNCEMENT BAR (Adres, Telefon, Perpa Merkezli Canlı Bilgi Şeridi & Canlı Dolar Kuru) -->
+  <div class="bg-gradient-to-r from-slate-950 via-cyan-950/40 to-slate-950 border-b border-cyan-500/20 py-1.5 sm:py-2 px-3 sm:px-4 text-xs overflow-hidden w-full">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 flex items-center justify-between gap-2 text-slate-300 w-full">
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
         <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-semibold shrink-0">
           <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span> PERPA MERKEZLİ
         </span>
-        <span class="hidden sm:inline text-slate-300">Perpa Ticaret Merkezi 8. Kat B Blok No:825 Şişli / İstanbul</span>
-        <span class="sm:hidden text-slate-400 text-[11px] truncate">Perpa B/825</span>
+        <span class="hidden md:inline text-slate-300">Perpa Ticaret Merkezi 8. Kat B Blok No:825 Şişli / İstanbul</span>
+        
+        <!-- Canlı Dolar Kuru Ticker (Saat Saat Otomatik Güncellenir) -->
+        <div id="topbar-exchange-rate" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-[11px] font-mono text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.15)]" title="Fiyatlarımız piyasa anlık USD/TRY kuruna göre saat başı otomatik güncellenmektedir.">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+          <span class="text-slate-400 font-sans">USD:</span>
+          <span id="topbar-usd-val" class="font-bold text-white tracking-tight">--.-- ₺</span>
+          <span class="hidden sm:inline text-[10px] text-emerald-400/80 font-sans font-medium">• Canlı Fiyatlandırma</span>
+        </div>
       </div>
-      <div class="flex items-center gap-4 sm:gap-6 shrink-0">
-        <span class="hidden md:inline text-slate-400">Hızlı Kargo & Aynı Gün Perpa Elden Teslimat</span>
-        <a href="tel:+905070201198" class="text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors">
+
+      <div class="flex items-center gap-3 sm:gap-6 shrink-0">
+        <span class="hidden lg:inline text-slate-400">Hızlı Kargo & Aynı Gün Elden Teslimat</span>
+        <a href="tel:+905070201198" class="text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors text-xs sm:text-sm">
           <i data-lucide="phone-call" class="w-3.5 h-3.5"></i> 0507 020 11 98
         </a>
       </div>
@@ -642,6 +650,49 @@
             <span class="text-[11px] font-mono text-slate-400 uppercase block mb-1">Envanter Değeri</span>
             <div id="admin-stat-total-value" class="text-2xl sm:text-3xl font-extrabold text-cyan-300 font-mono">0 ₺</div>
             <span class="text-[10px] text-slate-500 font-mono mt-1 block">Perakende Tutar</span>
+          </div>
+        </div>
+
+        
+        <!-- DÃ¶viz Kuru ve Dinamik FiyatlandÄ±rma Kontrol KartÄ± -->
+        <div class="glass-panel p-4 sm:p-5 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-950/25 via-slate-900/90 to-cyan-950/25 shadow-lg">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div class="flex items-start sm:items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+                <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <h4 class="text-sm font-bold text-white">CanlÄ± USD / TL Otomatik FiyatlandÄ±rma Entegrasyonu</h4>
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-[10px] font-mono text-emerald-300">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Saatlik Otomatik Kontrol
+                  </span>
+                </div>
+                <p class="text-xs text-slate-400 mt-0.5">Dolar kuru serbest piyasada deÄŸiÅŸtikÃ§e sitedeki 3.428 Ã¼rÃ¼nÃ¼n TL fiyatlarÄ± saatlik olarak aynÄ± oranda gÃ¼ncellenir.</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <div class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 font-mono text-xs shadow-inner">
+                <span class="text-slate-400">CanlÄ± USD:</span>
+                <span id="admin-rate-current" class="font-bold text-emerald-400 ml-1">--.-- â‚º</span>
+              </div>
+              <div class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 font-mono text-xs shadow-inner">
+                <span class="text-slate-400">Baz Referans:</span>
+                <span id="admin-rate-base" class="font-bold text-cyan-300 ml-1">34.50 â‚º</span>
+              </div>
+              <div class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 font-mono text-xs shadow-inner">
+                <span class="text-slate-400">Ã‡arpan:</span>
+                <span id="admin-rate-ratio" class="font-bold text-white ml-1">x1.000 (0.0%)</span>
+              </div>
+              <button onclick="forceRefreshExchangeRate()" class="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                <span>Kuru Åimdi GÃ¼ncelle</span>
+              </button>
+              <button onclick="setBaseRateToCurrent()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-semibold transition-all" title="Mevcut kuru referans baz kur olarak ayarlar (%0 deÄŸiÅŸim)">
+                <span>Mevcut Kuru Baz Al</span>
+              </button>
+            </div>
           </div>
         </div>
 
