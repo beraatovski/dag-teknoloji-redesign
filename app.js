@@ -878,10 +878,16 @@ function renderUserNav() {
                 </span>
                 <span class="px-1.5 py-0.2 text-[9px] bg-cyan-400 text-slate-950 font-extrabold rounded">Aktif</span>
               </div>
-              <button onclick="openAdminDashboard(); toggleUserDropdown(false);" class="w-full py-2 px-3 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 shadow-[0_0_12px_rgba(0,240,255,0.3)] transition-all">
-                <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
-                <span>Yönetici Paneline Git</span>
-              </button>
+              <div class="flex flex-col gap-1.5">
+                <button onclick="openAdminDashboard('catalog'); toggleUserDropdown(false);" class="w-full py-2 px-3 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 shadow-[0_0_12px_rgba(0,240,255,0.3)] transition-all">
+                  <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+                  <span>Yönetici Paneline Git</span>
+                </button>
+                <button onclick="openAdminDashboard('opencart'); toggleUserDropdown(false);" class="w-full py-1.5 px-3 rounded-lg bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 font-semibold text-[11px] flex items-center justify-center gap-1.5 border border-blue-500/30 transition-all">
+                  <i data-lucide="shopping-cart" class="w-3.5 h-3.5 text-blue-400"></i>
+                  <span>OpenCart Canlı Yönetim Köprüsü</span>
+                </button>
+              </div>
             </div>
           ` : ''}
 
@@ -1956,7 +1962,7 @@ function updateAdminUI() {
   }
 }
 
-window.openAdminDashboard = function() {
+window.openAdminDashboard = function(initialTab = 'catalog') {
   const isAdmin = !!(state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr' || state.currentUser.email === 'admin@dag.com' || state.isAdmin));
   if (!isAdmin) {
     showToast('Bu panele yalnızca yetkili yöneticiler erişebilir. Lütfen yönetici hesabınızla giriş yapın.', 'error');
@@ -1966,8 +1972,55 @@ window.openAdminDashboard = function() {
   renderAdminStats();
   renderAdminProductsTable();
   renderAdminOrdersTable();
+  switchAdminTab(initialTab);
   openModal('admin-panel-modal');
   if (window.lucide) lucide.createIcons();
+};
+window.openAdminPanel = window.openAdminDashboard;
+
+window.switchAdminTab = function(tabName = 'catalog') {
+  const catalogTab = document.getElementById('admin-tab-catalog');
+  const opencartTab = document.getElementById('admin-tab-opencart');
+  const shortcutsTab = document.getElementById('admin-tab-shortcuts');
+
+  const catalogBtn = document.getElementById('admin-tab-catalog-btn');
+  const opencartBtn = document.getElementById('admin-tab-opencart-btn');
+  const shortcutsBtn = document.getElementById('admin-tab-shortcuts-btn');
+
+  if (catalogTab) catalogTab.classList.toggle('hidden', tabName !== 'catalog');
+  if (opencartTab) opencartTab.classList.toggle('hidden', tabName !== 'opencart');
+  if (shortcutsTab) shortcutsTab.classList.toggle('hidden', tabName !== 'shortcuts');
+
+  if (catalogBtn) {
+    catalogBtn.classList.toggle('border-cyan-400', tabName === 'catalog');
+    catalogBtn.classList.toggle('text-cyan-400', tabName === 'catalog');
+    catalogBtn.classList.toggle('border-transparent', tabName !== 'catalog');
+    catalogBtn.classList.toggle('text-slate-400', tabName !== 'catalog');
+  }
+
+  if (opencartBtn) {
+    opencartBtn.classList.toggle('border-blue-400', tabName === 'opencart');
+    opencartBtn.classList.toggle('text-blue-400', tabName === 'opencart');
+    opencartBtn.classList.toggle('border-transparent', tabName !== 'opencart');
+    opencartBtn.classList.toggle('text-slate-400', tabName !== 'opencart');
+  }
+
+  if (shortcutsBtn) {
+    shortcutsBtn.classList.toggle('border-amber-400', tabName === 'shortcuts');
+    shortcutsBtn.classList.toggle('text-amber-400', tabName === 'shortcuts');
+    shortcutsBtn.classList.toggle('border-transparent', tabName !== 'shortcuts');
+    shortcutsBtn.classList.toggle('text-slate-400', tabName !== 'shortcuts');
+  }
+
+  if (window.lucide) lucide.createIcons();
+};
+
+window.reloadOpenCartFrame = function() {
+  const frame = document.getElementById('opencart-bridge-iframe');
+  if (frame) {
+    frame.src = 'https://dagteknoloji.com.tr/admin?t=' + Date.now();
+    showToast('OpenCart oturum ekranı yenileniyor...', 'info');
+  }
 };
 
 function renderAdminStats() {
