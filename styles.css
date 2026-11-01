@@ -316,3 +316,43 @@ input[type=range]::-webkit-slider-thumb:hover {
   transform-origin: top right;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* ==========================================================================
+   PAGE-TO-PAGE CYBER LOADING BAR & SEAMLESS TRANSITIONS
+   ========================================================================== */
+#page-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #00f0ff, #3b82f6, #10b981);
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.95), 0 0 6px #3b82f6;
+  z-index: 999999;
+  pointer-events: none;
+  transition: width 0.26s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+  opacity: 0;
+}
+
+@keyframes pageEntranceFade {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-transitioning {
+  opacity: 0.65 !important;
+  filter: blur(0.4px);
+  transition: opacity 0.2s ease, filter 0.2s ease;
+  pointer-events: none;
+}
+
+body {
+  animation: pageEntranceFade 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+

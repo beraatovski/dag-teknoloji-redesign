@@ -1,6 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="tr" class="scroll-smooth overflow-x-hidden">
 <head>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ürün Detayı | DAĞ TEKNOLOJİ</title>
@@ -47,7 +51,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20261101v10">
 </head>
 <body class="bg-[#07090e] text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950 w-full max-w-full">
 
@@ -56,7 +60,7 @@
   <!-- ========================================================================== -->
   <header class="sticky top-2 sm:top-3 z-50 px-2 sm:px-4 lg:px-8 transition-all duration-300 pointer-events-none w-full max-w-full">
     <div class="max-w-7xl mx-auto w-full">
-      <div class="bg-slate-900/90 backdrop-blur-xl border border-cyan-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_20px_rgba(0,240,255,0.08)] hover:border-cyan-500/40 rounded-2xl px-2.5 sm:px-4 lg:px-5 py-2 sm:py-2.5 flex items-center justify-between lg:grid lg:grid-cols-[200px_1fr_auto] xl:grid-cols-[240px_1fr_240px] transition-all pointer-events-auto">
+      <div class="bg-slate-900/90 backdrop-blur-xl border border-cyan-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_20px_rgba(0,240,255,0.08)] hover:border-cyan-500/40 rounded-2xl px-3 sm:px-4 lg:px-5 py-2 sm:py-2.5 flex items-center justify-between gap-2 lg:gap-4 transition-all pointer-events-auto">
         
         <!-- 1. SOL KANAT (Logo ve İsim - Sola Hizalı) -->
         <div class="flex items-center justify-start shrink-0">
@@ -66,7 +70,7 @@
         </div>
 
         <!-- 2. ORTA KANAT (Tam Merkezde Simetrik Menü Linkleri - Tablette de Açık) -->
-        <nav class="hidden lg:flex items-center justify-center gap-1 xl:gap-2 shrink-0 min-w-0">
+        <nav class="hidden lg:flex items-center justify-center gap-1 xl:gap-2 shrink min-w-0">
           
           <!-- Ana Sayfa -->
           <a href="index.html" class="inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-xl hover:bg-slate-800/80 text-slate-300 hover:text-cyan-400 font-medium text-xs xl:text-sm transition-all shrink-0" title="Ana Sayfaya Dön">
@@ -89,7 +93,7 @@
           </a>
 
           <!-- Hizmetlerimiz (lg ve üzeri) -->
-          <a href="index.html#services-section" class="hidden lg:inline-block px-2 xl:px-3 py-1.5 xl:py-2 rounded-xl hover:bg-slate-800/80 text-slate-300 hover:text-cyan-400 font-medium text-xs xl:text-sm transition-all shrink-0">Hizmetlerimiz</a>
+          <a href="index.html#services-section" class="hidden xl:inline-block px-2 xl:px-3 py-1.5 xl:py-2 rounded-xl hover:bg-slate-800/80 text-slate-300 hover:text-cyan-400 font-medium text-xs xl:text-sm transition-all shrink-0">Hizmetlerimiz</a>
 
           <!-- İletişim -->
           <a href="index.html#contact-section" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-xl hover:bg-slate-800/80 text-slate-300 hover:text-cyan-400 font-medium text-xs xl:text-sm transition-all shrink-0">İletişim</a>
@@ -100,7 +104,7 @@
         <div class="flex items-center justify-end gap-1.5 sm:gap-2 shrink-0">
           
           <!-- WhatsApp (md ve üzeri) -->
-          <a href="https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizden%20yaz%C4%B1yorum." target="_blank" class="hidden xl:flex p-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all shadow-sm w-9 sm:w-10 h-9 sm:h-10 items-center justify-center shrink-0" title="WhatsApp Destek Hattı">
+          <a href="https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizden%20yaz%C4%B1yorum." target="_blank" class="hidden 2xl:flex p-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all shadow-sm w-9 sm:w-10 h-9 sm:h-10 items-center justify-center shrink-0" title="WhatsApp Destek Hattı">
             <i data-lucide="message-circle" class="w-4 h-4"></i>
           </a>
 
@@ -691,10 +695,10 @@
   </div>
 
   <!-- 3. ADMIN ADD / EDIT PRODUCT MODAL -->
-  <div id="admin-edit-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div onclick="closeModal('admin-edit-modal')" class="fixed inset-0 bg-black/85 backdrop-blur-md"></div>
+  <div id="edit-product-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="closeModal('edit-product-modal')" class="fixed inset-0 bg-black/85 backdrop-blur-md"></div>
     <div class="relative w-full max-w-xl bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 z-10 shadow-2xl max-h-[92vh] overflow-y-auto">
-      <button onclick="closeModal('admin-edit-modal')" class="absolute top-5 right-5 p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white">
+      <button onclick="closeModal('edit-product-modal')" class="absolute top-5 right-5 p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
@@ -702,10 +706,10 @@
         <i data-lucide="edit-3" class="w-5 h-5"></i>
         <span class="text-xs font-mono font-bold uppercase">Ürün Editörü</span>
       </div>
-      <h3 id="admin-edit-modal-title" class="text-xl font-bold text-white mb-4">Ürün Bilgilerini Düzenle</h3>
+      <h3 id="product-form-title" class="text-xl font-bold text-white mb-4">Ürün Bilgilerini Düzenle</h3>
 
-      <form id="admin-edit-product-form" onsubmit="handleSaveProductForm(event)" class="space-y-4">
-        <input type="hidden" id="form-prod-id">
+      <form id="product-form" onsubmit="handleSaveProductForm(event)" class="space-y-4">
+        <input type="hidden" id="edit-product-id"><input type="hidden" id="form-prod-id">
 
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1">Ürün Adı *</label>
@@ -1006,6 +1010,6 @@
 
   <!-- PRODUCTS DATABASE & MAIN SCRIPT -->
   <script src="products.js?v=20261101v7"></script>
-  <script src="app.js?v=20261101v7"></script>
+  <script src="app.js?v=20261101v10"></script>
 </body>
 </html>

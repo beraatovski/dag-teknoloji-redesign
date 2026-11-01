@@ -1,4 +1,4 @@
-/**
+﻿/**
  * DAĞ TEKNOLOJİ - MODERN WEB PLATFORM & E-COMMERCE ENGINE
  * Real Products (132 Items), Multi-Filter, Stock System, Admin Panel, Membership System & 3D Engine
  */
@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('URL param parsing error:', err);
   }
 
+  initPageTransitionEngine();
   initThreeJsViewport();
   renderUserNav();
   renderBrandFilters();
@@ -264,7 +265,7 @@ function initThreeJsViewport() {
   createBuildPlate();
 
   modelGroup = new THREE.Group();
-  modelGroup.position.set(0, 0.2, 0);
+  modelGroup.position.set(0, 0.0, 0);
   scene.add(modelGroup);
 
   renderActive3dModel();
@@ -324,11 +325,11 @@ function initThreeJsViewport() {
     if (!isDragging && is3dAutoRotating) {
       modelGroup.rotation.y += 0.007;
     }
-    modelGroup.position.y = 0.2 + Math.sin(elapsedTime * 1.5) * 0.08;
+    modelGroup.position.y = 0.0 + Math.sin(elapsedTime * 1.5) * 0.05;
     if (printHead) {
       printHead.position.x = Math.sin(elapsedTime * 2.5) * 1.8;
       printHead.position.z = Math.cos(elapsedTime * 1.8) * 1.8;
-      printHead.position.y = 2.4 + Math.sin(elapsedTime * 3) * 0.15;
+      printHead.position.y = 1.95 + Math.sin(elapsedTime * 3) * 0.1;
     }
     renderer.render(scene, camera);
   }
@@ -339,12 +340,12 @@ function createBuildPlate() {
   const plateGeo = new THREE.BoxGeometry(7, 0.2, 7);
   const plateMat = new THREE.MeshStandardMaterial({ color: 0x121826, roughness: 0.8, metalness: 0.2 });
   const plate = new THREE.Mesh(plateGeo, plateMat);
-  plate.position.y = -1.9;
+  plate.position.y = -1.6;
   plate.receiveShadow = true;
   scene.add(plate);
 
   const gridHelper = new THREE.GridHelper(6.6, 22, 0x00f0ff, 0x1e293b);
-  gridHelper.position.y = -1.79;
+  gridHelper.position.y = -1.49;
   scene.add(gridHelper);
 }
 
@@ -509,6 +510,69 @@ function buildDroneModel(group, mat, darkMat) {
   }
 }
 
+// MODEL 5: HavacÄ±lÄ±k & Uzay Roket Prototipi
+function buildRocketModel(group, mat, darkMat) {
+  const bodyGeo = new THREE.CylinderGeometry(0.7, 0.7, 2.0, 24);
+  const body = new THREE.Mesh(bodyGeo, mat);
+  body.position.y = 0.1;
+  group.add(body);
+
+  const noseGeo = new THREE.ConeGeometry(0.7, 1.2, 24);
+  const nose = new THREE.Mesh(noseGeo, darkMat);
+  nose.position.y = 1.7;
+  group.add(nose);
+
+  const engineGeo = new THREE.ConeGeometry(0.55, 0.5, 20);
+  const engine = new THREE.Mesh(engineGeo, darkMat);
+  engine.position.y = -1.15;
+  engine.rotation.x = Math.PI;
+  group.add(engine);
+
+  for (let i = 0; i < 4; i++) {
+    const angle = (i / 4) * Math.PI * 2;
+    const finGeo = new THREE.BoxGeometry(0.08, 0.75, 0.55);
+    const fin = new THREE.Mesh(finGeo, mat);
+    fin.position.set(Math.cos(angle) * 0.95, -0.65, Math.sin(angle) * 0.95);
+    fin.rotation.y = -angle;
+    group.add(fin);
+  }
+}
+
+// MODEL 6: EndÃ¼striyel Robotik Tutucu Gripper
+function buildGripperModel(group, mat, darkMat) {
+  const baseGeo = new THREE.CylinderGeometry(0.9, 1.0, 0.55, 24);
+  const base = new THREE.Mesh(baseGeo, darkMat);
+  base.position.y = -0.85;
+  group.add(base);
+
+  const coreGeo = new THREE.BoxGeometry(1.1, 0.85, 0.8);
+  const core = new THREE.Mesh(coreGeo, mat);
+  core.position.y = -0.15;
+  group.add(core);
+
+  // Left Finger
+  const f1 = new THREE.Mesh(new THREE.BoxGeometry(0.28, 1.15, 0.35), darkMat);
+  f1.position.set(-0.6, 0.75, 0);
+  f1.rotation.z = -0.12;
+  group.add(f1);
+
+  const t1 = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.45, 0.35), mat);
+  t1.position.set(-0.45, 1.3, 0);
+  t1.rotation.z = 0.35;
+  group.add(t1);
+
+  // Right Finger
+  const f2 = new THREE.Mesh(new THREE.BoxGeometry(0.28, 1.15, 0.35), darkMat);
+  f2.position.set(0.6, 0.75, 0);
+  f2.rotation.z = 0.12;
+  group.add(f2);
+
+  const t2 = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.45, 0.35), mat);
+  t2.position.set(0.45, 1.3, 0);
+  t2.rotation.z = -0.35;
+  group.add(t2);
+}
+
 function renderActive3dModel() {
   if (!modelGroup) return;
   while (modelGroup.children.length > 0) {
@@ -545,7 +609,7 @@ window.switch3dModel = function(modelType) {
   active3dModel = modelType;
   renderActive3dModel();
 
-  ['gear', 'nozzle', 'cube', 'drone'].forEach(type => {
+  ['gear', 'nozzle', 'cube', 'drone', 'rocket', 'gripper'].forEach(type => {
     const btn = document.getElementById(`btn-model-${type}`);
     if (btn) {
       const isActive = (type === modelType);
@@ -595,10 +659,24 @@ window.toggle3dAutoRotate = function() {
   showToast(is3dAutoRotating ? 'Otomatik Dönüş Açık' : 'Otomatik Dönüş Duraklatıldı');
 };
 
+window.zoom3dIn = function() {
+  if (camera) {
+    camera.position.z = Math.max(4.2, camera.position.z - 0.8);
+    showToast('3D YakÄ±nlaÅŸtÄ±rÄ±ldÄ±');
+  }
+};
+
+window.zoom3dOut = function() {
+  if (camera) {
+    camera.position.z = Math.min(11.5, camera.position.z + 0.8);
+    showToast('3D UzaklaÅŸtÄ±rÄ±ldÄ±');
+  }
+};
+
 window.reset3dView = function() {
   if (modelGroup) {
     modelGroup.rotation.set(0, 0, 0);
-    modelGroup.position.set(0, 0.2, 0);
+    modelGroup.position.set(0, 0.0, 0);
   }
   if (camera) {
     camera.position.set(0, 1.8, 8.2);
@@ -621,7 +699,7 @@ function createPrintHead() {
 
   printHead.add(tip);
   printHead.add(beam);
-  printHead.position.set(0, 3.5, 0);
+  printHead.position.set(0, 2.0, 0);
   scene.add(printHead);
 }
 
@@ -2791,4 +2869,64 @@ function initProductDetailPage() {
   }
 
   lucide.createIcons();
+}
+
+// ==========================================================================
+// UNIVERSAL PAGE-TO-PAGE CYBER LOADING ENGINE
+// ==========================================================================
+function initPageTransitionEngine() {
+  let bar = document.getElementById('page-loading-bar');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'page-loading-bar';
+    document.body.appendChild(bar);
+  }
+
+  // Smooth entrance completion
+  bar.style.opacity = '1';
+  bar.style.width = '100%';
+  setTimeout(() => {
+    bar.style.opacity = '0';
+    setTimeout(() => {
+      bar.style.width = '0%';
+    }, 320);
+  }, 180);
+
+  // Restore on back/forward cache
+  window.addEventListener('pageshow', () => {
+    document.body.classList.remove('page-transitioning');
+    if (bar) {
+      bar.style.opacity = '0';
+      bar.style.width = '0%';
+    }
+  });
+
+  // Intercept internal page link clicks
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (!href) return;
+
+    if (href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    if (link.target === '_blank' || href.includes('wa.me') || href.includes('api.whatsapp.com')) return;
+    if (href.startsWith('http://') || href.startsWith('https://')) {
+      if (!href.includes(window.location.host)) return;
+    }
+
+    // Smooth page exit transition
+    e.preventDefault();
+    if (bar) {
+      bar.style.transition = 'width 0.22s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease';
+      bar.style.opacity = '1';
+      bar.style.width = '40%';
+      setTimeout(() => { bar.style.width = '78%'; }, 50);
+      setTimeout(() => { bar.style.width = '94%'; }, 120);
+    }
+    document.body.classList.add('page-transitioning');
+
+    setTimeout(() => {
+      window.location.href = href;
+    }, 160);
+  });
 }
