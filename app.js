@@ -3,16 +3,48 @@
  * Real Products (132 Items), Multi-Filter, Stock System, Admin Panel, Membership System & 3D Engine
  */
 
-// --- INITIAL STATE SETUP ---
+// --- INITIAL STATE SETUP & CATALOG VERSIONING ---
+const DAG_CATALOG_VERSION = '2026.11.01.v5';
+
 const initialProducts = (function() {
+  const savedVersion = localStorage.getItem('dag_catalog_version');
   const saved = localStorage.getItem('dag_custom_products');
-  if (saved) {
+  let products = [];
+
+  if (saved && savedVersion === DAG_CATALOG_VERSION) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        products = parsed;
+      }
     } catch(e) { console.error('Error parsing stored products', e); }
   }
-  return window.DAG_PRODUCTS || [];
+
+  // If no saved products or outdated version, load fresh from canonical DAG_PRODUCTS
+  if (products.length === 0 && window.DAG_PRODUCTS) {
+    products = JSON.parse(JSON.stringify(window.DAG_PRODUCTS));
+  }
+
+  // ALWAYS ENFORCE CANONICAL CATEGORIES & SANITY CHECKS:
+  // Fixes any stale cached category data in visitor local storage
+  if (window.DAG_PRODUCTS) {
+    const canonicalMap = new Map(window.DAG_PRODUCTS.map(p => [p.id, p.category]));
+    products.forEach(p => {
+      if (canonicalMap.has(p.id)) {
+        p.category = canonicalMap.get(p.id);
+      }
+      // Fail-safe rule: Any item with filament keywords can NEVER belong to printers
+      if (p.category === 'printers' && /filament|pla|petg|abs|tpu|re[cç]ine|resin/i.test(p.name)) {
+        p.category = 'filaments';
+      }
+    });
+  }
+
+  // Persist updated version and sanitized products
+  localStorage.setItem('dag_catalog_version', DAG_CATALOG_VERSION);
+  localStorage.setItem('dag_custom_products', JSON.stringify(products));
+
+  return products;
 })();
 
 // Default registered users (Yönetici ve Müşteri)
