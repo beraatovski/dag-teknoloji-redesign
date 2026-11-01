@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.location.pathname.includes('urun-detay.html')) {
     initProductDetailPage();
   }
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 });
 
 // ==========================================================================
@@ -952,7 +952,7 @@ function renderUserNav() {
     }
   }
 
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 }
 
 window.toggleUserDropdown = function(force) {
@@ -1165,7 +1165,7 @@ window.openMyOrdersModal = function() {
   }
 
   openModal('user-orders-modal');
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 };
 
 window.openWishlistModal = function() {
@@ -1220,7 +1220,7 @@ window.openWishlistModal = function() {
   }
 
   openModal('wishlist-modal');
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 };
 
 window.openProfileModal = function() {
@@ -1434,7 +1434,7 @@ function renderProducts() {
         <button onclick="resetFilters()" class="mt-4 px-5 py-2.5 text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-xl transition-all shadow-lg shadow-cyan-500/20">Filtreleri Sıfırla</button>
       </div>
     `;
-    lucide.createIcons();
+    if (window.lucide) lucide.createIcons();
     return;
   }
 
@@ -1560,7 +1560,7 @@ function renderProducts() {
     `;
   }).join('');
 
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 }
 
 function getCategoryName(cat) {
@@ -1624,12 +1624,77 @@ function updateCartBadge() {
     badge.innerText = count;
     badge.classList.toggle('hidden', count === 0);
   }
+  document.querySelectorAll('.mobile-cart-badge').forEach(el => {
+    el.innerText = count > 0 ? count + ' ÃœrÃ¼n' : '0 ÃœrÃ¼n';
+    el.classList.toggle('bg-cyan-400', count > 0);
+    el.classList.toggle('text-slate-950', count > 0);
+    el.classList.toggle('bg-slate-800', count === 0);
+    el.classList.toggle('text-slate-400', count === 0);
+  });
+}
+
+function ensureCartDrawerElements() {
+  let backdrop = document.getElementById('cart-backdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.id = 'cart-backdrop';
+    backdrop.className = 'hidden opacity-0 fixed inset-0 bg-black/70 backdrop-blur-sm z-50 transition-opacity duration-300';
+    backdrop.onclick = () => toggleCartDrawer(false);
+    document.body.appendChild(backdrop);
+  }
+
+  let drawer = document.getElementById('cart-drawer');
+  if (!drawer) {
+    drawer = document.createElement('div');
+    drawer.id = 'cart-drawer';
+    drawer.className = 'hidden fixed top-0 right-0 h-full w-full max-w-md bg-slate-900 border-l border-slate-800 z-50 translate-x-full transition-all duration-300 flex flex-col justify-between shadow-2xl';
+    drawer.innerHTML = `
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shopping-bag" class="w-5 h-5 text-cyan-400"></i>
+          <h3 class="text-base font-bold text-white">AlÄ±ÅŸveriÅŸ Sepetiniz</h3>
+        </div>
+        <button onclick="toggleCartDrawer(false)" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white" title="Kapat">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="flex-1 overflow-y-auto p-5 space-y-3">
+        <div id="cart-items-container" class="space-y-3"></div>
+        <div id="cart-empty-message" class="hidden text-center py-16 text-slate-400">
+          <i data-lucide="shopping-cart" class="w-12 h-12 mx-auto text-slate-600 mb-3"></i>
+          <h4 class="text-sm font-bold text-white mb-1">Sepetiniz BoÅŸ</h4>
+          <p class="text-xs text-slate-500 mb-4">ÃœrÃ¼nlerimizi inceleyerek sepete Ã¼rÃ¼n ekleyebilirsiniz.</p>
+          <button onclick="toggleCartDrawer(false)" class="px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 font-bold text-xs">AlÄ±ÅŸveriÅŸe BaÅŸla</button>
+        </div>
+      </div>
+      <div class="p-5 border-t border-slate-800 bg-slate-950/80 space-y-3">
+        <div class="flex justify-between items-center text-xs text-slate-400">
+          <span>Ara Toplam:</span>
+          <span id="cart-subtotal" class="font-bold text-white text-sm">0 â‚º</span>
+        </div>
+        <div class="flex justify-between items-center text-xs text-slate-400">
+          <span>Kargo Ãœcreti:</span>
+          <span class="text-emerald-400 font-semibold">1.000 â‚º Ãœzeri Ãœcretsiz</span>
+        </div>
+        <div class="flex justify-between items-center text-sm font-bold text-white pt-2 border-t border-slate-800">
+          <span>Genel Toplam:</span>
+          <span id="cart-total" class="text-cyan-400 text-lg font-mono">0 â‚º</span>
+        </div>
+        <button id="cart-checkout-btn" onclick="processCheckout()" class="w-full py-3 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>SipariÅŸi Tamamla</span>
+        </button>
+      </div>
+    `;
+    document.body.appendChild(drawer);
+    if (window.lucide) lucide.createIcons();
+  }
+
+  return { drawer, backdrop };
 }
 
 window.toggleCartDrawer = function(forceOpen) {
-  const drawer = document.getElementById('cart-drawer');
-  const backdrop = document.getElementById('cart-backdrop');
-  if (!drawer || !backdrop) return;
+  const { drawer, backdrop } = ensureCartDrawerElements();
 
   const isOpen = !drawer.classList.contains('hidden') && !drawer.classList.contains('translate-x-full');
   const shouldOpen = forceOpen !== undefined ? forceOpen : !isOpen;
@@ -1709,7 +1774,7 @@ function renderCartDrawer() {
   if (subtotalEl) subtotalEl.innerText = `${subtotal.toLocaleString('tr-TR')} ₺`;
   if (totalEl) totalEl.innerText = `${subtotal.toLocaleString('tr-TR')} ₺`;
 
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 }
 
 window.changeCartQty = function(id, delta) {
@@ -1851,7 +1916,7 @@ window.openProductModal = function(productId) {
   `;
 
   openModal('product-modal');
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 };
 
 // ==========================================================================
@@ -1894,7 +1959,7 @@ window.openAdminDashboard = function() {
   renderAdminProductsTable();
   renderAdminOrdersTable();
   openModal('admin-panel-modal');
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 };
 
 function renderAdminStats() {
@@ -2002,7 +2067,7 @@ function renderAdminProductsTable() {
     `;
   }).join('');
 
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 }
 
 function renderAdminOrdersTable() {
@@ -2203,7 +2268,7 @@ function showToast(message, type = 'info') {
   `;
 
   container.appendChild(toast);
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 
   requestAnimationFrame(() => { toast.classList.add('show'); });
 
@@ -2868,7 +2933,7 @@ function initProductDetailPage() {
     }).join('');
   }
 
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 }
 
 // ==========================================================================
