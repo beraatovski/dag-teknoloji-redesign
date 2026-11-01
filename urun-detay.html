@@ -51,7 +51,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=20261101v17">
+  <link rel="stylesheet" href="styles.css?v=20261101v18">
 </head>
 <body class="bg-[#07090e] text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950 w-full max-w-full">
 
@@ -585,19 +585,14 @@
       <!-- Tab Switcher Navigation -->
       <div class="px-5 sm:px-8 bg-slate-900/60 border-b border-slate-800 flex items-center gap-2 overflow-x-auto flex-shrink-0">
         <button id="admin-tab-catalog-btn" onclick="switchAdminTab('catalog')" class="py-3 px-3 sm:px-4 text-xs font-bold border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 transition-all shrink-0">
-          <i data-lucide="layout-grid" class="w-4 h-4"></i>
-          <span>Hızlı Katalog &amp; Stok</span>
+          <i data-lucide="package" class="w-4 h-4"></i>
+          <span>Hızlı Katalog &amp; Stok (132 Ürün)</span>
         </button>
 
         <button id="admin-tab-opencart-btn" onclick="switchAdminTab('opencart')" class="py-3 px-3 sm:px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all shrink-0">
           <i data-lucide="shopping-cart" class="w-4 h-4 text-blue-400"></i>
-          <span>OpenCart Canlı Yönetim Köprüsü</span>
-          <span class="px-1.5 py-0.5 rounded text-[10px] bg-blue-500/20 text-blue-300 border border-blue-500/30 font-mono">CANLI</span>
-        </button>
-
-        <button id="admin-tab-shortcuts-btn" onclick="switchAdminTab('shortcuts')" class="py-3 px-3 sm:px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all shrink-0">
-          <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
-          <span>OpenCart Kısayollar &amp; Modüller</span>
+          <span>OpenCart Yönetim Merkezi &amp; Canlı Köprü</span>
+          <span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">AKTİF</span>
         </button>
       </div>
 
@@ -717,19 +712,19 @@
 
       </div>
 
-      <!-- Tab 2: OpenCart Live Iframe Bridge -->
-      <div id="admin-tab-opencart" class="hidden flex-1 flex flex-col h-full overflow-y-auto bg-slate-950 p-4 sm:p-6 space-y-4">
+      <!-- Tab 2: OpenCart Management Center & Live Bridge -->
+      <div id="admin-tab-opencart" class="hidden flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 bg-slate-950">
         
         <!-- Direct OpenCart Secure Login Terminal -->
-        <div class="glass-panel p-5 rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-950/40 via-slate-900/90 to-slate-950">
-          <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800/80">
+        <div class="glass-panel p-5 sm:p-6 rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-950/40 via-slate-900/90 to-slate-950 shadow-xl">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-4 border-b border-slate-800/80">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-blue-400">
-                <i data-lucide="shield-check" class="w-5 h-5"></i>
+              <div class="w-11 h-11 rounded-xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-blue-400">
+                <i data-lucide="shield-check" class="w-6 h-6"></i>
               </div>
               <div>
-                <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                  <span>OpenCart Güvenli Giriş Terminali</span>
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                  <span>Doğrudan OpenCart Güvenli Giriş Terminali</span>
                   <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">Doğrudan Bağlantı</span>
                 </h3>
                 <p class="text-xs text-slate-400">Sunucu: <strong class="text-slate-200">dagteknoloji.com.tr/admin</strong> (LiteSpeed PHP 7.4 / OpenCart Türkçe)</p>
@@ -737,19 +732,14 @@
             </div>
 
             <div class="flex items-center gap-2">
+              <button onclick="openOpenCartWindow()" class="px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md shadow-cyan-500/20 transition-all">
+                <i data-lucide="app-window" class="w-4 h-4"></i>
+                <span>Bağımsız Yönetici Penceresi</span>
+              </button>
               <a href="https://dagteknoloji.com.tr/admin" target="_blank" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-blue-500/20 transition-all">
                 <i data-lucide="external-link" class="w-4 h-4"></i>
-                <span>OpenCart'ı Yeni Sekmede Aç</span>
+                <span>Yeni Sekmede Aç</span>
               </a>
-            </div>
-          </div>
-
-          <!-- Notice on cross-origin iframe security -->
-          <div class="p-3 mb-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200/90 text-xs flex items-start gap-2.5">
-            <i data-lucide="info" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
-            <div>
-              <strong class="text-white block mb-0.5">Neden Sayfa İçindeki Gömülü Pencerede Giriş Yapılamıyor?</strong>
-              Modern web tarayıcıları (Chrome, Safari, Edge), farklı siteler arasında (<strong>github.io</strong> ile <strong>dagteknoloji.com.tr</strong>) kullanıcı güvenliği için gömülü pencere içindeki oturum çerezlerini (SameSite Cookie) kısıtlar. Bu sebeple gömülü ekranda oturum açılamaz. Aşağıdaki doğrudan form ile bilgilerinizi girdiğinizde tarayıcınız doğrudan OpenCart oturumunuzu açıp yönetim paneline yönlendirir.
             </div>
           </div>
 
@@ -780,130 +770,101 @@
           </form>
         </div>
 
-        <!-- Embedded Frame Container with Controls -->
-        <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden flex flex-col h-[520px]">
-          <div class="p-3 px-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between gap-3 flex-shrink-0">
-            <span class="text-xs font-mono text-slate-400 flex items-center gap-2">
-              <i data-lucide="monitor" class="w-4 h-4 text-cyan-400"></i>
-              <span>Canlı Önizleme Ekranı (dagteknoloji.com.tr/admin)</span>
-            </span>
-
-            <div class="flex items-center gap-2">
-              <button onclick="reloadOpenCartFrame()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 flex items-center gap-1 transition-colors">
-                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-                <span>Yenile</span>
-              </button>
-              <a href="https://dagteknoloji.com.tr/admin" target="_blank" class="px-2.5 py-1 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 text-xs font-semibold flex items-center gap-1 transition-colors">
-                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                <span>Tam Ekran Aç</span>
-              </a>
-            </div>
+        <!-- OpenCart Quick Modules Grid (6 Core Cards) -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+              <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
+              <span>OpenCart Yönetim Modülleri &amp; Hızlı İşlemler</span>
+            </h4>
+            <span class="text-xs text-slate-400">Tıklayarak doğrudan modüle bağlanın</span>
           </div>
 
-          <div class="flex-1 w-full h-full relative bg-slate-950">
-            <iframe id="opencart-bridge-iframe" src="https://dagteknoloji.com.tr/admin" class="w-full h-full border-none" allow="forms; scripts; same-origin; popups"></iframe>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div onclick="openOpenCartWindow('sale/order')" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/60 hover:bg-slate-900/80 transition-all group cursor-pointer">
+              <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                  <i data-lucide="shopping-bag" class="w-4.5 h-4.5"></i>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transition-colors"></i>
+              </div>
+              <h5 class="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">Sipariş Yönetimi</h5>
+              <p class="text-xs text-slate-400 mt-1">Gelen siparişler, fatura yazdırma, kargo takip durumları.</p>
+            </div>
+
+            <div onclick="openOpenCartWindow('catalog/product')" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-cyan-500/60 hover:bg-slate-900/80 transition-all group cursor-pointer">
+              <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+                  <i data-lucide="package" class="w-4.5 h-4.5"></i>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
+              </div>
+              <h5 class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">Ürünler Kataloğu</h5>
+              <p class="text-xs text-slate-400 mt-1">Tüm ürün detayları, seçenekler, özellikler ve resimler.</p>
+            </div>
+
+            <div onclick="openOpenCartWindow('catalog/category')" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-indigo-500/60 hover:bg-slate-900/80 transition-all group cursor-pointer">
+              <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+                  <i data-lucide="folder-tree" class="w-4.5 h-4.5"></i>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-indigo-400 transition-colors"></i>
+              </div>
+              <h5 class="text-sm font-bold text-white group-hover:text-indigo-400 transition-colors">Kategoriler &amp; Hiyerarşi</h5>
+              <p class="text-xs text-slate-400 mt-1">3D Yazıcı, Filament, Toner ve Yedek Parça ağaçları.</p>
+            </div>
+
+            <div onclick="openOpenCartWindow('customer/customer')" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-purple-500/60 hover:bg-slate-900/80 transition-all group cursor-pointer">
+              <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
+                  <i data-lucide="users" class="w-4.5 h-4.5"></i>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-purple-400 transition-colors"></i>
+              </div>
+              <h5 class="text-sm font-bold text-white group-hover:text-purple-400 transition-colors">Müşteri Hesapları</h5>
+              <p class="text-xs text-slate-400 mt-1">Kayıtlı kullanıcılar, kurumsal müşteri grupları ve onaylar.</p>
+            </div>
+
+            <div onclick="openOpenCartWindow('report/report')" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-amber-500/60 hover:bg-slate-900/80 transition-all group cursor-pointer">
+              <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                  <i data-lucide="bar-chart-3" class="w-4.5 h-4.5"></i>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-amber-400 transition-colors"></i>
+              </div>
+              <h5 class="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">Satış &amp; Stok Raporları</h5>
+              <p class="text-xs text-slate-400 mt-1">Günlük/aylık ciro, çok satanlar, görüntülenen ürün raporları.</p>
+            </div>
+
+            <div onclick="openOpenCartWindow('setting/store')" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-rose-500/60 hover:bg-slate-900/80 transition-all group cursor-pointer">
+              <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center">
+                  <i data-lucide="settings" class="w-4.5 h-4.5"></i>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-rose-400 transition-colors"></i>
+              </div>
+              <h5 class="text-sm font-bold text-white group-hover:text-rose-400 transition-colors">Sistem Ayarları</h5>
+              <p class="text-xs text-slate-400 mt-1">Ödeme yöntemleri, kargo eklentileri, e-posta sunucusu.</p>
+            </div>
           </div>
         </div>
 
-      </div>
-
-      <!-- Tab 3: OpenCart Shortcuts & API Hub -->
-      <div id="admin-tab-shortcuts" class="hidden flex-1 overflow-y-auto p-5 sm:p-8 space-y-6">
-        <div class="glass-panel p-5 rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-950/40 to-slate-900/80">
-          <div class="flex items-center gap-3 mb-2">
-            <div class="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-blue-400">
-              <i data-lucide="store" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h3 class="text-base font-bold text-white">OpenCart Yönetim Modülleri &amp; Hızlı Bağlantılar</h3>
-              <p class="text-xs text-slate-400">Tek tıkla doğrudan ilgili OpenCart yönetim sayfasına geçiş yapın.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <a href="https://dagteknoloji.com.tr/admin/index.php?route=sale/order" target="_blank" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all group block">
-            <div class="flex items-center justify-between mb-2">
-              <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
-                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-              </div>
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
-            </div>
-            <h4 class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">Sipariş Yönetimi</h4>
-            <p class="text-xs text-slate-400 mt-1">Gelen siparişler, fatura yazdırma, kargo takip durumları.</p>
-          </a>
-
-          <a href="https://dagteknoloji.com.tr/admin/index.php?route=catalog/product" target="_blank" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all group block">
-            <div class="flex items-center justify-between mb-2">
-              <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
-                <i data-lucide="package" class="w-4 h-4"></i>
-              </div>
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
-            </div>
-            <h4 class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">Ürünler Kataloğu</h4>
-            <p class="text-xs text-slate-400 mt-1">Tüm ürün detayları, seçenekler, özellikler ve resimler.</p>
-          </a>
-
-          <a href="https://dagteknoloji.com.tr/admin/index.php?route=catalog/category" target="_blank" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all group block">
-            <div class="flex items-center justify-between mb-2">
-              <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
-                <i data-lucide="folder-tree" class="w-4 h-4"></i>
-              </div>
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
-            </div>
-            <h4 class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">Kategoriler &amp; Hiyerarşi</h4>
-            <p class="text-xs text-slate-400 mt-1">3D Yazıcı, Filament, Toner ve Yedek Parça ağaçları.</p>
-          </a>
-
-          <a href="https://dagteknoloji.com.tr/admin/index.php?route=customer/customer" target="_blank" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all group block">
-            <div class="flex items-center justify-between mb-2">
-              <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
-                <i data-lucide="users" class="w-4 h-4"></i>
-              </div>
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
-            </div>
-            <h4 class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">Müşteri Hesapları</h4>
-            <p class="text-xs text-slate-400 mt-1">Kayıtlı kullanıcılar, kurumsal müşteri grupları ve onaylar.</p>
-          </a>
-
-          <a href="https://dagteknoloji.com.tr/admin/index.php?route=report/report" target="_blank" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all group block">
-            <div class="flex items-center justify-between mb-2">
-              <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
-                <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
-              </div>
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
-            </div>
-            <h4 class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">Satış &amp; Stok Raporları</h4>
-            <p class="text-xs text-slate-400 mt-1">Günlük/aylık ciro, çok satanlar, görüntülenen ürün raporları.</p>
-          </a>
-
-          <a href="https://dagteknoloji.com.tr/admin/index.php?route=setting/store" target="_blank" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all group block">
-            <div class="flex items-center justify-between mb-2">
-              <div class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center">
-                <i data-lucide="settings" class="w-4 h-4"></i>
-              </div>
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
-            </div>
-            <h4 class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">Sistem Ayarları</h4>
-            <p class="text-xs text-slate-400 mt-1">Ödeme yöntemleri, kargo eklentileri, e-posta sunucusu.</p>
-          </a>
-        </div>
-
+        <!-- OpenCart Server & Architecture Info -->
         <div class="glass-panel p-5 rounded-2xl border border-slate-800">
           <h4 class="text-sm font-bold text-white flex items-center gap-2 mb-3">
             <i data-lucide="link-2" class="w-4 h-4 text-cyan-400"></i>
-            <span>OpenCart API &amp; Canlı Entegrasyon Bilgileri</span>
+            <span>OpenCart Sunucu &amp; Entegrasyon Altyapısı</span>
           </h4>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
               <span class="text-[10px] font-mono text-slate-500 uppercase block">OpenCart Yönetim URL</span>
               <span class="text-xs text-white font-mono font-semibold break-all">https://dagteknoloji.com.tr/admin</span>
             </div>
-            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
-              <span class="text-[10px] font-mono text-slate-500 uppercase block">Protokol / Altyapı</span>
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+              <span class="text-[10px] font-mono text-slate-500 uppercase block">Sunucu &amp; PHP Altyapısı</span>
               <span class="text-xs text-emerald-400 font-mono font-semibold">HTTPS / LiteSpeed PHP 7.4</span>
             </div>
-            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
               <span class="text-[10px] font-mono text-slate-500 uppercase block">Köprü Durumu</span>
               <span class="text-xs text-cyan-400 font-mono font-semibold flex items-center gap-1.5 mt-0.5">
                 <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
@@ -912,6 +873,7 @@
             </div>
           </div>
         </div>
+
       </div>
 
     </div>
@@ -1233,6 +1195,6 @@
 
   <!-- PRODUCTS DATABASE & MAIN SCRIPT -->
   <script src="products.js?v=20261101v7"></script>
-  <script src="app.js?v=20261101v17"></script>
+  <script src="app.js?v=20261101v18"></script>
 </body>
 </html>

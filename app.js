@@ -1,4 +1,4 @@
-﻿/**
+/**
  * DAĞ TEKNOLOJİ - MODERN WEB PLATFORM & E-COMMERCE ENGINE
  * Real Products (132 Items), Multi-Filter, Stock System, Admin Panel, Membership System & 3D Engine
  */
@@ -1979,17 +1979,15 @@ window.openAdminDashboard = function(initialTab = 'catalog') {
 window.openAdminPanel = window.openAdminDashboard;
 
 window.switchAdminTab = function(tabName = 'catalog') {
+  if (tabName === 'shortcuts') tabName = 'opencart';
   const catalogTab = document.getElementById('admin-tab-catalog');
   const opencartTab = document.getElementById('admin-tab-opencart');
-  const shortcutsTab = document.getElementById('admin-tab-shortcuts');
 
   const catalogBtn = document.getElementById('admin-tab-catalog-btn');
   const opencartBtn = document.getElementById('admin-tab-opencart-btn');
-  const shortcutsBtn = document.getElementById('admin-tab-shortcuts-btn');
 
   if (catalogTab) catalogTab.classList.toggle('hidden', tabName !== 'catalog');
   if (opencartTab) opencartTab.classList.toggle('hidden', tabName !== 'opencart');
-  if (shortcutsTab) shortcutsTab.classList.toggle('hidden', tabName !== 'shortcuts');
 
   if (catalogBtn) {
     catalogBtn.classList.toggle('border-cyan-400', tabName === 'catalog');
@@ -2005,22 +2003,21 @@ window.switchAdminTab = function(tabName = 'catalog') {
     opencartBtn.classList.toggle('text-slate-400', tabName !== 'opencart');
   }
 
-  if (shortcutsBtn) {
-    shortcutsBtn.classList.toggle('border-amber-400', tabName === 'shortcuts');
-    shortcutsBtn.classList.toggle('text-amber-400', tabName === 'shortcuts');
-    shortcutsBtn.classList.toggle('border-transparent', tabName !== 'shortcuts');
-    shortcutsBtn.classList.toggle('text-slate-400', tabName !== 'shortcuts');
-  }
-
   if (window.lucide) lucide.createIcons();
 };
 
-window.reloadOpenCartFrame = function() {
-  const frame = document.getElementById('opencart-bridge-iframe');
-  if (frame) {
-    frame.src = 'https://dagteknoloji.com.tr/admin?t=' + Date.now();
-    showToast('OpenCart oturum ekranı yenileniyor...', 'info');
-  }
+window.openOpenCartWindow = function(route = '') {
+  const url = route ? `https://dagteknoloji.com.tr/admin/index.php?route=${route}` : 'https://dagteknoloji.com.tr/admin';
+  const width = Math.min(1366, (window.screen && window.screen.availWidth) ? window.screen.availWidth - 40 : 1200);
+  const height = Math.min(880, (window.screen && window.screen.availHeight) ? window.screen.availHeight - 60 : 800);
+  const left = Math.max(0, ((window.screen && window.screen.availWidth ? window.screen.availWidth : 1920) - width) / 2);
+  const top = Math.max(0, ((window.screen && window.screen.availHeight ? window.screen.availHeight : 1080) - height) / 2);
+
+  window.open(
+    url,
+    'OpenCartAdminWindow',
+    `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=yes,status=yes,scrollbars=yes,resizable=yes`
+  );
 };
 
 function renderAdminStats() {
