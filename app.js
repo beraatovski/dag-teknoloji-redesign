@@ -221,7 +221,9 @@ const MODEL_SPECS = {
   gear: 'Model: Mekanik Dişli & Türbin (Ø 80mm - Tolerans: ±0.05mm)',
   nozzle: 'Model: 3D Yazıcı Nozzle & Hotend (0.4mm Pirinç/Çelik)',
   cube: 'Model: Voronoi Kalibrasyon Test Küpü (20x20x20mm)',
-  drone: 'Model: Karbon Takviyeli Aero Pervane (3 Kanatlı)'
+  drone: 'Model: Karbon Takviyeli Aero Pervane (3 Kanatlı)',
+  rocket: 'Model: Havacılık & Uzay Roket Prototipi (Aero Burun & Nozzle)',
+  gripper: 'Model: Endüstriyel Robotik Servo Tutucu (2 Kademeli Gripper)'
 };
 
 function initThreeJsViewport() {
@@ -594,6 +596,12 @@ function renderActive3dModel() {
       break;
     case 'drone':
       buildDroneModel(modelGroup, mat, darkMat);
+      break;
+    case 'rocket':
+      buildRocketModel(modelGroup, mat, darkMat);
+      break;
+    case 'gripper':
+      buildGripperModel(modelGroup, mat, darkMat);
       break;
     default:
       buildGearModel(modelGroup, mat, darkMat);
