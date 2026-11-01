@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.01.v3428';
+const DAG_CATALOG_VERSION = '2026.11.01.v3429';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -1444,11 +1444,19 @@ function renderProducts() {
 
   const wishlist = (state.currentUser && state.currentUser.wishlist) || [];
 
+  function stripHtmlTags(str) {
+    if (!str) return '';
+    return String(str).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
   container.innerHTML = visibleItems.map(p => {
     const stock = Number(p.stock !== undefined ? p.stock : 10);
     const isOutOfStock = stock <= 0;
     const isLowStock = stock > 0 && stock <= 5;
     const isFavorited = wishlist.includes(p.id);
+    const safeName = stripHtmlTags(p.name || '');
+    const rawSub = p.subtitle || p.desc || '';
+    const safeSub = stripHtmlTags(rawSub);
 
     let stockBadgeHtml = '';
     if (isOutOfStock) {
@@ -1472,7 +1480,7 @@ function renderProducts() {
     }
 
     return `
-      <div class="product-card glass-panel rounded-2xl overflow-hidden flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300 ${isOutOfStock ? 'opacity-85' : ''}">
+      <div class="product-card glass-panel rounded-2xl overflow-hidden flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300 h-full ${isOutOfStock ? 'opacity-85' : ''}">
         <!-- Product Header & Visual (Tıklanabilir Ürün Görseli) -->
         <div class="p-5 pb-3 relative bg-gradient-to-b from-white/[0.03] to-transparent">
           <div class="flex items-center justify-between mb-3">
@@ -1481,10 +1489,10 @@ function renderProducts() {
           </div>
 
           <!-- Real Product Image Display (Kendi Sayfasına Bağlantı) -->
-          <a href="urun-detay.html?id=${p.id}" class="w-full h-44 rounded-xl bg-slate-950/70 border border-slate-800/80 p-3 flex items-center justify-center relative overflow-hidden group-hover:border-cyan-500/40 transition-all block cursor-pointer" title="${p.name} - Detaylı Sayfaya Git">
+          <a href="urun-detay.html?id=${p.id}" class="w-full h-44 rounded-xl bg-slate-950/70 border border-slate-800/80 p-3 flex items-center justify-center relative overflow-hidden group-hover:border-cyan-500/40 transition-all block cursor-pointer" title="${safeName} - Detaylı Sayfaya Git">
             <img 
               src="${p.image || p.remoteImage}" 
-              alt="${p.name}" 
+              alt="${safeName}" 
               class="max-h-full max-w-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300 ${isOutOfStock ? 'grayscale-[60%]' : ''}"
               loading="lazy"
               onerror="if(this.src!=='${p.remoteImage}' && '${p.remoteImage}'){this.src='${p.remoteImage}';}else{this.style.display='none';this.nextElementSibling.classList.remove('hidden');}"
@@ -1507,14 +1515,14 @@ function renderProducts() {
             </div>
 
             <!-- Tıklanabilir Ürün Başlığı -->
-            <a href="urun-detay.html?id=${p.id}" class="block group/title" title="${p.name} - Detaylı Sayfaya Git">
+            <a href="urun-detay.html?id=${p.id}" class="block group/title" title="${safeName} - Detaylı Sayfaya Git">
               <h3 class="text-sm font-bold text-white group-hover/title:text-cyan-400 transition-colors mb-1.5 line-clamp-2">
-                ${p.name}
+                ${safeName}
               </h3>
             </a>
             
             <a href="urun-detay.html?id=${p.id}" class="text-xs text-slate-400 hover:text-slate-200 line-clamp-2 mb-4 leading-relaxed block" title="Detayları İncele">
-              ${p.subtitle || p.desc}
+              ${safeSub}
             </a>
 
             <div class="flex flex-wrap gap-1 mb-5">
