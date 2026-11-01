@@ -52,7 +52,7 @@
   <!-- ========================================================================== -->
   <header class="sticky top-2 sm:top-3.5 z-50 px-3 sm:px-6 lg:px-8 transition-all duration-300 pointer-events-none">
     <div class="max-w-7xl mx-auto">
-      <div class="bg-slate-900/90 backdrop-blur-xl border border-cyan-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_20px_rgba(0,240,255,0.08)] hover:border-cyan-500/40 rounded-2xl px-4 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between lg:grid lg:grid-cols-[240px_1fr_240px] transition-all pointer-events-auto">
+      <div class="bg-slate-900/90 backdrop-blur-xl border border-cyan-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_20px_rgba(0,240,255,0.08)] hover:border-cyan-500/40 rounded-2xl px-4 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between lg:grid lg:grid-cols-[260px_1fr_260px] transition-all pointer-events-auto">
         
         <!-- 1. SOL KANAT (Logo ve İsim - Kapsülün İçinde Sola Hizalı) -->
         <div class="flex items-center justify-start shrink-0">
@@ -92,18 +92,13 @@
 
         </nav>
 
-        <!-- 3. SAĞ KANAT (Aksiyon Butonları - Sağa Yaslı, Sol Kanatla Birebir Eşit 240px Genişlikte) -->
-        <div class="flex items-center justify-end gap-2 shrink-0">
+        <!-- 3. SAĞ KANAT (Aksiyon Butonları - Sağa Yaslı, Sol Kanatla Birebir Eşit 220px Genişlikte) -->
+        <div class="flex items-center justify-end gap-2 sm:gap-2.5 shrink-0">
           
           <!-- WhatsApp -->
           <a href="https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizdeki%20%C3%BCr%C3%BCnler%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" class="hidden sm:flex p-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all shadow-sm w-9 sm:w-10 h-9 sm:h-10 items-center justify-center shrink-0" title="WhatsApp Destek Hattı">
             <i data-lucide="message-circle" class="w-4 h-4"></i>
           </a>
-
-          <!-- Yönetici Giriş Kalkanı -->
-          <button onclick="openAdminLogin()" class="hidden sm:flex p-2 rounded-xl bg-slate-800/90 border border-slate-700/80 hover:border-cyan-400/80 text-slate-300 hover:text-white transition-all shadow-sm w-9 sm:w-10 h-9 sm:h-10 items-center justify-center shrink-0" title="Yönetici Paneli (Stok & Ürün Yönetimi)">
-            <i data-lucide="shield-check" class="w-4 h-4 text-cyan-400"></i>
-          </button>
 
           <!-- Cart Button -->
           <button onclick="toggleCartDrawer(true)" class="relative p-2 rounded-xl bg-slate-800/90 border border-slate-700/80 hover:border-cyan-500/60 text-slate-200 hover:text-cyan-400 transition-all shadow-sm w-9 sm:w-10 h-9 sm:h-10 flex items-center justify-center shrink-0" title="Sepetim">
@@ -111,7 +106,7 @@
             <span id="cart-badge-count" class="hidden absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-cyan-400 text-slate-950 font-bold text-[11px] flex items-center justify-center shadow-md">0</span>
           </button>
 
-          <!-- User Nav Container (Desktop / Mobil Giriş Yap / Profil) -->
+          <!-- User Nav Container (Tek Giriş Kapısı: Giriş Yap veya Profil/Yetkili Panel) -->
           <div id="user-nav-container" class="shrink-0"></div>
 
           <!-- Mobile Menu Toggle (Mobil) -->
@@ -499,11 +494,10 @@
         <div>
           © 2026 DAĞ TEKNOLOJİ. Tüm Hakları Saklıdır. Perpa Ticaret Merkezi.
         </div>
-        <div class="flex items-center gap-4">
-          <button onclick="openAdminLogin()" class="hover:text-cyan-400 transition-colors flex items-center gap-1">
-            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-            <span>Yönetici Paneli (PIN: 1234)</span>
-          </button>
+        <div class="flex items-center gap-6">
+          <a href="index.html" class="hover:text-slate-400">Ana Sayfa</a>
+          <a href="urunler.html" class="hover:text-slate-400">Ürün Kataloğu</a>
+          <a href="https://wa.me/905070201198" target="_blank" class="hover:text-emerald-400">WhatsApp Destek</a>
         </div>
       </div>
     </div>
@@ -920,12 +914,16 @@
           </button>
         </form>
 
-        <div class="mt-4 pt-4 border-t border-slate-800/80">
-          <button type="button" onclick="handleDemoLogin()" class="w-full py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs text-cyan-300 font-semibold flex items-center justify-center gap-2 transition-all">
-            <i data-lucide="zap" class="w-4 h-4 text-cyan-400"></i>
-            <span>Tek Tıkla Demo Giriş (Ahmet Yılmaz)</span>
+        <div class="mt-4 pt-4 border-t border-slate-800/80 space-y-2">
+          <button type="button" onclick="handleDemoLogin('customer')" class="w-full py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs text-cyan-300 font-semibold flex items-center justify-center gap-2 transition-all">
+            <i data-lucide="user" class="w-4 h-4 text-cyan-400"></i>
+            <span>Müşteri Demo Girişi (Ahmet Yılmaz)</span>
           </button>
-          <p class="text-[11px] text-center text-slate-500 mt-2">Demo şifresi: 123 | Test siparişleri ve favoriler kayıtlıdır.</p>
+          <button type="button" onclick="handleDemoLogin('admin')" class="w-full py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-amber-500/40 text-xs text-amber-300 font-semibold flex items-center justify-center gap-2 transition-all">
+            <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i>
+            <span>Yönetici Demo Girişi (Yetkili Hesap)</span>
+          </button>
+          <p class="text-[11px] text-center text-slate-500 mt-1">Yönetici: admin@dagteknoloji.com.tr / admin &bull; Müşteri: ahmet@dag.com / 123</p>
         </div>
       </div>
 

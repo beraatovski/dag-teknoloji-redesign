@@ -15,8 +15,21 @@ const initialProducts = (function() {
   return window.DAG_PRODUCTS || [];
 })();
 
-// Default demo registered user
+// Default registered users (Yönetici ve Müşteri)
 const defaultUsers = [
+  {
+    id: 'usr-admin',
+    name: 'Dağ Teknoloji Yönetici',
+    email: 'admin@dagteknoloji.com.tr',
+    password: 'admin',
+    phone: '0507 020 11 98',
+    company: 'Dağ Teknoloji Ltd. Şti.',
+    accountType: 'corporate',
+    role: 'admin',
+    address: 'Halil Rıfat Paşa Mah. Perpa Ticaret Merkezi B Blok Kat: 8 No: 825 Şişli / İstanbul',
+    orders: [],
+    wishlist: ['dt-4873', 'dt-5051']
+  },
   {
     id: 'usr-1',
     name: 'Ahmet Yılmaz',
@@ -25,6 +38,7 @@ const defaultUsers = [
     phone: '0555 123 4567',
     company: 'Yılmaz 3D Prototip & Tasarım',
     accountType: 'corporate',
+    role: 'customer',
     address: 'Halil Rıfat Paşa Mah. Perpa Ticaret Merkezi B Blok Kat: 8 No: 825 Şişli / İstanbul',
     orders: [
       {
@@ -43,7 +57,16 @@ const defaultUsers = [
 const storedUsers = (function() {
   const u = localStorage.getItem('dag_users');
   if (u) {
-    try { return JSON.parse(u); } catch(e) {}
+    try {
+      const parsed = JSON.parse(u);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        // Sistem yöneticisi hesabının listede mevcut olduğunu garantile
+        if (!parsed.some(item => item.role === 'admin' || item.email === 'admin@dagteknoloji.com.tr')) {
+          parsed.unshift(defaultUsers[0]);
+        }
+        return parsed;
+      }
+    } catch(e) {}
   }
   return defaultUsers;
 })();
@@ -150,11 +173,20 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================================================
-// 1. THREE.JS 3D INTERACTIVE ENGINE
+// 1. THREE.JS 3D INTERACTIVE ENGINE (ÇOKLU MODEL & GÖRSEL SHADING SEÇENEKLERİ)
 // ==========================================================================
 let scene, camera, renderer, modelGroup, printHead;
-let isWireframe = false;
 let currentMaterialColor = 0x00f0ff;
+let active3dModel = 'gear'; // 'gear', 'nozzle', 'cube', 'drone'
+let active3dRenderMode = 'solid'; // 'solid', 'wireframe', 'xray'
+let is3dAutoRotating = true;
+
+const MODEL_SPECS = {
+  gear: 'Model: Mekanik Dişli & Türbin (Ø 80mm - Tolerans: ±0.05mm)',
+  nozzle: 'Model: 3D Yazıcı Nozzle & Hotend (0.4mm Pirinç/Çelik)',
+  cube: 'Model: Voronoi Kalibrasyon Test Küpü (20x20x20mm)',
+  drone: 'Model: Karbon Takviyeli Aero Pervane (3 Kanatlı)'
+};
 
 function initThreeJsViewport() {
   const container = document.getElementById('canvas-3d-container');
@@ -196,10 +228,10 @@ function initThreeJsViewport() {
   createBuildPlate();
 
   modelGroup = new THREE.Group();
-  buildMechanicalPart(modelGroup);
   modelGroup.position.y = 1.2;
   scene.add(modelGroup);
 
+  renderActive3dModel();
   createPrintHead();
 
   let isDragging = false;
@@ -253,10 +285,10 @@ function initThreeJsViewport() {
   function animate() {
     requestAnimationFrame(animate);
     const elapsedTime = clock.getElapsedTime();
-    if (!isDragging) {
-      modelGroup.rotation.y += 0.006;
+    if (!isDragging && is3dAutoRotating) {
+      modelGroup.rotation.y += 0.007;
     }
-    modelGroup.position.y = 1.2 + Math.sin(elapsedTime * 1.5) * 0.15;
+    modelGroup.position.y = 1.2 + Math.sin(elapsedTime * 1.5) * 0.12;
     if (printHead) {
       printHead.position.x = Math.sin(elapsedTime * 2.5) * 1.8;
       printHead.position.z = Math.cos(elapsedTime * 1.8) * 1.8;
@@ -280,57 +312,264 @@ function createBuildPlate() {
   scene.add(gridHelper);
 }
 
-function buildMechanicalPart(group) {
-  while (group.children.length > 0) {
-    group.remove(group.children[0]);
-  }
+function getActiveMaterial(isDark = false) {
+  const isWire = active3dRenderMode === 'wireframe';
+  const isXray = active3dRenderMode === 'xray';
 
-  const mat = new THREE.MeshStandardMaterial({
-    color: currentMaterialColor,
-    roughness: 0.25,
-    metalness: 0.7,
-    wireframe: isWireframe
+  return new THREE.MeshStandardMaterial({
+    color: isDark ? 0x1e293b : currentMaterialColor,
+    roughness: isDark ? 0.45 : (isXray ? 0.1 : 0.25),
+    metalness: isDark ? 0.9 : (isXray ? 0.1 : 0.75),
+    wireframe: isWire,
+    transparent: isXray,
+    opacity: isXray ? 0.45 : 1.0,
+    depthWrite: !isXray
   });
+}
 
-  const darkMat = new THREE.MeshStandardMaterial({
-    color: 0x1e293b,
-    roughness: 0.4,
-    metalness: 0.9,
-    wireframe: isWireframe
-  });
-
-  const torusGeo = new THREE.TorusGeometry(1.6, 0.45, 16, 40);
+// MODEL 1: Mekanik Dişli & Türbin (Gear & Turbine)
+function buildGearModel(group, mat, darkMat) {
+  const torusGeo = new THREE.TorusGeometry(1.6, 0.42, 16, 40);
   const torus = new THREE.Mesh(torusGeo, mat);
   torus.rotation.x = Math.PI / 2;
   group.add(torus);
 
-  const teethCount = 8;
+  const teethCount = 10;
   for (let i = 0; i < teethCount; i++) {
     const angle = (i / teethCount) * Math.PI * 2;
-    const toothGeo = new THREE.BoxGeometry(0.35, 0.7, 0.8);
+    const toothGeo = new THREE.BoxGeometry(0.32, 0.65, 0.85);
     const tooth = new THREE.Mesh(toothGeo, mat);
-    tooth.position.x = Math.cos(angle) * 1.8;
-    tooth.position.z = Math.sin(angle) * 1.8;
+    tooth.position.set(Math.cos(angle) * 1.82, 0, Math.sin(angle) * 1.82);
     tooth.rotation.y = -angle;
     group.add(tooth);
   }
 
-  const cylinderGeo = new THREE.CylinderGeometry(0.8, 0.8, 1.4, 6);
+  const cylinderGeo = new THREE.CylinderGeometry(0.85, 0.85, 1.3, 6);
   const coreMesh = new THREE.Mesh(cylinderGeo, darkMat);
   group.add(coreMesh);
 
-  const coneGeo = new THREE.ConeGeometry(0.5, 0.9, 16);
+  const boreGeo = new THREE.CylinderGeometry(0.4, 0.4, 1.4, 16);
+  const bore = new THREE.Mesh(boreGeo, mat);
+  group.add(bore);
+
+  const coneGeo = new THREE.ConeGeometry(0.55, 0.9, 16);
   const coneMesh = new THREE.Mesh(coneGeo, mat);
-  coneMesh.position.y = -1.1;
+  coneMesh.position.y = -1.0;
   coneMesh.rotation.x = Math.PI;
   group.add(coneMesh);
 
-  const ringGeo = new THREE.TorusGeometry(0.6, 0.12, 12, 24);
+  const ringGeo = new THREE.TorusGeometry(0.65, 0.12, 12, 24);
   const ring = new THREE.Mesh(ringGeo, mat);
   ring.position.y = 0.8;
   ring.rotation.x = Math.PI / 2;
   group.add(ring);
 }
+
+// MODEL 2: 3D Yazıcı Nozzle & Hotend
+function buildNozzleModel(group, mat, darkMat) {
+  for (let i = 0; i < 4; i++) {
+    const finGeo = new THREE.CylinderGeometry(1.35, 1.35, 0.08, 24);
+    const fin = new THREE.Mesh(finGeo, darkMat);
+    fin.position.y = 0.85 + i * 0.3;
+    group.add(fin);
+  }
+
+  const throatGeo = new THREE.CylinderGeometry(0.5, 0.5, 1.5, 16);
+  const throat = new THREE.Mesh(throatGeo, darkMat);
+  throat.position.y = 1.3;
+  group.add(throat);
+
+  const hexGeo = new THREE.CylinderGeometry(1.05, 1.05, 0.85, 6);
+  const hex = new THREE.Mesh(hexGeo, mat);
+  hex.position.y = 0.25;
+  group.add(hex);
+
+  const coneGeo = new THREE.ConeGeometry(1.05, 1.3, 20);
+  const cone = new THREE.Mesh(coneGeo, mat);
+  cone.position.y = -0.75;
+  cone.rotation.x = Math.PI;
+  group.add(cone);
+
+  const tipGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.4, 16);
+  const tip = new THREE.Mesh(tipGeo, darkMat);
+  tip.position.y = -1.45;
+  group.add(tip);
+}
+
+// MODEL 3: Voronoi Kalibrasyon Test Küpü
+function buildCubeModel(group, mat, darkMat) {
+  const size = 1.9;
+  const half = size / 2;
+  const strutR = 0.09;
+
+  const edges = [
+    [-half, -half, 0, size, 'z'], [half, -half, 0, size, 'z'],
+    [0, -half, -half, size, 'x'], [0, -half, half, size, 'x'],
+    [-half, half, 0, size, 'z'], [half, half, 0, size, 'z'],
+    [0, half, -half, size, 'x'], [0, half, half, size, 'x'],
+    [-half, 0, -half, size, 'y'], [half, 0, -half, size, 'y'],
+    [-half, 0, half, size, 'y'], [half, 0, half, size, 'y']
+  ];
+
+  edges.forEach(e => {
+    const geo = new THREE.CylinderGeometry(strutR, strutR, e[3], 10);
+    const m = new THREE.Mesh(geo, mat);
+    m.position.set(e[0], e[1], e[2]);
+    if (e[4] === 'x') m.rotation.z = Math.PI / 2;
+    else if (e[4] === 'z') m.rotation.x = Math.PI / 2;
+    group.add(m);
+  });
+
+  const corners = [
+    [-half, -half, -half], [half, -half, -half], [-half, -half, half], [half, -half, half],
+    [-half, half, -half], [half, half, -half], [-half, half, half], [half, half, half]
+  ];
+  corners.forEach(c => {
+    const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 12), darkMat);
+    sphere.position.set(c[0], c[1], c[2]);
+    group.add(sphere);
+  });
+
+  const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.75, 1), darkMat);
+  group.add(core);
+
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.9, 0.08, 10, 24), mat);
+  group.add(ring);
+}
+
+// MODEL 4: Aero Drone Pervanesi & Rotor
+function buildDroneModel(group, mat, darkMat) {
+  const hubGeo = new THREE.CylinderGeometry(0.7, 0.8, 0.85, 24);
+  const hub = new THREE.Mesh(hubGeo, darkMat);
+  group.add(hub);
+
+  const domeGeo = new THREE.ConeGeometry(0.45, 0.55, 16);
+  const dome = new THREE.Mesh(domeGeo, mat);
+  dome.position.y = 0.65;
+  group.add(dome);
+
+  const baseGeo = new THREE.CylinderGeometry(0.9, 0.9, 0.15, 24);
+  const base = new THREE.Mesh(baseGeo, darkMat);
+  base.position.y = -0.5;
+  group.add(base);
+
+  for (let i = 0; i < 3; i++) {
+    const angle = (i / 3) * Math.PI * 2;
+    const bladeGroup = new THREE.Group();
+    bladeGroup.rotation.y = angle;
+
+    const bladeGeo = new THREE.BoxGeometry(1.65, 0.07, 0.45);
+    const blade = new THREE.Mesh(bladeGeo, mat);
+    blade.position.set(1.05, 0.15, 0);
+    blade.rotation.x = 0.28;
+    bladeGroup.add(blade);
+
+    const wingletGeo = new THREE.BoxGeometry(0.08, 0.28, 0.45);
+    const winglet = new THREE.Mesh(wingletGeo, darkMat);
+    winglet.position.set(1.88, 0.25, 0);
+    bladeGroup.add(winglet);
+
+    group.add(bladeGroup);
+  }
+}
+
+function renderActive3dModel() {
+  if (!modelGroup) return;
+  while (modelGroup.children.length > 0) {
+    modelGroup.remove(modelGroup.children[0]);
+  }
+
+  const mat = getActiveMaterial(false);
+  const darkMat = getActiveMaterial(true);
+
+  switch (active3dModel) {
+    case 'gear':
+      buildGearModel(modelGroup, mat, darkMat);
+      break;
+    case 'nozzle':
+      buildNozzleModel(modelGroup, mat, darkMat);
+      break;
+    case 'cube':
+      buildCubeModel(modelGroup, mat, darkMat);
+      break;
+    case 'drone':
+      buildDroneModel(modelGroup, mat, darkMat);
+      break;
+    default:
+      buildGearModel(modelGroup, mat, darkMat);
+  }
+
+  const specEl = document.getElementById('active-model-spec');
+  if (specEl && MODEL_SPECS[active3dModel]) {
+    specEl.textContent = MODEL_SPECS[active3dModel];
+  }
+}
+
+window.switch3dModel = function(modelType) {
+  active3dModel = modelType;
+  renderActive3dModel();
+
+  ['gear', 'nozzle', 'cube', 'drone'].forEach(type => {
+    const btn = document.getElementById(`btn-model-${type}`);
+    if (btn) {
+      const isActive = (type === modelType);
+      btn.classList.toggle('bg-cyan-500', isActive);
+      btn.classList.toggle('text-slate-950', isActive);
+      btn.classList.toggle('font-bold', isActive);
+      btn.classList.toggle('shadow-sm', isActive);
+      btn.classList.toggle('text-slate-400', !isActive);
+      btn.classList.toggle('font-medium', !isActive);
+    }
+  });
+
+  const names = { gear: 'Mekanik Dişli Çark', nozzle: '3D Hotend Nozzle', cube: 'Kalibrasyon Test Küpü', drone: 'Aero Drone Pervanesi' };
+  showToast(`3D Model: ${names[modelType] || modelType}`);
+};
+
+window.set3dRenderMode = function(mode) {
+  active3dRenderMode = mode;
+  renderActive3dModel();
+
+  ['solid', 'wireframe', 'xray'].forEach(m => {
+    const btn = document.getElementById(`btn-mode-${m}`);
+    if (btn) {
+      const isActive = (m === mode);
+      btn.classList.toggle('bg-cyan-500/25', isActive);
+      btn.classList.toggle('text-cyan-300', isActive);
+      btn.classList.toggle('border-cyan-500/40', isActive);
+      btn.classList.toggle('font-semibold', isActive);
+      btn.classList.toggle('bg-slate-800/80', !isActive);
+      btn.classList.toggle('text-slate-400', !isActive);
+      btn.classList.toggle('border-slate-700/80', !isActive);
+    }
+  });
+
+  const modeNames = { solid: 'Katı Yüzey Modu', wireframe: 'Tel Kafes (Wireframe) Modu', xray: 'X-Ray Hologram Modu' };
+  showToast(`Görsel Mod: ${modeNames[mode] || mode}`);
+};
+
+window.toggle3dAutoRotate = function() {
+  is3dAutoRotating = !is3dAutoRotating;
+  const btn = document.getElementById('btn-mode-rotate');
+  if (btn) {
+    btn.classList.toggle('text-cyan-400', is3dAutoRotating);
+    btn.classList.toggle('text-slate-500', !is3dAutoRotating);
+    btn.classList.toggle('bg-cyan-500/10', is3dAutoRotating);
+  }
+  showToast(is3dAutoRotating ? 'Otomatik Dönüş Açık' : 'Otomatik Dönüş Duraklatıldı');
+};
+
+window.reset3dView = function() {
+  if (modelGroup) {
+    modelGroup.rotation.set(0, 0, 0);
+    modelGroup.position.set(0, 1.2, 0);
+  }
+  if (camera) {
+    camera.position.set(0, 5, 11);
+    camera.lookAt(0, 0, 0);
+  }
+  showToast('Kamera açısı sıfırlandı.');
+};
 
 function createPrintHead() {
   printHead = new THREE.Group();
@@ -352,14 +591,12 @@ function createPrintHead() {
 
 window.set3dColor = function(hexColor) {
   currentMaterialColor = parseInt(hexColor.replace('#', '0x'));
-  buildMechanicalPart(modelGroup);
+  renderActive3dModel();
   showToast(`Filament rengi güncellendi: ${hexColor}`);
 };
 
 window.toggle3dWireframe = function() {
-  isWireframe = !isWireframe;
-  buildMechanicalPart(modelGroup);
-  showToast(isWireframe ? 'Tel Kafes (Wireframe) Modu Açık' : 'Katı Yüzey Moduna Geçildi');
+  set3dRenderMode(active3dRenderMode === 'wireframe' ? 'solid' : 'wireframe');
 };
 
 // ==========================================================================
@@ -474,7 +711,7 @@ window.handleFileUpload = function(event) {
 };
 
 // ==========================================================================
-// 3. MEMBERSHIP & USER AUTHENTICATION SYSTEM (ÜYELİK SİSTEMİ)
+// 3. MEMBERSHIP & USER AUTHENTICATION SYSTEM (ÜYELİK VE ROL TABANLI YÖNETİM)
 // ==========================================================================
 function renderUserNav() {
   const container = document.getElementById('user-nav-container');
@@ -485,22 +722,46 @@ function renderUserNav() {
     const u = state.currentUser;
     const initials = u.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
     const wishlistCount = (u.wishlist || []).length;
+    const isAdmin = !!(u.role === 'admin' || u.email === 'admin@dagteknoloji.com.tr' || u.email === 'admin@dag.com' || state.isAdmin);
+    state.isAdmin = isAdmin;
+    const displayName = isAdmin ? 'Yönetici' : (u.name.length > 12 ? u.name.split(' ')[0] : u.name);
 
     container.innerHTML = `
       <div class="relative">
-        <button onclick="toggleUserDropdown()" class="flex items-center gap-2.5 px-3.5 sm:px-4 py-2.5 rounded-xl bg-slate-900/90 border border-cyan-500/40 hover:border-cyan-400 text-xs text-white font-semibold transition-all shadow-md">
-          <span class="w-6 h-6 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-[11px]">${initials}</span>
-          <span class="max-w-[110px] truncate hidden md:inline">${u.name}</span>
+        <button onclick="toggleUserDropdown()" class="flex items-center gap-2 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-slate-900/90 border ${isAdmin ? 'border-amber-400/60 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'border-cyan-500/40'} hover:border-cyan-400 text-xs text-white font-semibold transition-all shadow-md shrink-0">
+          <span class="w-6 h-6 rounded-lg ${isAdmin ? 'bg-amber-400/20 text-amber-300' : 'bg-cyan-500/20 text-cyan-400'} flex items-center justify-center font-bold text-[11px]">${initials}</span>
+          <span class="max-w-[75px] truncate hidden md:inline">${displayName}</span>
+          ${isAdmin ? `<span class="px-1.5 py-0.2 text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 rounded font-mono font-bold">ADMIN</span>` : ''}
           <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400"></i>
         </button>
 
         <!-- Dropdown Menu -->
-        <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-56 rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl p-2 z-50 space-y-1">
-          <div class="px-3 py-2 border-b border-slate-800/80 mb-1">
-            <div class="text-xs font-bold text-white truncate">${u.name}</div>
+        <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-60 rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl p-2.5 z-50 space-y-1">
+          <div class="px-3 py-2 border-b border-slate-800/80 mb-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-white truncate">${u.name}</span>
+              ${isAdmin ? `<span class="px-1.5 py-0.2 text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded font-mono font-bold">YÖNETİCİ</span>` : ''}
+            </div>
             <div class="text-[10px] text-cyan-400 font-mono truncate">${u.email}</div>
             ${u.company ? `<div class="text-[10px] text-slate-400 truncate mt-0.5">${u.company}</div>` : ''}
           </div>
+
+          ${isAdmin ? `
+            <!-- YALNIZCA YÖNETİCİ GİRİŞ YAPTIĞINDA GÖRÜNEN PANEL BUTONU -->
+            <div class="p-2.5 mb-2 rounded-xl bg-gradient-to-r from-amber-500/10 via-cyan-500/10 to-blue-500/10 border border-cyan-500/35 shadow-sm">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[11px] font-bold text-white flex items-center gap-1.5">
+                  <i data-lucide="shield-check" class="w-4 h-4 text-cyan-400"></i>
+                  <span>Yönetici Yetkisi</span>
+                </span>
+                <span class="px-1.5 py-0.2 text-[9px] bg-cyan-400 text-slate-950 font-extrabold rounded">Aktif</span>
+              </div>
+              <button onclick="openAdminDashboard(); toggleUserDropdown(false);" class="w-full py-2 px-3 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 shadow-[0_0_12px_rgba(0,240,255,0.3)] transition-all">
+                <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+                <span>Yönetici Paneline Git</span>
+              </button>
+            </div>
+          ` : ''}
 
           <button onclick="openMyOrdersModal(); toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center justify-between transition-colors">
             <span class="flex items-center gap-2">
@@ -535,24 +796,35 @@ function renderUserNav() {
 
     if (mobileContainer) {
       mobileContainer.innerHTML = `
-        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800">
-          <div class="flex items-center gap-2.5">
-            <span class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs">${initials}</span>
-            <div>
-              <div class="text-xs font-bold text-white">${u.name}</div>
-              <div class="text-[10px] text-cyan-400 font-mono">${u.email}</div>
+        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg ${isAdmin ? 'bg-amber-400/20 text-amber-300' : 'bg-cyan-500/20 text-cyan-400'} flex items-center justify-center font-bold text-xs">${initials}</span>
+              <div>
+                <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                  <span>${u.name}</span>
+                  ${isAdmin ? `<span class="px-1.5 py-0.2 text-[8px] bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded font-mono font-bold">ADMIN</span>` : ''}
+                </div>
+                <div class="text-[10px] text-cyan-400 font-mono">${u.email}</div>
+              </div>
             </div>
+            <button onclick="userLogout()" class="text-xs text-rose-400 hover:underline">Çıkış</button>
           </div>
-          <button onclick="userLogout()" class="text-xs text-rose-400 hover:underline">Çıkış</button>
+          ${isAdmin ? `
+            <button onclick="openAdminDashboard()" class="w-full py-2 px-3 rounded-lg bg-cyan-500 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5">
+              <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+              <span>Yönetici Kontrol Paneli</span>
+            </button>
+          ` : ''}
         </div>
       `;
     }
   } else {
-    // Guest state
+    // Misafir Durumu - Ayrı bir yönetici butonu yok; tek giriş kapısı normal giriş
     container.innerHTML = `
-      <button onclick="openAuthModal('login')" class="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-400 text-xs text-slate-300 hover:text-white transition-all font-semibold shadow-sm shrink-0">
+      <button onclick="openAuthModal('login')" class="flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-400 text-xs text-slate-300 hover:text-white transition-all font-semibold shadow-sm shrink-0">
         <i data-lucide="user" class="w-4 h-4 text-cyan-400"></i>
-        <span class="hidden sm:inline">Giriş Yap</span>
+        <span>Giriş Yap</span>
       </button>
     `;
 
@@ -612,28 +884,50 @@ window.handleUserLogin = function(e) {
   const emailInput = document.getElementById('login-email').value.trim().toLowerCase();
   const passwordInput = document.getElementById('login-password').value;
 
-  const found = state.users.find(u => (u.email.toLowerCase() === emailInput || u.phone === emailInput) && u.password === passwordInput);
+  let found = state.users.find(u => (u.email.toLowerCase() === emailInput || u.phone === emailInput) && (u.password === passwordInput || (u.role === 'admin' && (passwordInput === '1234' || passwordInput === 'admin'))));
   
+  // Yönetici kısayol kontrolü
+  if (!found && (emailInput === 'admin' || emailInput === 'admin@dagteknoloji.com.tr' || emailInput === 'admin@dag.com') && (passwordInput === '1234' || passwordInput === 'admin')) {
+    found = defaultUsers.find(u => u.role === 'admin');
+  }
+
   if (found) {
     state.currentUser = found;
+    state.isAdmin = (found.role === 'admin' || found.email === 'admin@dagteknoloji.com.tr');
     localStorage.setItem('dag_current_user', JSON.stringify(found));
+    sessionStorage.setItem('dag_is_admin', state.isAdmin ? 'true' : 'false');
     closeModal('auth-modal');
     renderUserNav();
     renderProducts();
-    showToast(`Hoş geldiniz Sayın ${found.name}!`, 'success');
+    if (state.isAdmin) {
+      showToast(`Hoş geldiniz Sayın ${found.name}! Yönetici yetkileri tanımlandı.`, 'success');
+    } else {
+      showToast(`Hoş geldiniz Sayın ${found.name}!`, 'success');
+    }
   } else {
-    showToast('Hatalı e-posta veya şifre! (Demo için: ahmet@dag.com / 123)', 'error');
+    showToast('Hatalı e-posta veya şifre! (Müşteri: ahmet@dag.com / 123 | Yönetici: admin@dagteknoloji.com.tr / admin)', 'error');
   }
 };
 
-window.handleDemoLogin = function() {
-  const demoUser = state.users[0] || defaultUsers[0];
+window.handleDemoLogin = function(role = 'customer') {
+  let demoUser;
+  if (role === 'admin') {
+    demoUser = defaultUsers.find(u => u.role === 'admin');
+  } else {
+    demoUser = defaultUsers.find(u => u.role !== 'admin') || defaultUsers[0];
+  }
   state.currentUser = demoUser;
+  state.isAdmin = (demoUser.role === 'admin');
   localStorage.setItem('dag_current_user', JSON.stringify(demoUser));
+  sessionStorage.setItem('dag_is_admin', state.isAdmin ? 'true' : 'false');
   closeModal('auth-modal');
   renderUserNav();
   renderProducts();
-  showToast(`Demo hesabı ile giriş yapıldı: ${demoUser.name}`, 'success');
+  if (state.isAdmin) {
+    showToast(`Yönetici hesabı ile giriş yapıldı: ${demoUser.name}`, 'success');
+  } else {
+    showToast(`Müşteri hesabı ile giriş yapıldı: ${demoUser.name}`, 'success');
+  }
 };
 
 window.handleUserSignup = function(e) {
@@ -658,6 +952,7 @@ window.handleUserSignup = function(e) {
     password: password,
     company: company,
     accountType: accountType,
+    role: 'customer',
     address: 'İstanbul, Türkiye',
     orders: [],
     wishlist: []
@@ -667,7 +962,9 @@ window.handleUserSignup = function(e) {
   localStorage.setItem('dag_users', JSON.stringify(state.users));
 
   state.currentUser = newUser;
+  state.isAdmin = false;
   localStorage.setItem('dag_current_user', JSON.stringify(newUser));
+  sessionStorage.removeItem('dag_is_admin');
 
   closeModal('auth-modal');
   renderUserNav();
@@ -677,9 +974,12 @@ window.handleUserSignup = function(e) {
 
 window.userLogout = function() {
   state.currentUser = null;
+  state.isAdmin = false;
   localStorage.removeItem('dag_current_user');
+  sessionStorage.removeItem('dag_is_admin');
   renderUserNav();
   renderProducts();
+  closeModal('admin-panel-modal');
   showToast('Oturumunuz başarıyla kapatıldı.');
 };
 
@@ -1425,38 +1725,25 @@ window.openProductModal = function(productId) {
 };
 
 // ==========================================================================
-// 7. ADMIN PANEL SYSTEM (YÖNETİCİ PANELİ - CRUD & STOK)
+// 7. ADMIN PANEL SYSTEM (YÖNETİCİ PANELİ - YALNIZCA GİRİŞ YAPAN YÖNETİCİLER İÇİN)
 // ==========================================================================
 window.openAdminLogin = function() {
-  if (state.isAdmin) {
+  const isAdmin = !!(state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr' || state.isAdmin));
+  if (isAdmin) {
     openAdminDashboard();
   } else {
-    openModal('admin-login-modal');
+    showToast('Yönetici paneline erişmek için yetkili yönetici hesabıyla oturum açmalısınız.', 'info');
+    openAuthModal('login');
   }
 };
 
 window.handleAdminLogin = function(e) {
-  e.preventDefault();
-  const pinInput = document.getElementById('admin-pin-input');
-  if (pinInput && pinInput.value === '1234') {
-    state.isAdmin = true;
-    sessionStorage.setItem('dag_is_admin', 'true');
-    closeModal('admin-login-modal');
-    pinInput.value = '';
-    showToast('Yönetici girişi başarılı!', 'success');
-    updateAdminUI();
-    openAdminDashboard();
-  } else {
-    showToast('Hatalı PIN kodu! (Varsayılan PIN: 1234)', 'error');
-  }
+  if (e) e.preventDefault();
+  handleDemoLogin('admin');
 };
 
 window.adminLogout = function() {
-  state.isAdmin = false;
-  sessionStorage.removeItem('dag_is_admin');
-  closeModal('admin-panel-modal');
-  updateAdminUI();
-  showToast('Yönetici oturumu kapatıldı.');
+  userLogout();
 };
 
 function updateAdminUI() {
@@ -1467,10 +1754,17 @@ function updateAdminUI() {
 }
 
 window.openAdminDashboard = function() {
+  const isAdmin = !!(state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr' || state.currentUser.email === 'admin@dag.com' || state.isAdmin));
+  if (!isAdmin) {
+    showToast('Bu panele yalnızca yetkili yöneticiler erişebilir. Lütfen yönetici hesabınızla giriş yapın.', 'error');
+    openAuthModal('login');
+    return;
+  }
   renderAdminStats();
   renderAdminProductsTable();
   renderAdminOrdersTable();
   openModal('admin-panel-modal');
+  lucide.createIcons();
 };
 
 function renderAdminStats() {

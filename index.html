@@ -65,7 +65,7 @@
   <!-- MASTER FLOATING CAPSULE NAVBAR (DAĞ TEKNOLOJİ İLE BÜTÜNLEŞİK, %100 SİMETRİK TEK PARÇA BAR ÇUBUĞU) -->
   <header class="sticky top-2 sm:top-3 z-50 px-3 sm:px-6 lg:px-8 transition-all duration-300 pointer-events-none">
     <div class="max-w-7xl mx-auto">
-      <div class="bg-slate-900/90 backdrop-blur-xl border border-cyan-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_20px_rgba(0,240,255,0.08)] hover:border-cyan-500/40 rounded-2xl px-4 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between lg:grid lg:grid-cols-[240px_1fr_240px] transition-all pointer-events-auto">
+      <div class="bg-slate-900/90 backdrop-blur-xl border border-cyan-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_20px_rgba(0,240,255,0.08)] hover:border-cyan-500/40 rounded-2xl px-4 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between lg:grid lg:grid-cols-[260px_1fr_260px] transition-all pointer-events-auto">
         
         <!-- 1. SOL KANAT (Logo ve İsim - Kapsülün İçinde Sola Hizalı) -->
         <div class="flex items-center justify-start shrink-0">
@@ -102,18 +102,13 @@
 
         </nav>
 
-        <!-- 3. SAĞ KANAT (Aksiyon Butonları - Sağa Yaslı, Sol Kanatla Birebir Eşit 240px Genişlikte) -->
-        <div class="flex items-center justify-end gap-2 shrink-0">
+        <!-- 3. SAĞ KANAT (Aksiyon Butonları - Sağa Yaslı, Sol Kanatla Birebir Eşit 220px Genişlikte) -->
+        <div class="flex items-center justify-end gap-2 sm:gap-2.5 shrink-0">
           
           <!-- WhatsApp -->
           <a href="https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizden%20yaz%C4%B1yorum." target="_blank" class="hidden sm:flex p-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all shadow-sm w-9 sm:w-10 h-9 sm:h-10 items-center justify-center shrink-0" title="WhatsApp Destek Hattı">
             <i data-lucide="message-circle" class="w-4 h-4"></i>
           </a>
-
-          <!-- Yönetici Giriş Kalkanı -->
-          <button onclick="openAdminLogin()" class="hidden sm:flex p-2 rounded-xl bg-slate-800/90 border border-slate-700/80 hover:border-cyan-400/80 text-slate-300 hover:text-white transition-all shadow-sm w-9 sm:w-10 h-9 sm:h-10 items-center justify-center shrink-0" title="Yönetici Paneli (Stok & Ürün Yönetimi)">
-            <i data-lucide="shield-check" class="w-4 h-4 text-cyan-400"></i>
-          </button>
 
           <!-- Cart Button -->
           <button onclick="toggleCartDrawer(true)" class="relative p-2 rounded-xl bg-slate-800/90 border border-slate-700/80 hover:border-cyan-500/60 text-slate-200 hover:text-cyan-400 transition-all shadow-sm w-9 sm:w-10 h-9 sm:h-10 flex items-center justify-center shrink-0" title="Sepetim">
@@ -121,7 +116,7 @@
             <span id="cart-badge-count" class="hidden absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-cyan-400 text-slate-950 font-bold text-[11px] flex items-center justify-center shadow-md">0</span>
           </button>
 
-          <!-- User Nav Container (Desktop Giriş Yap / Profil) -->
+          <!-- User Nav Container (Tek Giriş Kapısı: Giriş Yap veya Profil/Yetkili Panel) -->
           <div id="user-nav-container" class="shrink-0"></div>
 
           <!-- Mobile Menu Toggle (Mobil) -->
@@ -206,21 +201,52 @@
           </div>
         </div>
 
-        <!-- 3D Interactive Showcase (Col 5) -->
+        <!-- 3D Interactive Showcase (Col 5) - Çoklu Görsel & Model Seçenekleri -->
         <div class="lg:col-span-5 relative">
           <div class="relative rounded-3xl p-1 bg-gradient-to-b from-cyan-500/30 via-slate-800/40 to-transparent shadow-2xl shadow-cyan-950/40">
-            <div class="relative rounded-[22px] bg-slate-950/90 border border-slate-800 overflow-hidden p-4">
+            <div class="relative rounded-[22px] bg-slate-950/90 border border-slate-800 overflow-hidden p-3.5 sm:p-4">
               
-              <!-- Top Canvas Controls Bar -->
-              <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-800/80">
+              <!-- Üst Başlık & Görsel Render Modları (Katı / Kafes / X-Ray / Döndür) -->
+              <div class="flex items-center justify-between mb-2.5 pb-2.5 border-b border-slate-800/80">
                 <div class="flex items-center gap-2">
                   <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
                   <span class="text-xs font-mono font-bold text-slate-200">INTERACTIVE 3D VIEW</span>
                 </div>
                 
-                <button onclick="toggle3dWireframe()" class="text-xs font-mono px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center gap-1 transition-colors">
-                  <i data-lucide="grid" class="w-3.5 h-3.5"></i>
-                  <span>Wireframe</span>
+                <!-- Görsel Shading Modları -->
+                <div class="flex items-center gap-1">
+                  <button onclick="set3dRenderMode('solid')" id="btn-mode-solid" class="px-2 py-1 rounded-lg bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 text-[11px] font-mono font-semibold transition-all hover:bg-cyan-500/30" title="Katı / Metalik Gerçekçi Yüzey Modu">
+                    Katı
+                  </button>
+                  <button onclick="set3dRenderMode('wireframe')" id="btn-mode-wireframe" class="px-2 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-cyan-300 border border-slate-700/80 text-[11px] font-mono transition-all" title="Tel Kafes (Neon Wireframe) Modu">
+                    Kafes
+                  </button>
+                  <button onclick="set3dRenderMode('xray')" id="btn-mode-xray" class="px-2 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-cyan-300 border border-slate-700/80 text-[11px] font-mono transition-all" title="Yarı Saydam X-Ray Hologram Modu">
+                    X-Ray
+                  </button>
+                  <button onclick="toggle3dAutoRotate()" id="btn-mode-rotate" class="p-1 px-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-cyan-400 border border-slate-700/80 text-[11px] font-mono transition-all" title="Otomatik Dönüşü Duraklat / Başlat">
+                    <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Farklı 3D Model Seçenekleri (Model Selector Bar) -->
+              <div class="grid grid-cols-4 gap-1 p-1 bg-slate-900/90 rounded-xl border border-slate-800 mb-2.5">
+                <button onclick="switch3dModel('gear')" id="btn-model-gear" class="py-1 px-1 rounded-lg text-[11px] font-bold transition-all flex items-center justify-center gap-1 bg-cyan-500 text-slate-950 shadow-sm" title="Mekanik Dişli & Türbin">
+                  <i data-lucide="cog" class="w-3 h-3"></i>
+                  <span class="truncate">Dişli</span>
+                </button>
+                <button onclick="switch3dModel('nozzle')" id="btn-model-nozzle" class="py-1 px-1 rounded-lg text-[11px] font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1 hover:bg-slate-800" title="3D Yazıcı Hotend Nozzle">
+                  <i data-lucide="flame" class="w-3 h-3"></i>
+                  <span class="truncate">Nozzle</span>
+                </button>
+                <button onclick="switch3dModel('cube')" id="btn-model-cube" class="py-1 px-1 rounded-lg text-[11px] font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1 hover:bg-slate-800" title="Voronoi Kalibrasyon Küpü">
+                  <i data-lucide="box" class="w-3 h-3"></i>
+                  <span class="truncate">Test Küpü</span>
+                </button>
+                <button onclick="switch3dModel('drone')" id="btn-model-drone" class="py-1 px-1 rounded-lg text-[11px] font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1 hover:bg-slate-800" title="Aero Drone Pervanesi">
+                  <i data-lucide="fan" class="w-3 h-3"></i>
+                  <span class="truncate">Pervane</span>
                 </button>
               </div>
 
@@ -232,18 +258,29 @@
                   <i data-lucide="move" class="w-3.5 h-3.5 text-cyan-400"></i>
                   <span>Mouse ile 360° Çevirin</span>
                 </div>
+                <!-- Active Model Spec Pill -->
+                <div id="active-model-spec" class="absolute top-3 left-3 pointer-events-none bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-md border border-slate-800 text-[10px] font-mono text-cyan-300">
+                  Model: Mekanik Dişli &amp; Türbin (Ø 80mm)
+                </div>
               </div>
 
-              <!-- Bottom Filament Color Bar -->
-              <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                <span class="text-xs text-slate-400 font-medium">Filament Rengi:</span>
+              <!-- Bottom Filament Color Bar & Reset -->
+              <div class="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                  <button onclick="set3dColor('#00f0ff')" class="w-6 h-6 rounded-full bg-cyan-400 border-2 border-white/40 shadow-lg shadow-cyan-500/40 hover:scale-110 transition-transform" title="Cyan"></button>
-                  <button onclick="set3dColor('#10b981')" class="w-6 h-6 rounded-full bg-emerald-500 border border-slate-700 hover:scale-110 transition-transform" title="Emerald"></button>
-                  <button onclick="set3dColor('#f59e0b')" class="w-6 h-6 rounded-full bg-amber-500 border border-slate-700 hover:scale-110 transition-transform" title="Gold"></button>
-                  <button onclick="set3dColor('#ef4444')" class="w-6 h-6 rounded-full bg-red-500 border border-slate-700 hover:scale-110 transition-transform" title="Ruby"></button>
-                  <button onclick="set3dColor('#475569')" class="w-6 h-6 rounded-full bg-slate-600 border border-slate-700 hover:scale-110 transition-transform" title="Carbon"></button>
+                  <span class="text-xs text-slate-400 font-medium">Filament:</span>
+                  <div class="flex items-center gap-1.5">
+                    <button onclick="set3dColor('#00f0ff')" class="w-5 h-5 rounded-full bg-cyan-400 border-2 border-white/40 shadow-lg shadow-cyan-500/40 hover:scale-110 transition-transform" title="Cyan (Standart)"></button>
+                    <button onclick="set3dColor('#10b981')" class="w-5 h-5 rounded-full bg-emerald-500 border border-slate-700 hover:scale-110 transition-transform" title="Zümrüt Yeşili"></button>
+                    <button onclick="set3dColor('#f59e0b')" class="w-5 h-5 rounded-full bg-amber-500 border border-slate-700 hover:scale-110 transition-transform" title="Mühendislik Altın"></button>
+                    <button onclick="set3dColor('#ef4444')" class="w-5 h-5 rounded-full bg-red-500 border border-slate-700 hover:scale-110 transition-transform" title="Ateş Kırmızı"></button>
+                    <button onclick="set3dColor('#a855f7')" class="w-5 h-5 rounded-full bg-purple-500 border border-slate-700 hover:scale-110 transition-transform" title="Neon Mor"></button>
+                    <button onclick="set3dColor('#334155')" class="w-5 h-5 rounded-full bg-slate-700 border border-slate-600 hover:scale-110 transition-transform" title="Karbon Siyah"></button>
+                  </div>
                 </div>
+                <button onclick="reset3dView()" class="text-[11px] text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-1" title="Kamera Açısını Sıfırla">
+                  <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                  <span>Sıfırla</span>
+                </button>
               </div>
 
             </div>
@@ -1532,12 +1569,16 @@
           </button>
         </form>
 
-        <div class="mt-4 pt-4 border-t border-slate-800/80">
-          <button type="button" onclick="handleDemoLogin()" class="w-full py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs text-cyan-300 font-semibold flex items-center justify-center gap-2 transition-all">
-            <i data-lucide="zap" class="w-4 h-4 text-cyan-400"></i>
-            <span>Tek Tıkla Demo Giriş (Ahmet Yılmaz)</span>
+        <div class="mt-4 pt-4 border-t border-slate-800/80 space-y-2">
+          <button type="button" onclick="handleDemoLogin('customer')" class="w-full py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs text-cyan-300 font-semibold flex items-center justify-center gap-2 transition-all">
+            <i data-lucide="user" class="w-4 h-4 text-cyan-400"></i>
+            <span>Müşteri Demo Girişi (Ahmet Yılmaz)</span>
           </button>
-          <p class="text-[11px] text-center text-slate-500 mt-2">Demo şifresi: 123 | Test siparişleri ve favoriler kayıtlıdır.</p>
+          <button type="button" onclick="handleDemoLogin('admin')" class="w-full py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-amber-500/40 text-xs text-amber-300 font-semibold flex items-center justify-center gap-2 transition-all">
+            <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i>
+            <span>Yönetici Demo Girişi (Yetkili Hesap)</span>
+          </button>
+          <p class="text-[11px] text-center text-slate-500 mt-1">Yönetici: admin@dagteknoloji.com.tr / admin &bull; Müşteri: ahmet@dag.com / 123</p>
         </div>
       </div>
 
