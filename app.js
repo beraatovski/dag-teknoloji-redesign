@@ -729,10 +729,10 @@ function renderUserNav() {
 
     container.innerHTML = `
       <div class="relative">
-        <button onclick="toggleUserDropdown()" class="flex items-center gap-2 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-slate-900/90 border ${isAdmin ? 'border-amber-400/60 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'border-cyan-500/40'} hover:border-cyan-400 text-xs text-white font-semibold transition-all shadow-md shrink-0">
-          <span class="w-6 h-6 rounded-lg ${isAdmin ? 'bg-amber-400/20 text-amber-300' : 'bg-cyan-500/20 text-cyan-400'} flex items-center justify-center font-bold text-[11px]">${initials}</span>
+        <button onclick="toggleUserDropdown()" class="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-slate-900/90 border ${isAdmin ? 'border-amber-400/60 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'border-cyan-500/40'} hover:border-cyan-400 text-xs text-white font-semibold transition-all shadow-md shrink-0 h-8 sm:h-9">
+          <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-lg ${isAdmin ? 'bg-amber-400/20 text-amber-300' : 'bg-cyan-500/20 text-cyan-400'} flex items-center justify-center font-bold text-[10px] sm:text-[11px]">${initials}</span>
           <span class="max-w-[70px] truncate hidden xl:inline">${displayName}</span>
-          ${isAdmin ? `<span class="px-1.5 py-0.2 text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 rounded font-mono font-bold">ADMIN</span>` : ''}
+          ${isAdmin ? `<span class="hidden md:inline px-1.5 py-0.2 text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 rounded font-mono font-bold">ADMIN</span>` : ''}
           <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400"></i>
         </button>
 
@@ -804,7 +804,7 @@ function renderUserNav() {
               <div>
                 <div class="text-xs font-bold text-white flex items-center gap-1.5">
                   <span>${u.name}</span>
-                  ${isAdmin ? `<span class="px-1.5 py-0.2 text-[8px] bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded font-mono font-bold">ADMIN</span>` : ''}
+          ${isAdmin ? `<span class="hidden md:inline px-1.5 py-0.2 text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 rounded font-mono font-bold">ADMIN</span>` : ''}
                 </div>
                 <div class="text-[10px] text-cyan-400 font-mono">${u.email}</div>
               </div>
@@ -823,7 +823,7 @@ function renderUserNav() {
   } else {
     // Misafir Durumu - Ayrı bir yönetici butonu yok; tek giriş kapısı normal giriş
     container.innerHTML = `
-      <button onclick="openAuthModal('login')" class="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-400 text-xs text-slate-300 hover:text-white transition-all font-semibold shadow-sm shrink-0">
+      <button onclick="openAuthModal('login')" class="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-400 text-xs text-slate-300 hover:text-white transition-all font-semibold shadow-sm shrink-0 h-8 sm:h-9">
         <i data-lucide="user" class="w-4 h-4 text-cyan-400"></i>
         <span class="hidden sm:inline">Giriş Yap</span>
       </button>
@@ -1510,19 +1510,25 @@ window.toggleCartDrawer = function(forceOpen) {
   const backdrop = document.getElementById('cart-backdrop');
   if (!drawer || !backdrop) return;
 
-  const isOpen = !drawer.classList.contains('translate-x-full');
+  const isOpen = !drawer.classList.contains('hidden') && !drawer.classList.contains('translate-x-full');
   const shouldOpen = forceOpen !== undefined ? forceOpen : !isOpen;
 
   if (shouldOpen) {
     renderCartDrawer();
-    drawer.classList.remove('translate-x-full');
+    drawer.classList.remove('hidden');
     backdrop.classList.remove('hidden');
-    backdrop.classList.remove('opacity-0');
-    backdrop.classList.add('opacity-100');
+    requestAnimationFrame(() => {
+      drawer.classList.remove('translate-x-full');
+      backdrop.classList.remove('opacity-0');
+      backdrop.classList.add('opacity-100');
+    });
   } else {
     drawer.classList.add('translate-x-full');
     backdrop.classList.add('opacity-0');
-    setTimeout(() => { backdrop.classList.add('hidden'); }, 300);
+    setTimeout(() => {
+      drawer.classList.add('hidden');
+      backdrop.classList.add('hidden');
+    }, 300);
   }
 };
 

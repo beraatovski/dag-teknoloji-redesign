@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr" class="scroll-smooth">
+<html lang="tr" class="scroll-smooth overflow-x-hidden">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,11 +43,11 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-[#07090e] text-slate-100 cyber-grid relative min-h-screen">
+<body class="bg-[#07090e] text-slate-100 cyber-grid relative min-h-screen overflow-x-hidden w-full max-w-full">
 
   <!-- TOP ANNOUNCEMENT BAR -->
-  <div class="bg-gradient-to-r from-slate-950 via-cyan-950/40 to-slate-950 border-b border-cyan-500/20 py-2 px-4 text-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-2 text-slate-300">
+  <div class="bg-gradient-to-r from-slate-950 via-cyan-950/40 to-slate-950 border-b border-cyan-500/20 py-2 px-4 text-xs overflow-hidden w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-2 text-slate-300 w-full">
       <div class="flex items-center gap-2">
         <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span> PERPA MERKEZLİ
@@ -64,25 +64,19 @@
   </div>
 
   <!-- MASTER FLOATING CAPSULE NAVBAR (DAĞ TEKNOLOJİ İLE BÜTÜNLEŞİK, %100 SİMETRİK VE HER EKRANDA TAM) -->
-  <header class="sticky top-2 sm:top-3 z-50 px-2 sm:px-4 lg:px-8 transition-all duration-300 pointer-events-none">
-    <div class="max-w-7xl mx-auto">
-      <div class="bg-slate-900/90 backdrop-blur-xl border border-cyan-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_20px_rgba(0,240,255,0.08)] hover:border-cyan-500/40 rounded-2xl px-3 sm:px-4 lg:px-5 py-2 sm:py-2.5 flex items-center justify-between md:grid md:grid-cols-[180px_1fr_auto] lg:grid-cols-[200px_1fr_auto] xl:grid-cols-[240px_1fr_240px] transition-all pointer-events-auto">
+  <header class="sticky top-2 sm:top-3 z-50 px-2 sm:px-4 lg:px-8 transition-all duration-300 pointer-events-none w-full max-w-full">
+    <div class="max-w-7xl mx-auto w-full">
+      <div class="bg-slate-900/90 backdrop-blur-xl border border-cyan-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_20px_rgba(0,240,255,0.08)] hover:border-cyan-500/40 rounded-2xl px-2.5 sm:px-4 lg:px-5 py-2 sm:py-2.5 flex items-center justify-between lg:grid lg:grid-cols-[200px_1fr_auto] xl:grid-cols-[240px_1fr_240px] transition-all pointer-events-auto">
         
         <!-- 1. SOL KANAT (Logo ve İsim - Sola Hizalı) -->
-        <div class="flex items-center justify-start gap-2 shrink-0">
-          <a href="index.html" class="flex items-center gap-2 group shrink-0" title="Dağ Teknoloji Ana Sayfa">
-            <img src="assets/logo.svg" alt="Dağ Teknoloji" class="h-7 sm:h-8 md:h-9 xl:h-10 w-auto brand-logo-img transition-transform duration-300 group-hover:scale-105">
-          </a>
-          <!-- sm-md ekranlarda logo yanında Ürünler butonu -->
-          <a href="urunler.html" class="hidden sm:inline-flex md:hidden items-center gap-1.5 px-2.5 py-1 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/35 font-bold text-xs shrink-0" title="Ürünler Kataloğu">
-            <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-cyan-400"></i>
-            <span>Ürünler</span>
-            <span class="px-1.5 py-0.2 text-[9px] bg-cyan-400 text-slate-950 font-extrabold rounded-full">132</span>
+        <div class="flex items-center justify-start shrink-0">
+          <a href="index.html" class="flex items-center group shrink-0" title="Dağ Teknoloji">
+            <img src="assets/logo.svg" alt="Dağ Teknoloji" class="h-6 sm:h-7 md:h-8 xl:h-9 w-auto brand-logo-img transition-transform duration-300 group-hover:scale-105">
           </a>
         </div>
 
         <!-- 2. ORTA KANAT (Tam Merkezde Simetrik Menü Linkleri - Tablette de Açık) -->
-        <nav class="hidden md:flex items-center justify-center gap-1 xl:gap-2 shrink-0 min-w-0">
+        <nav class="hidden lg:flex items-center justify-center gap-1 xl:gap-2 shrink-0 min-w-0">
           
           <!-- Sol Parça: Ürünler Butonu -->
           <a href="urunler.html" class="inline-flex items-center gap-1.5 xl:gap-2 px-2.5 xl:px-3.5 py-1.5 xl:py-2 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 hover:text-white border border-cyan-500/35 hover:border-cyan-400 font-bold text-xs xl:text-sm transition-all shadow-[0_0_12px_rgba(0,240,255,0.15)] group shrink-0" title="Tüm Ürünler Kataloğu">
@@ -113,12 +107,12 @@
         <div class="flex items-center justify-end gap-1.5 sm:gap-2 shrink-0">
           
           <!-- WhatsApp (md ve üzeri) -->
-          <a href="https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizden%20yaz%C4%B1yorum." target="_blank" class="hidden md:flex p-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all shadow-sm w-9 sm:w-10 h-9 sm:h-10 items-center justify-center shrink-0" title="WhatsApp Destek Hattı">
+          <a href="https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizden%20yaz%C4%B1yorum." target="_blank" class="hidden xl:flex p-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all shadow-sm w-9 sm:w-10 h-9 sm:h-10 items-center justify-center shrink-0" title="WhatsApp Destek Hattı">
             <i data-lucide="message-circle" class="w-4 h-4"></i>
           </a>
 
           <!-- Cart Button -->
-          <button onclick="toggleCartDrawer(true)" class="relative p-2 rounded-xl bg-slate-800/90 border border-slate-700/80 hover:border-cyan-500/60 text-slate-200 hover:text-cyan-400 transition-all shadow-sm w-8.5 sm:w-9.5 h-8.5 sm:h-9.5 flex items-center justify-center shrink-0" title="Sepetim">
+          <button onclick="toggleCartDrawer(true)" class="relative p-2 rounded-xl bg-slate-800/90 border border-slate-700/80 hover:border-cyan-500/60 text-slate-200 hover:text-cyan-400 transition-all shadow-sm w-8 sm:w-9 h-8 sm:h-9 flex items-center justify-center shrink-0" title="Sepetim">
             <i data-lucide="shopping-cart" class="w-4 h-4 sm:w-4.5 sm:h-4.5"></i>
             <span id="cart-badge-count" class="hidden absolute -top-1.5 -right-1.5 w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full bg-cyan-400 text-slate-950 font-bold text-[10px] sm:text-[11px] flex items-center justify-center shadow-md">0</span>
           </button>
@@ -127,7 +121,7 @@
           <div id="user-nav-container" class="shrink-0"></div>
 
           <!-- Mobile Menu Toggle (md altında görünür) -->
-          <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl bg-slate-800 text-slate-200 border border-slate-700 hover:border-cyan-400/60 transition-colors w-8.5 h-8.5 sm:w-9 sm:h-9 flex items-center justify-center shrink-0" title="Menüyü Aç">
+          <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-xl bg-slate-800 text-slate-200 border border-slate-700 hover:border-cyan-400/60 transition-colors w-8 sm:w-9 h-8 sm:h-9 flex items-center justify-center shrink-0" title="Menüyü Aç">
             <i data-lucide="menu" class="w-4.5 h-4.5"></i>
           </button>
 
@@ -136,7 +130,7 @@
       </div>
 
       <!-- MOBILE DROPDOWN MENU -->
-      <div id="mobile-menu" class="hidden md:hidden mt-2 border border-slate-800/90 bg-slate-950/95 backdrop-blur-xl rounded-2xl p-5 space-y-3 shadow-2xl pointer-events-auto">
+      <div id="mobile-menu" class="hidden lg:hidden mt-2 border border-slate-800/90 bg-slate-950/95 backdrop-blur-xl rounded-2xl p-5 space-y-3 shadow-2xl pointer-events-auto">
         <a href="urunler.html" class="flex items-center justify-between p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold text-sm">
           <span class="flex items-center gap-2">
             <i data-lucide="layout-grid" class="w-4 h-4"></i>
@@ -1122,7 +1116,7 @@
   <!-- SHOPPING CART SLIDE-OUT DRAWER -->
   <div id="cart-backdrop" onclick="toggleCartDrawer(false)" class="hidden opacity-0 fixed inset-0 bg-black/70 backdrop-blur-sm z-50 transition-opacity duration-300"></div>
   
-  <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-slate-900 border-l border-slate-800 z-50 translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
+  <div id="cart-drawer" class="hidden fixed top-0 right-0 h-full w-full max-w-md bg-slate-900 border-l border-slate-800 z-50 translate-x-full transition-all duration-300 flex flex-col justify-between shadow-2xl">
     <!-- Header -->
     <div class="p-5 border-b border-slate-800 flex items-center justify-between">
       <div class="flex items-center gap-2">
