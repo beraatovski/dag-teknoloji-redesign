@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr" class="scroll-smooth overflow-x-hidden">
 <head>
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
@@ -51,7 +51,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=20261101v16">
+  <link rel="stylesheet" href="styles.css?v=20261101v17">
 </head>
 <body class="bg-[#07090e] text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950 w-full max-w-full">
 
@@ -718,31 +718,93 @@
       </div>
 
       <!-- Tab 2: OpenCart Live Iframe Bridge -->
-      <div id="admin-tab-opencart" class="hidden flex-1 flex flex-col h-full overflow-hidden bg-slate-950">
-        <div class="p-3 sm:px-6 bg-slate-900/80 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
-          <div class="flex items-center gap-2.5 text-xs">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span class="text-slate-300 font-mono">OpenCart Sunucusu: <strong class="text-white">dagteknoloji.com.tr/admin</strong></span>
-            <span class="text-slate-600 hidden md:inline">•</span>
-            <span class="text-slate-400 hidden md:inline text-[11px]">LiteSpeed PHP 7.4 / OpenCart Türkçe</span>
+      <div id="admin-tab-opencart" class="hidden flex-1 flex flex-col h-full overflow-y-auto bg-slate-950 p-4 sm:p-6 space-y-4">
+        
+        <!-- Direct OpenCart Secure Login Terminal -->
+        <div class="glass-panel p-5 rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-950/40 via-slate-900/90 to-slate-950">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800/80">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-blue-400">
+                <i data-lucide="shield-check" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                  <span>OpenCart Güvenli Giriş Terminali</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">Doğrudan Bağlantı</span>
+                </h3>
+                <p class="text-xs text-slate-400">Sunucu: <strong class="text-slate-200">dagteknoloji.com.tr/admin</strong> (LiteSpeed PHP 7.4 / OpenCart Türkçe)</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <a href="https://dagteknoloji.com.tr/admin" target="_blank" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-blue-500/20 transition-all">
+                <i data-lucide="external-link" class="w-4 h-4"></i>
+                <span>OpenCart'ı Yeni Sekmede Aç</span>
+              </a>
+            </div>
           </div>
 
-          <div class="flex items-center gap-2">
-            <button onclick="reloadOpenCartFrame()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition-colors" title="Sayfayı Yenile">
-              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-              <span class="hidden sm:inline">Yenile</span>
-            </button>
+          <!-- Notice on cross-origin iframe security -->
+          <div class="p-3 mb-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200/90 text-xs flex items-start gap-2.5">
+            <i data-lucide="info" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+            <div>
+              <strong class="text-white block mb-0.5">Neden Sayfa İçindeki Gömülü Pencerede Giriş Yapılamıyor?</strong>
+              Modern web tarayıcıları (Chrome, Safari, Edge), farklı siteler arasında (<strong>github.io</strong> ile <strong>dagteknoloji.com.tr</strong>) kullanıcı güvenliği için gömülü pencere içindeki oturum çerezlerini (SameSite Cookie) kısıtlar. Bu sebeple gömülü ekranda oturum açılamaz. Aşağıdaki doğrudan form ile bilgilerinizi girdiğinizde tarayıcınız doğrudan OpenCart oturumunuzu açıp yönetim paneline yönlendirir.
+            </div>
+          </div>
 
-            <a href="https://dagteknoloji.com.tr/admin" target="_blank" class="px-3 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/40 text-xs font-semibold flex items-center gap-1.5 transition-colors">
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-              <span>Ayrı Sekmede Aç</span>
-            </a>
+          <!-- Direct Login Form (Posts directly to OpenCart in target _blank) -->
+          <form action="https://dagteknoloji.com.tr/admin/index.php?route=common/login" method="post" enctype="multipart/form-data" target="_blank" class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">OpenCart Kullanıcı Adınız</label>
+              <div class="relative">
+                <i data-lucide="user" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+                <input type="text" name="username" required placeholder="Örn: admin" class="w-full pl-9 pr-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">OpenCart Parolanız</label>
+              <div class="relative">
+                <i data-lucide="lock" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+                <input type="password" name="password" required placeholder="Parolanız" class="w-full pl-9 pr-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400">
+              </div>
+            </div>
+
+            <div>
+              <button type="submit" class="w-full py-2 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all">
+                <i data-lucide="key" class="w-4 h-4"></i>
+                <span>OpenCart'ta Güvenli Oturum Aç &rarr;</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Embedded Frame Container with Controls -->
+        <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden flex flex-col h-[520px]">
+          <div class="p-3 px-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between gap-3 flex-shrink-0">
+            <span class="text-xs font-mono text-slate-400 flex items-center gap-2">
+              <i data-lucide="monitor" class="w-4 h-4 text-cyan-400"></i>
+              <span>Canlı Önizleme Ekranı (dagteknoloji.com.tr/admin)</span>
+            </span>
+
+            <div class="flex items-center gap-2">
+              <button onclick="reloadOpenCartFrame()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 flex items-center gap-1 transition-colors">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                <span>Yenile</span>
+              </button>
+              <a href="https://dagteknoloji.com.tr/admin" target="_blank" class="px-2.5 py-1 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 text-xs font-semibold flex items-center gap-1 transition-colors">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                <span>Tam Ekran Aç</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="flex-1 w-full h-full relative bg-slate-950">
+            <iframe id="opencart-bridge-iframe" src="https://dagteknoloji.com.tr/admin" class="w-full h-full border-none" allow="forms; scripts; same-origin; popups"></iframe>
           </div>
         </div>
 
-        <div class="flex-1 w-full h-full relative bg-slate-900/30">
-          <iframe id="opencart-bridge-iframe" src="https://dagteknoloji.com.tr/admin" class="w-full h-full border-none" allow="forms; scripts; same-origin; popups"></iframe>
-        </div>
       </div>
 
       <!-- Tab 3: OpenCart Shortcuts & API Hub -->
@@ -1171,6 +1233,6 @@
 
   <!-- PRODUCTS DATABASE & MAIN SCRIPT -->
   <script src="products.js?v=20261101v7"></script>
-  <script src="app.js?v=20261101v16"></script>
+  <script src="app.js?v=20261101v17"></script>
 </body>
 </html>
