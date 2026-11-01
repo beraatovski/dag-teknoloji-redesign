@@ -1,10 +1,10 @@
-/**
+﻿/**
  * DAĞ TEKNOLOJİ - MODERN WEB PLATFORM & E-COMMERCE ENGINE
  * Real Products (3,428 Items), Multi-Filter, Stock System, Admin Panel, Membership System & 3D Engine
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3441';
+const DAG_CATALOG_VERSION = '2026.11.02.v3445';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -443,46 +443,89 @@ function initThreeJsViewport() {
 
   let isDragging = false;
   let prevMousePos = { x: 0, y: 0 };
+  let rotVelocity = { x: 0, y: 0 };
+
+  function pauseAutoRotateOnDrag() {
+    if (is3dAutoRotating) {
+      is3dAutoRotating = false;
+      const btn = document.getElementById('btn-mode-rotate');
+      if (btn) {
+        btn.classList.remove('text-cyan-400', 'bg-cyan-500/10');
+        btn.classList.add('text-slate-500');
+      }
+    }
+  }
 
   container.addEventListener('mousedown', (e) => {
     isDragging = true;
     prevMousePos = { x: e.clientX, y: e.clientY };
+    rotVelocity = { x: 0, y: 0 };
+    pauseAutoRotateOnDrag();
   });
 
-  window.addEventListener('mouseup', () => { isDragging = false; });
+  window.addEventListener('mouseup', () => { 
+    isDragging = false; 
+  });
 
   container.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
     const deltaX = e.clientX - prevMousePos.x;
     const deltaY = e.clientY - prevMousePos.y;
-    modelGroup.rotation.y += deltaX * 0.008;
-    modelGroup.rotation.x += deltaY * 0.008;
-    modelGroup.rotation.x = Math.max(-0.6, Math.min(0.6, modelGroup.rotation.x));
+    
+    const speed = 0.009;
+    rotVelocity.y = deltaX * speed;
+    rotVelocity.x = deltaY * speed;
+
+    modelGroup.rotation.y += rotVelocity.y;
+    modelGroup.rotation.x += rotVelocity.x;
+    
+    // Serbest dikey açı kontrolü (üstten, alttan ve her açıdan kesintisiz inceleme)
+    modelGroup.rotation.x = Math.max(-1.48, Math.min(1.48, modelGroup.rotation.x));
+    
     prevMousePos = { x: e.clientX, y: e.clientY };
   });
 
+  // Mouse tekerleği ile dinamik yakınlaştırma / uzaklaştırma (Zoom)
+  container.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    if (!camera) return;
+    camera.position.z = Math.max(3.0, Math.min(16.0, camera.position.z + e.deltaY * 0.006));
+  }, { passive: false });
+
+  // Mobil Dokunmatik Desteği
   container.addEventListener('touchstart', (e) => {
     if (e.touches.length === 1) {
       isDragging = true;
       prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      rotVelocity = { x: 0, y: 0 };
+      pauseAutoRotateOnDrag();
     }
-  });
+  }, { passive: true });
 
-  window.addEventListener('touchend', () => { isDragging = false; });
+  window.addEventListener('touchend', () => { 
+    isDragging = false; 
+  });
 
   container.addEventListener('touchmove', (e) => {
     if (!isDragging || e.touches.length !== 1) return;
     const deltaX = e.touches[0].clientX - prevMousePos.x;
     const deltaY = e.touches[0].clientY - prevMousePos.y;
-    modelGroup.rotation.y += deltaX * 0.008;
-    modelGroup.rotation.x += deltaY * 0.008;
+    
+    const speed = 0.009;
+    rotVelocity.y = deltaX * speed;
+    rotVelocity.x = deltaY * speed;
+
+    modelGroup.rotation.y += rotVelocity.y;
+    modelGroup.rotation.x += rotVelocity.x;
+    modelGroup.rotation.x = Math.max(-1.48, Math.min(1.48, modelGroup.rotation.x));
+    
     prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-  });
+  }, { passive: true });
 
   window.addEventListener('resize', () => {
     if (!container) return;
     const w = container.clientWidth;
-    const h = container.clientHeight || 450;
+    const h = container.clientHeight || 500;
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
@@ -494,9 +537,22 @@ function initThreeJsViewport() {
   function animate() {
     requestAnimationFrame(animate);
     const elapsedTime = clock.getElapsedTime();
-    if (!isDragging && is3dAutoRotating) {
-      modelGroup.rotation.y += 0.007;
+    
+    if (isDragging) {
+      // Doğrudan kullanıcı sürüklemesi
+    } else if (is3dAutoRotating) {
+      modelGroup.rotation.y += 0.006;
+    } else {
+      // Yumuşak eylemsizlik / sönümleme (Inertia Damping)
+      if (Math.abs(rotVelocity.y) > 0.0001 || Math.abs(rotVelocity.x) > 0.0001) {
+        modelGroup.rotation.y += rotVelocity.y;
+        modelGroup.rotation.x += rotVelocity.x;
+        modelGroup.rotation.x = Math.max(-1.48, Math.min(1.48, modelGroup.rotation.x));
+        rotVelocity.y *= 0.92;
+        rotVelocity.x *= 0.92;
+      }
     }
+
     modelGroup.position.y = 0.0 + Math.sin(elapsedTime * 1.5) * 0.05;
     if (printHead) {
       printHead.position.x = Math.sin(elapsedTime * 2.5) * 1.8;
@@ -866,28 +922,34 @@ window.toggle3dAutoRotate = function() {
 
 window.zoom3dIn = function() {
   if (camera) {
-    camera.position.z = Math.max(4.2, camera.position.z - 0.8);
+    camera.position.z = Math.max(3.0, camera.position.z - 0.8);
     showToast('3D Yakınlaştırıldı');
   }
 };
 
 window.zoom3dOut = function() {
   if (camera) {
-    camera.position.z = Math.min(11.5, camera.position.z + 0.8);
+    camera.position.z = Math.min(15.0, camera.position.z + 0.8);
     showToast('3D Uzaklaştırıldı');
   }
 };
 
 window.reset3dView = function() {
   if (modelGroup) {
-    modelGroup.rotation.set(0, 0, 0);
+    modelGroup.rotation.set(0.15, 0, 0);
     modelGroup.position.set(0, 0.0, 0);
   }
   if (camera) {
     camera.position.set(0, 1.8, 8.2);
-  camera.lookAt(0, 0.2, 0);
-      }
-  showToast('Kamera açısı sıfırlandı.');
+    camera.lookAt(0, 0.2, 0);
+  }
+  is3dAutoRotating = true;
+  const btn = document.getElementById('btn-mode-rotate');
+  if (btn) {
+    btn.classList.add('text-cyan-400', 'bg-cyan-500/10');
+    btn.classList.remove('text-slate-500');
+  }
+  showToast('3D Görünüm Sıfırlandı');
 };
 
 function createPrintHead() {
