@@ -1,48 +1,37 @@
 /**
  * DAĞ TEKNOLOJİ - MODERN WEB PLATFORM & E-COMMERCE ENGINE
- * Real Products (132 Items), Multi-Filter, Stock System, Admin Panel, Membership System & 3D Engine
+ * Real Products (3,428 Items), Multi-Filter, Stock System, Admin Panel, Membership System & 3D Engine
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.01.v5';
+const DAG_CATALOG_VERSION = '2026.11.01.v3428';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
-  const saved = localStorage.getItem('dag_custom_products');
   let products = [];
 
-  if (saved && savedVersion === DAG_CATALOG_VERSION) {
+  // If catalog version changed, clear stale local cache so fresh 3,428 catalog loads
+  if (savedVersion !== DAG_CATALOG_VERSION) {
     try {
-      const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        products = parsed;
-      }
-    } catch(e) { console.error('Error parsing stored products', e); }
+      localStorage.removeItem('dag_custom_products');
+      localStorage.setItem('dag_catalog_version', DAG_CATALOG_VERSION);
+    } catch(e) {}
+  } else {
+    const saved = localStorage.getItem('dag_custom_products');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          products = parsed;
+        }
+      } catch(e) { console.error('Error parsing stored products', e); }
+    }
   }
 
-  // If no saved products or outdated version, load fresh from canonical DAG_PRODUCTS
+  // Load fresh canonical 3,428 products from window.DAG_PRODUCTS
   if (products.length === 0 && window.DAG_PRODUCTS) {
     products = JSON.parse(JSON.stringify(window.DAG_PRODUCTS));
   }
-
-  // ALWAYS ENFORCE CANONICAL CATEGORIES & SANITY CHECKS:
-  // Fixes any stale cached category data in visitor local storage
-  if (window.DAG_PRODUCTS) {
-    const canonicalMap = new Map(window.DAG_PRODUCTS.map(p => [p.id, p.category]));
-    products.forEach(p => {
-      if (canonicalMap.has(p.id)) {
-        p.category = canonicalMap.get(p.id);
-      }
-      // Fail-safe rule: Any item with filament keywords can NEVER belong to printers
-      if (p.category === 'printers' && /filament|pla|petg|abs|tpu|re[cç]ine|resin/i.test(p.name)) {
-        p.category = 'filaments';
-      }
-    });
-  }
-
-  // Persist updated version and sanitized products
-  localStorage.setItem('dag_catalog_version', DAG_CATALOG_VERSION);
-  localStorage.setItem('dag_custom_products', JSON.stringify(products));
 
   return products;
 })();
@@ -125,7 +114,7 @@ const state = {
     brand: 'all',
     stockStatus: 'all', // 'all', 'in_stock', 'low_stock', 'out_of_stock'
     searchQuery: '',
-    priceMax: 65000,
+    priceMax: 200000,
     sortBy: 'default',
     displayLimit: 24
   },
@@ -146,7 +135,8 @@ const state = {
   adminFilter: {
     query: '',
     category: 'all',
-    stockOnly: 'all'
+    stockOnly: 'all',
+    displayLimit: 100
   }
 };
 
@@ -1394,16 +1384,16 @@ window.resetFilters = function() {
   state.filters.brand = 'all';
   state.filters.stockStatus = 'all';
   state.filters.searchQuery = '';
-  state.filters.priceMax = 65000;
+  state.filters.priceMax = 200000;
   state.filters.sortBy = 'default';
   state.filters.displayLimit = 24;
 
   const searchInput = document.getElementById('product-search-input');
   if (searchInput) searchInput.value = '';
   const priceSlider = document.getElementById('price-filter-slider');
-  if (priceSlider) priceSlider.value = 65000;
+  if (priceSlider) priceSlider.value = 200000;
   const priceDisplay = document.getElementById('price-filter-display');
-  if (priceDisplay) priceDisplay.innerText = 'Maks: 65.000 ₺';
+  if (priceDisplay) priceDisplay.innerText = 'Maks: 200.000 ₺';
   const sortSelect = document.getElementById('sort-select');
   if (sortSelect) sortSelect.value = 'default';
   const stockSelect = document.getElementById('stock-filter-select');
@@ -1482,7 +1472,7 @@ function renderProducts() {
     }
 
     return `
-      <div class="glass-panel rounded-2xl overflow-hidden flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300 ${isOutOfStock ? 'opacity-85' : ''}">
+      <div class="product-card glass-panel rounded-2xl overflow-hidden flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300 ${isOutOfStock ? 'opacity-85' : ''}">
         <!-- Product Header & Visual (Tıklanabilir Ürün Görseli) -->
         <div class="p-5 pb-3 relative bg-gradient-to-b from-white/[0.03] to-transparent">
           <div class="flex items-center justify-between mb-3">
@@ -2066,12 +2056,17 @@ function renderAdminProductsTable() {
     return;
   }
 
+  const limit = state.adminFilter.displayLimit || 100;
+  const displayItems = items.slice(0, limit);
+
   const countBadge = document.getElementById('admin-table-count');
   if (countBadge) {
-    countBadge.innerText = `${items.length} Ürün`;
+    countBadge.innerText = items.length > displayItems.length 
+      ? `${displayItems.length} / ${items.length} Ürün` 
+      : `${items.length} Ürün`;
   }
 
-  tbody.innerHTML = items.map((p, idx) => {
+  let tableHtml = displayItems.map((p, idx) => {
     const stock = Number(p.stock !== undefined ? p.stock : 10);
     let stockStatusHtml = '';
     if (stock <= 0) {
@@ -2124,6 +2119,20 @@ function renderAdminProductsTable() {
       </tr>
     `;
   }).join('');
+
+  if (items.length > displayItems.length) {
+    tableHtml += `
+      <tr>
+        <td colspan="7" class="text-center py-4 bg-slate-900/60 border-t border-slate-800">
+          <button onclick="state.adminFilter.displayLimit = (state.adminFilter.displayLimit || 100) + 100; renderAdminProductsTable();" class="px-5 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 font-bold text-xs border border-cyan-500/40 transition-all">
+            Daha Fazla Ürün Göster (+100 / Kalan: ${(items.length - displayItems.length).toLocaleString('tr-TR')})
+          </button>
+        </td>
+      </tr>
+    `;
+  }
+
+  tbody.innerHTML = tableHtml;
 
   if (window.lucide) lucide.createIcons();
 }
@@ -2274,20 +2283,24 @@ window.handleSaveProductForm = function(e) {
 };
 
 window.resetToDefaultProducts = function() {
-  if (confirm('Tüm ürünleri ve stokları orijinal fabrika ayarlarına (132 ürün) sıfırlamak istediğinize emin misiniz?')) {
-    localStorage.removeItem('dag_custom_products');
+  if (confirm('Tüm ürünleri ve stokları orijinal fabrika ayarlarına (3.428 ürün) sıfırlamak istediğinize emin misiniz?')) {
+    try { localStorage.removeItem('dag_custom_products'); } catch(e) {}
     state.products = window.DAG_PRODUCTS ? JSON.parse(JSON.stringify(window.DAG_PRODUCTS)) : [];
     saveProductsState();
     renderBrandFilters();
     renderAdminStats();
     renderAdminProductsTable();
     renderProducts();
-    showToast('Katalog orijinal ayarlara sıfırlandı!', 'success');
+    showToast('Katalog orijinal ayarlara (3.428 Ürün) sıfırlandı!', 'success');
   }
 };
 
 function saveProductsState() {
-  localStorage.setItem('dag_custom_products', JSON.stringify(state.products));
+  try {
+    localStorage.setItem('dag_custom_products', JSON.stringify(state.products));
+  } catch(e) {
+    console.warn('LocalStorage limit or disabled:', e);
+  }
 }
 
 // ==========================================================================
