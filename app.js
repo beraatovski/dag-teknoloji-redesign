@@ -199,7 +199,8 @@ function initThreeJsViewport() {
   scene.fog = new THREE.FogExp2(0x07090e, 0.035);
 
   camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-  camera.position.set(0, 5, 11);
+  camera.position.set(0, 1.8, 8.2);
+  camera.lookAt(0, 0.2, 0);
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(width, height);
@@ -562,12 +563,12 @@ window.toggle3dAutoRotate = function() {
 window.reset3dView = function() {
   if (modelGroup) {
     modelGroup.rotation.set(0, 0, 0);
-    modelGroup.position.set(0, 1.2, 0);
+    modelGroup.position.set(0, 0.2, 0);
   }
   if (camera) {
-    camera.position.set(0, 5, 11);
-    camera.lookAt(0, 0, 0);
-  }
+    camera.position.set(0, 1.8, 8.2);
+  camera.lookAt(0, 0.2, 0);
+      }
   showToast('Kamera açısı sıfırlandı.');
 };
 
@@ -1148,7 +1149,9 @@ window.handleSaveProfile = function(e) {
 // ==========================================================================
 function getFilteredProducts() {
   const f = state.filters;
+  const isHomePage = !window.location.pathname.includes('urunler.html');
   let items = state.products.filter(p => {
+    if (isHomePage && p.category !== 'printers') return false;
     if (f.category !== 'all' && p.category !== f.category) return false;
     if (f.brand !== 'all' && (p.brand || 'Diğer') !== f.brand) return false;
 
