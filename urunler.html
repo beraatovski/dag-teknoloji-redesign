@@ -55,6 +55,25 @@
 </head>
 <body class="bg-[#07090e] text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950 w-full max-w-full">
 
+  <!-- TOP ANNOUNCEMENT BAR (Adres, Telefon, Perpa Merkezli Canlı Bilgi Şeridi) -->
+  <div class="bg-gradient-to-r from-slate-950 via-cyan-950/40 to-slate-950 border-b border-cyan-500/20 py-2 px-4 text-xs overflow-hidden w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-2 text-slate-300 w-full">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-semibold shrink-0">
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span> PERPA MERKEZLİ
+        </span>
+        <span class="hidden sm:inline text-slate-300">Perpa Ticaret Merkezi 8. Kat B Blok No:825 Şişli / İstanbul</span>
+        <span class="sm:hidden text-slate-400 text-[11px] truncate">Perpa B/825</span>
+      </div>
+      <div class="flex items-center gap-4 sm:gap-6 shrink-0">
+        <span class="hidden md:inline text-slate-400">Hızlı Kargo & Aynı Gün Perpa Elden Teslimat</span>
+        <a href="tel:+905070201198" class="text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors">
+          <i data-lucide="phone-call" class="w-3.5 h-3.5"></i> 0507 020 11 98
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- ========================================================================== -->
   <!-- MASTER FLOATING CAPSULE NAVBAR (DAĞ TEKNOLOJİ İLE BÜTÜNLEŞİK, %100 SİMETRİK VE HER EKRANDA TAM) -->
   <!-- ========================================================================== -->
@@ -578,7 +597,7 @@
     <div class="p-5 border-b border-slate-800 flex items-center justify-between">
       <div class="flex items-center gap-2">
         <i data-lucide="shopping-bag" class="w-5 h-5 text-cyan-400"></i>
-        <h3 class="text-base font-bold text-white">AlÄ±ÅŸveriÅŸ Sepetiniz</h3>
+        <h3 class="text-base font-bold text-white">AlıÅŸveriÅŸ Sepetiniz</h3>
       </div>
       <button onclick="toggleCartDrawer(false)" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white" title="Kapat">
         <i data-lucide="x" class="w-5 h-5"></i>
@@ -593,8 +612,8 @@
       <div id="cart-empty-message" class="hidden text-center py-16 text-slate-400">
         <i data-lucide="shopping-cart" class="w-12 h-12 mx-auto text-slate-600 mb-3"></i>
         <h4 class="text-sm font-bold text-white mb-1">Sepetiniz BoÅŸ</h4>
-        <p class="text-xs text-slate-500 mb-4">ÃœrÃ¼nlerimizi inceleyerek sepete Ã¼rÃ¼n ekleyebilirsiniz.</p>
-        <button onclick="toggleCartDrawer(false)" class="px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 font-bold text-xs">AlÄ±ÅŸveriÅŸe BaÅŸla</button>
+        <p class="text-xs text-slate-500 mb-4">Ãœrünlerimizi inceleyerek sepete ürün ekleyebilirsiniz.</p>
+        <button onclick="toggleCartDrawer(false)" class="px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 font-bold text-xs">AlıÅŸveriÅŸe BaÅŸla</button>
       </div>
     </div>
 
@@ -1358,7 +1377,7 @@
   <div id="toast-container" class="toast-container"></div>
 
   <!-- PRODUCTS DATABASE & MAIN SCRIPT -->
-  <script src="products.js?v=20261101v3430"></script>
-  <script src="app.js?v=20261101v3430"></script>
+  <script src="products.js?v=20261101v3431"></script>
+  <script src="app.js?v=20261101v3431"></script>
 </body>
 </html>
