@@ -48,69 +48,61 @@
 <body class="bg-[#07090e] text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950">
 
   <!-- ========================================================================== -->
-  <!-- STICKY NAVBAR (ORTADAN SAĞA VE SOLA KUSURSUZ SİMETRİK) -->
+  <!-- STICKY NAVBAR (SOLDA LOGO, SAĞDA EŞİT KANAT, TAM ORTADA SİMETRİK MENÜ ÇUBUĞU) -->
   <!-- ========================================================================== -->
   <header class="sticky top-0 z-50 glass-nav transition-all duration-300 border-b border-cyan-500/10">
-    <div class="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 h-20 sm:h-22 flex items-center justify-between header-grid-symmetric">
+    <div class="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 h-20 sm:h-22 flex items-center justify-between">
       
-      <!-- 1. SOL KANAT (Ortadaki Logodan Sola Doğru Simetrik Yayılan Menü & Araçlar) -->
-      <nav class="hidden lg:flex items-center justify-end gap-2 xl:gap-3 min-w-0 pr-4 xl:pr-8">
-        
-        <!-- Ana Sayfaya Dön Butonu -->
-        <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl hover:bg-slate-800/70 text-slate-300 hover:text-cyan-400 font-semibold text-xs xl:text-sm transition-all shrink-0" title="Ana Sayfaya Dön">
-          <i data-lucide="home" class="w-4 h-4"></i>
-          <span>Ana Sayfa</span>
+      <!-- 1. SOL KANAT (Logo ve İsim - Sola Yaslı, Sağ Kanatla Eşit Genişlik Payında) -->
+      <div class="w-auto lg:w-[280px] xl:w-[320px] flex items-center justify-start shrink-0">
+        <a href="index.html" class="flex items-center gap-3 group shrink-0" title="Dağ Teknoloji Ana Sayfa">
+          <img src="assets/logo.svg" alt="Dağ Teknoloji" class="h-10 sm:h-11 xl:h-12 w-auto brand-logo-img transition-transform duration-300 group-hover:scale-105">
         </a>
+      </div>
 
-        <!-- Ürünler Kataloğu Butonu (Aktif Sayfa Vurgusu) -->
-        <span class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold text-xs xl:text-sm shadow-[0_0_14px_rgba(0,240,255,0.2)] shrink-0" title="Şu an Ürünler Sayfasındasınız">
-          <i data-lucide="layout-grid" class="w-4 h-4 text-cyan-400"></i>
-          <span>Ürünler</span>
-          <span class="px-1.5 py-0.2 text-[10px] bg-cyan-400 text-slate-950 font-extrabold rounded-full">132</span>
-        </span>
+      <!-- 2. ORTA KANAT (Tam Merkezde Simetrik Kapsül Menü Çubuğu) -->
+      <nav class="hidden lg:flex flex-1 items-center justify-center shrink-0">
+        <div class="bg-slate-900/80 border border-slate-800/90 hover:border-slate-700/80 rounded-2xl p-1.5 backdrop-blur-md shadow-lg flex items-center gap-1 xl:gap-1.5 transition-all">
+          
+          <!-- Sol Parça: Ana Sayfa -->
+          <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl hover:bg-slate-800/70 text-slate-300 hover:text-cyan-400 font-semibold text-xs xl:text-sm transition-all shrink-0" title="Ana Sayfaya Dön">
+            <i data-lucide="home" class="w-4 h-4"></i>
+            <span>Ana Sayfa</span>
+          </a>
 
-        <!-- 3D Maliyet Hesapla (Canlı Araç Butonu) -->
-        <a href="index.html#calc-section" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-400/60 text-slate-200 hover:text-cyan-300 font-semibold text-xs xl:text-sm transition-all shadow-sm shrink-0" title="3D Baskı Maliyet Hesapla">
-          <i data-lucide="calculator" class="w-4 h-4 text-cyan-400"></i>
-          <span>3D Maliyet Hesapla</span>
-          <span class="px-1.5 py-0.2 text-[10px] bg-cyan-500/20 text-cyan-400 rounded-full border border-cyan-500/30 font-mono">Canlı</span>
-        </a>
+          <!-- Aktif Sayfa Vurgusu: Ürünler -->
+          <span class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold text-xs xl:text-sm shadow-[0_0_12px_rgba(0,240,255,0.2)] shrink-0" title="Şu an Ürünler Sayfasındasınız">
+            <i data-lucide="layout-grid" class="w-4 h-4 text-cyan-400"></i>
+            <span>Ürünler</span>
+            <span class="px-1.5 py-0.2 text-[10px] bg-cyan-400 text-slate-950 font-extrabold rounded-full">132</span>
+          </span>
 
+          <!-- TAM MERKEZ: 3D Maliyet Hesapla (Çubuğun Tam Ortasında) -->
+          <a href="index.html#calc-section" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700/80 hover:border-cyan-400/60 text-slate-200 hover:text-cyan-300 font-semibold text-xs xl:text-sm transition-all shadow-sm shrink-0" title="3D Baskı Maliyet Hesaplayıcı">
+            <i data-lucide="calculator" class="w-4 h-4 text-cyan-400"></i>
+            <span>3D Maliyet Hesapla</span>
+            <span class="px-1.5 py-0.2 text-[10px] bg-cyan-500/20 text-cyan-400 rounded-full border border-cyan-500/30 font-mono">Canlı</span>
+          </a>
+
+          <!-- Hizmetlerimiz -->
+          <a href="index.html#services-section" class="px-3 py-2 rounded-xl hover:bg-slate-800/70 text-slate-300 hover:text-cyan-400 font-medium text-xs xl:text-sm transition-all shrink-0">Hizmetlerimiz</a>
+
+          <!-- İletişim -->
+          <a href="index.html#contact-section" class="px-3 py-2 rounded-xl hover:bg-slate-800/70 text-slate-300 hover:text-cyan-400 font-medium text-xs xl:text-sm transition-all shrink-0">İletişim</a>
+
+        </div>
       </nav>
 
-      <!-- MOBİL MENÜ BUTONU (Yalnızca Mobil < 1024px Ekranlarda Sol Başta Yer Alır) -->
-      <div class="lg:hidden flex items-center">
-        <button id="mobile-menu-btn" class="p-2.5 rounded-xl bg-slate-900 text-slate-200 border border-slate-800 hover:border-cyan-400/60 transition-colors" title="Menüyü Aç">
-          <i data-lucide="menu" class="w-6 h-6"></i>
-        </button>
-      </div>
-
-      <!-- 2. TAM MERKEZ: LOGO (Sayfanın Tam Ortası, Simetri Ekseni) -->
-      <div class="flex items-center justify-center shrink-0">
-        <a href="index.html" class="flex items-center justify-center group shrink-0 py-1" title="Dağ Teknoloji Ana Sayfa">
-          <img src="assets/logo.svg" alt="Dağ Teknoloji" class="h-10 sm:h-11 xl:h-12 w-auto brand-logo-img transition-transform duration-300 group-hover:scale-105 filter drop-shadow-[0_0_12px_rgba(0,240,255,0.2)]">
-        </a>
-      </div>
-
-      <!-- 3. SAĞ KANAT (Ortadaki Logodan Sağa Doğru Simetrik Yayılan Menü & Aksiyonlar) -->
-      <div class="flex items-center justify-end lg:justify-start gap-2 sm:gap-2.5 xl:gap-3 min-w-0 pl-0 lg:pl-4 xl:pl-8">
+      <!-- 3. SAĞ KANAT (Aksiyon Butonları - Sağa Yaslı, Sol Kanatla Birebir Eşit Genişlikte) -->
+      <div class="w-auto lg:w-[280px] xl:w-[320px] flex items-center justify-end gap-2 sm:gap-2.5 xl:gap-3 shrink-0">
         
-        <!-- Hizmetlerimiz (Masaüstü) -->
-        <a href="index.html#services-section" class="hidden lg:inline-block px-3 py-2 rounded-xl hover:bg-slate-800/70 text-slate-300 hover:text-cyan-400 font-medium text-xs xl:text-sm transition-all shrink-0">Hizmetlerimiz</a>
-
-        <!-- Hakkımızda (Masaüstü) -->
-        <a href="index.html#about-section" class="hidden lg:inline-block px-3 py-2 rounded-xl hover:bg-slate-800/70 text-slate-300 hover:text-cyan-400 font-medium text-xs xl:text-sm transition-all shrink-0">Hakkımızda</a>
-        
-        <!-- İletişim (Masaüstü) -->
-        <a href="index.html#contact-section" class="hidden lg:inline-block px-3 py-2 rounded-xl hover:bg-slate-800/70 text-slate-300 hover:text-cyan-400 font-medium text-xs xl:text-sm transition-all shrink-0">İletişim</a>
-
-        <!-- WhatsApp Butonu -->
+        <!-- WhatsApp -->
         <a href="https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizdeki%20%C3%BCr%C3%BCnler%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" class="hidden sm:flex items-center gap-1.5 text-xs font-semibold px-3 py-2 sm:py-2.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all shadow-sm shrink-0" title="WhatsApp Destek Hattı">
           <i data-lucide="message-circle" class="w-4 h-4"></i>
           <span class="hidden 2xl:inline">WhatsApp</span>
         </a>
 
-        <!-- Admin Giriş Kalkanı -->
+        <!-- Yönetici Giriş Kalkanı -->
         <button onclick="openAdminLogin()" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-cyan-400/80 text-slate-300 hover:text-white transition-all text-xs font-semibold shadow-sm shrink-0" title="Yönetici Paneli (Stok & Ürün Yönetimi)">
           <i data-lucide="shield-check" class="w-4 h-4 text-cyan-400"></i>
           <span class="hidden 2xl:inline">Yönetici</span>
@@ -124,6 +116,11 @@
 
         <!-- User Nav Container (Desktop / Mobil Giriş Yap / Profil) -->
         <div id="user-nav-container" class="shrink-0"></div>
+
+        <!-- Mobile Menu Toggle (Mobil) -->
+        <button id="mobile-menu-btn" class="lg:hidden p-2.5 rounded-xl bg-slate-900 text-slate-200 border border-slate-800 hover:border-cyan-400/60 transition-colors ml-1 shrink-0" title="Menüyü Aç">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
 
       </div>
 
