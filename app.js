@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3454';
+const DAG_CATALOG_VERSION = '2026.11.02.v3455';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -3975,31 +3975,18 @@ function initProductDetailPage() {
     <div class="lg:col-span-7 space-y-6">
       
       <div>
-        <div class="flex items-center justify-between gap-3 flex-wrap mb-2">
-          <div class="flex items-center gap-2 flex-wrap">
-            <span class="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">` + getCategoryName(p.category) + `</span>
-            <span class="text-slate-600">•</span>
-            <span class="text-xs font-mono text-slate-400">SKU: ` + (p.sku || p.id) + `</span>
-            ` + (p.brand ? `<span class="text-xs font-mono bg-slate-800/80 px-2 py-0.5 rounded text-slate-300">` + p.brand + `</span>` : '') + `
-          </div>
-          ` + (isAdmin ? `
-            <button 
-              onclick="openEditProductModal('` + p.id + `')" 
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold text-xs transition-all shadow-sm hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group"
-              title="Yönetici Olarak Bu Ürünü Düzenle"
-            >
-              <i data-lucide="edit-3" class="w-3.5 h-3.5 text-amber-400 group-hover:rotate-12 transition-transform"></i>
-              <span>Ürünü Düzenle</span>
-              <span class="px-1.5 py-0.2 text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded font-mono font-bold">ADMIN</span>
-            </button>
-          ` : '') + `
+        <div class="flex items-center gap-2 flex-wrap mb-2">
+          <span class="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">` + getCategoryName(p.category) + `</span>
+          <span class="text-slate-600">•</span>
+          <span class="text-xs font-mono text-slate-400">SKU: ` + (p.sku || p.id) + `</span>
+          ` + (p.brand ? `<span class="text-xs font-mono bg-slate-800/80 px-2 py-0.5 rounded text-slate-300">` + p.brand + `</span>` : '') + `
         </div>
 
         <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight mb-3">
           ` + p.name + `
         </h1>
 
-        <div class="flex items-center gap-3 text-xs">
+        <div class="flex items-center gap-3 text-xs flex-wrap">
           <div class="flex items-center text-amber-400">
             ` + Array(5).fill(0).map(() => `<i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>`).join('') + `
           </div>
@@ -4007,6 +3994,18 @@ function initProductDetailPage() {
           <span class="text-slate-500">(` + (p.reviews || 28) + ` Müşteri Değerlendirmesi)</span>
           <span class="text-slate-600">•</span>
           <span class="text-cyan-400 font-mono">Perpa Mağaza Çok Satan</span>
+          ` + (isAdmin ? `
+            <span class="text-slate-600">•</span>
+            <button 
+              onclick="openEditProductModal('` + p.id + `')" 
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold text-xs transition-all shadow-sm hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group"
+              title="Yönetici Olarak Bu Ürünü Düzenle"
+            >
+              <i data-lucide="edit-3" class="w-3.5 h-3.5 text-amber-400 group-hover:rotate-12 transition-transform"></i>
+              <span>Ürünü Düzenle</span>
+              <span class="px-1.5 py-0.2 text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded font-mono font-bold">ADMIN</span>
+            </button>
+          ` : '') + `
         </div>
       </div>
 
