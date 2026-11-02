@@ -4,40 +4,71 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3472';
+const DAG_CATALOG_VERSION = '2026.11.02.v3473';
+
+function getStoredOverrides() {
+  try {
+    const raw = localStorage.getItem('dag_product_overrides');
+    return raw ? JSON.parse(raw) : {};
+  } catch(e) { return {}; }
+}
+
+function getStoredCustomProducts() {
+  try {
+    const raw = localStorage.getItem('dag_custom_added_products');
+    return (raw && Array.isArray(JSON.parse(raw))) ? JSON.parse(raw) : [];
+  } catch(e) { return []; }
+}
+
+function getStoredDeletedIds() {
+  try {
+    const raw = localStorage.getItem('dag_deleted_products');
+    return new Set((raw && Array.isArray(JSON.parse(raw))) ? JSON.parse(raw) : []);
+  } catch(e) { return new Set(); }
+}
+
+function getBaseProducts() {
+  if (typeof window !== 'undefined' && window.DAG_PRODUCTS) {
+    const raw = Array.isArray(window.DAG_PRODUCTS) ? window.DAG_PRODUCTS : (window.DAG_PRODUCTS.value || []);
+    return JSON.parse(JSON.stringify(raw));
+  }
+  return [];
+}
+
+function applyCatalogOverrides(baseList) {
+  const overrides = getStoredOverrides();
+  const deletedIds = getStoredDeletedIds();
+  const customProds = getStoredCustomProducts();
+
+  // 1. Filter out deleted products from base
+  let list = (baseList || []).filter(p => !deletedIds.has(p.id));
+
+  // 2. Apply field overrides to existing products
+  list.forEach(p => {
+    if (overrides[p.id]) {
+      Object.assign(p, overrides[p.id]);
+    }
+  });
+
+  // 3. Prepend custom added products (if not deleted)
+  const validCustom = customProds.filter(cp => !deletedIds.has(cp.id));
+  validCustom.forEach(cp => {
+    if (overrides[cp.id]) {
+      Object.assign(cp, overrides[cp.id]);
+    }
+  });
+
+  return validCustom.concat(list);
+}
 
 const initialProducts = (function() {
-  const savedVersion = localStorage.getItem('dag_catalog_version');
-  let products = [];
+  try {
+    // Purge legacy 5MB key that was exceeding localStorage quota
+    localStorage.removeItem('dag_custom_products');
+    localStorage.setItem('dag_catalog_version', DAG_CATALOG_VERSION);
+  } catch(e) {}
 
-  // If catalog version changed, clear stale local cache so fresh 3,428 catalog loads
-  if (savedVersion !== DAG_CATALOG_VERSION) {
-    try {
-      localStorage.removeItem('dag_custom_products');
-      localStorage.removeItem('dag_usd_exchange_rate');
-      localStorage.setItem('dag_catalog_version', DAG_CATALOG_VERSION);
-    } catch(e) {}
-  } else {
-    const saved = localStorage.getItem('dag_custom_products');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length >= 3428) {
-          products = parsed;
-        }
-      } catch(e) { console.error('Error parsing stored products', e); }
-    }
-  }
-
-  // Load fresh canonical 3,428 products from window.DAG_PRODUCTS
-  if (window.DAG_PRODUCTS) {
-    const raw = Array.isArray(window.DAG_PRODUCTS) ? window.DAG_PRODUCTS : (window.DAG_PRODUCTS.value || []);
-    if ((products.length < 3428 || products.length === 0) && raw.length > 0) {
-      products = JSON.parse(JSON.stringify(raw));
-    }
-  }
-
-  return products;
+  return applyCatalogOverrides(getBaseProducts());
 })();
 
 // ==========================================================================
@@ -126,18 +157,30 @@ async function fetchLiveUsdRate(force = false) {
   }
 }
 
-// TÜM CİHAZLARDA KESİN FİYAT EŞİTLİĞİ:
+// TÜM CİHAZLARDA VE PANELLERDE KESİN FİYAT EŞİTLİĞİ:
 // Ürün fiyatları OpenCart veritabanından çekilen orijinal Türk Lirası fiyatlarıdır.
-// Hiçbir harici API veya çarpanla cihazlar arasında farklılaşamaz.
+// Hiçbir harici API veya çarpanla cihazlar ya da sayfalar arasında farklılaşamaz.
 function getProductPrice(p) {
-  if (!p || typeof p.price !== 'number') return 0;
-  return p.price;
+  if (!p) return 0;
+  const pr = typeof p.price === 'number' ? p.price : parseFloat(p.price);
+  return isNaN(pr) ? 0 : pr;
 }
 
 function getProductOldPrice(p) {
   if (!p || !p.oldPrice) return 0;
-  return p.oldPrice;
+  const opr = typeof p.oldPrice === 'number' ? p.oldPrice : parseFloat(p.oldPrice);
+  return isNaN(opr) ? 0 : opr;
 }
+
+function formatPrice(val) {
+  if (val === null || val === undefined || isNaN(val)) return '0';
+  const num = typeof val === 'number' ? val : parseFloat(val) || 0;
+  return num.toLocaleString('tr-TR', {
+    minimumFractionDigits: Number.isInteger(num) ? 0 : 2,
+    maximumFractionDigits: 2
+  });
+}
+window.formatPrice = formatPrice;
 
 function updateExchangeRateUI() {
   if (!state.exchangeRate) return;
@@ -469,6 +512,17 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (e) {}
 
   if (window.lucide) lucide.createIcons();
+});
+
+// Cihazlar ve sekmeler arası anlık ürün, stok ve fiyat senkronizasyonu
+window.addEventListener('storage', function(e) {
+  if (e.key === 'dag_product_overrides' || e.key === 'dag_custom_added_products' || e.key === 'dag_deleted_products') {
+    state.products = applyCatalogOverrides(getBaseProducts());
+    if (document.getElementById('admin-products-tbody')) renderAdminProductsTable();
+    if (document.getElementById('product-detail-hero')) initProductDetailPage();
+    if (document.getElementById('products-grid')) renderProducts();
+    if (document.getElementById('admin-stat-total-products')) renderAdminStats();
+  }
 });
 
 // ==========================================================================
@@ -2023,7 +2077,7 @@ window.openWishlistModal = function() {
               <div>
                 <h4 class="text-xs font-bold text-white line-clamp-1">${p.name}</h4>
                 <div class="flex items-center gap-2 mt-0.5">
-                  <span class="text-xs font-bold text-cyan-400">${getProductPrice(p).toLocaleString('tr-TR')} ₺</span>
+                  <span class="text-xs font-bold text-cyan-400">${formatPrice(getProductPrice(p))} ₺</span>
                   ${isOutOfStock ? `<span class="text-[10px] text-rose-400">Tükendi</span>` : `<span class="text-[10px] text-emerald-400">Stokta (${stock})</span>`}
                 </div>
               </div>
@@ -2844,9 +2898,9 @@ function renderProducts() {
           <!-- Pricing & Stock Action Row -->
           <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
             <div class="shrink-0 min-w-0">
-              ${p.oldPrice ? `<span class="text-[11px] text-slate-500 line-through block whitespace-nowrap">${getProductOldPrice(p).toLocaleString('tr-TR')} ₺</span>` : ''}
+              ${p.oldPrice ? `<span class="text-[11px] text-slate-500 line-through block whitespace-nowrap">${formatPrice(getProductOldPrice(p))} ₺</span>` : ''}
               <div class="text-base sm:text-lg font-extrabold text-white whitespace-nowrap inline-flex items-baseline">
-                <span>${getProductPrice(p).toLocaleString('tr-TR')}</span>
+                <span>${formatPrice(getProductPrice(p))}</span>
                 <span class="text-xs text-cyan-400 font-normal ml-0.5">₺</span>
               </div>
             </div>
@@ -2858,7 +2912,7 @@ function renderProducts() {
               </button>
 
               <!-- Kendi Sayfasına Git Butonu (İncele) -->
-              <a href="urun-detay.html?id=${p.id}" title="Ürün Sayfasına Git" class="p-2 sm:px-2.5 sm:py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-cyan-300 hover:text-white transition-colors border border-slate-700 flex items-center gap-1 text-xs font-semibold">
+              <a href="${getProductUrl(p)}" title="Ürün Sayfasına Git" class="p-2 sm:px-2.5 sm:py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-cyan-300 hover:text-white transition-colors border border-slate-700 flex items-center gap-1 text-xs font-semibold">
                 <i data-lucide="eye" class="w-3.5 h-3.5"></i>
                 <span class="hidden 2xl:inline">İncele</span>
               </a>
@@ -4064,10 +4118,10 @@ window.openProductModal = function(productId) {
 
         <div class="flex items-baseline gap-3 mb-6 flex-wrap">
           <span class="inline-flex items-baseline gap-1 whitespace-nowrap">
-            <span class="text-3xl font-extrabold text-white font-mono">${getProductPrice(p).toLocaleString('tr-TR')}</span>
+            <span class="text-3xl font-extrabold text-white font-mono">${formatPrice(getProductPrice(p))}</span>
             <span class="text-lg text-cyan-400 font-bold">₺</span>
           </span>
-          ${p.oldPrice ? `<span class="text-sm text-slate-500 line-through">${getProductOldPrice(p).toLocaleString('tr-TR')} ₺</span>` : ''}
+          ${p.oldPrice ? `<span class="text-sm text-slate-500 line-through">${formatPrice(getProductOldPrice(p))} ₺</span>` : ''}
           <span class="text-xs text-emerald-400 font-medium">KDV Dahil</span>
           
         </div>
@@ -4290,9 +4344,9 @@ function renderAdminProductsTable() {
       <tr class="admin-table-row border-b border-slate-800/80 transition-colors">
         <td class="py-3 px-4 text-xs font-mono text-slate-500">${idx + 1}</td>
         
-        <!-- Clickable Product Info (Opens urun-detay.html?id=...) -->
+        <!-- Clickable Product Info (Opens Canonical Product Page) -->
         <td class="py-3 px-4">
-          <a href="urun-detay.html?id=${p.id}" target="_blank" class="flex items-center gap-3 group/prod hover:opacity-95 transition-opacity" title="Ürünün Sayfasını Aç (Yeni Sekme)">
+          <a href="${getProductUrl(p)}" target="_blank" class="flex items-center gap-3 group/prod hover:opacity-95 transition-opacity" title="Ürünün Sayfasını Aç (Yeni Sekme)">
             <div class="relative shrink-0">
               ${getProductThumbHtml(p, "w-10 h-10 group-hover/prod:ring-2 ring-cyan-400 rounded-lg transition-all")}
             </div>
@@ -4308,7 +4362,7 @@ function renderAdminProductsTable() {
 
         <td class="py-3 px-4 text-xs text-slate-300 font-mono">${getCategoryName(p.category)}</td>
         
-        <td class="py-3 px-4 text-xs font-bold text-cyan-400 font-mono">${dynPrice.toLocaleString('tr-TR')} ₺</td>
+        <td class="py-3 px-4 text-xs font-bold text-cyan-400 font-mono">${formatPrice(dynPrice)} ₺</td>
         
         <!-- Live Quick Stock Adjustment -->
         <td class="py-3 px-4">
@@ -4324,7 +4378,7 @@ function renderAdminProductsTable() {
         <td class="py-3 px-4 text-right">
           <div class="flex items-center justify-end gap-1.5">
             <!-- Dedicated Button to View Dedicated Product Page -->
-            <a href="urun-detay.html?id=${p.id}" target="_blank" title="Ürünün Sayfasına Git (Yeni Sekme)" class="p-1.5 rounded-lg bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-cyan-300 transition-colors border border-slate-700/80">
+            <a href="${getProductUrl(p)}" target="_blank" title="Ürünün Sayfasına Git (Yeni Sekme)" class="p-1.5 rounded-lg bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-cyan-300 transition-colors border border-slate-700/80">
               <i data-lucide="external-link" class="w-4 h-4"></i>
             </a>
             <button onclick="openEditProductModal('${p.id}')" title="Ürünü Düzenle" class="p-1.5 rounded-lg bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-slate-300 transition-colors">
@@ -4895,8 +4949,8 @@ window.handleSaveProductForm = function(e) {
   const name = document.getElementById('form-prod-name').value.trim();
   const category = document.getElementById('form-prod-category').value;
   const brand = document.getElementById('form-prod-brand').value.trim() || 'Dağ Tech';
-  const price = parseInt(document.getElementById('form-prod-price').value) || 0;
-  const oldPrice = parseInt(document.getElementById('form-prod-old-price').value) || 0;
+  const price = parseFloat(document.getElementById('form-prod-price').value) || 0;
+  const oldPrice = parseFloat(document.getElementById('form-prod-old-price').value) || 0;
   const stock = parseInt(document.getElementById('form-prod-stock').value) || 0;
   const image = document.getElementById('form-prod-image').value.trim() || 'assets/logo.svg';
   const desc = document.getElementById('form-prod-desc').value.trim();
@@ -4981,8 +5035,13 @@ window.handleSaveProductForm = function(e) {
 
 window.resetToDefaultProducts = function() {
   if (confirm('Tüm ürünleri ve stokları orijinal fabrika ayarlarına (3.428 ürün) sıfırlamak istediğinize emin misiniz?')) {
-    try { localStorage.removeItem('dag_custom_products'); } catch(e) {}
-    state.products = window.DAG_PRODUCTS ? JSON.parse(JSON.stringify(window.DAG_PRODUCTS)) : [];
+    try {
+      localStorage.removeItem('dag_custom_products');
+      localStorage.removeItem('dag_product_overrides');
+      localStorage.removeItem('dag_custom_added_products');
+      localStorage.removeItem('dag_deleted_products');
+    } catch(e) {}
+    state.products = getBaseProducts();
     saveProductsState();
     renderBrandFilters();
     renderAdminStats();
@@ -4994,9 +5053,60 @@ window.resetToDefaultProducts = function() {
 
 function saveProductsState() {
   try {
-    localStorage.setItem('dag_custom_products', JSON.stringify(state.products));
-  } catch(e) {
-    console.warn('LocalStorage limit or disabled:', e);
+    const canonicalMap = new Map();
+    const raw = getBaseProducts();
+    raw.forEach(p => canonicalMap.set(p.id, p));
+
+    const overrides = {};
+    const customAdded = [];
+    const currentIds = new Set();
+
+    (state.products || []).forEach(p => {
+      currentIds.add(p.id);
+      const canon = canonicalMap.get(p.id);
+      if (!canon) {
+        customAdded.push(p);
+      } else {
+        const isModified = (
+          p.price !== canon.price ||
+          p.oldPrice !== canon.oldPrice ||
+          p.stock !== canon.stock ||
+          p.name !== canon.name ||
+          p.category !== canon.category ||
+          p.brand !== canon.brand ||
+          p.image !== canon.image ||
+          p.desc !== canon.desc
+        );
+        if (isModified) {
+          overrides[p.id] = {
+            price: p.price,
+            oldPrice: p.oldPrice,
+            stock: p.stock,
+            name: p.name,
+            category: p.category,
+            brand: p.brand,
+            image: p.image,
+            desc: p.desc,
+            subtitle: p.subtitle,
+            specs: p.specs
+          };
+        }
+      }
+    });
+
+    const deletedIds = [];
+    canonicalMap.forEach((_, id) => {
+      if (!currentIds.has(id)) {
+        deletedIds.push(id);
+      }
+    });
+
+    localStorage.setItem('dag_product_overrides', JSON.stringify(overrides));
+    localStorage.setItem('dag_custom_added_products', JSON.stringify(customAdded));
+    localStorage.setItem('dag_deleted_products', JSON.stringify(deletedIds));
+    localStorage.removeItem('dag_custom_products');
+  } catch (e) {
+    console.warn('LocalStorage save error:', e);
   }
 }
 
@@ -5552,10 +5662,17 @@ function initProductDetailPage() {
     const lowerParam = stockParam.toLowerCase();
     p = state.products.find(item => 
       (item.sku && item.sku.toUpperCase() === upperParam) ||
+      (item.sku && item.sku.toUpperCase() === ('DT-' + upperParam)) ||
       (item.id && item.id.toLowerCase() === lowerParam) ||
       (item.id && item.id.toLowerCase() === ('dt-' + lowerParam)) ||
       (item.oc_id && item.oc_id.toString() === stockParam)
     );
+    if (!p) {
+      p = state.products.find(item => 
+        (item.name && item.name.toLowerCase() === lowerParam) ||
+        (item.name && item.name.toLowerCase().includes(lowerParam))
+      );
+    }
   }
   if (!p) {
     p = state.products.find(item => item.category === 'printers') || state.products[0];
@@ -5736,11 +5853,11 @@ function initProductDetailPage() {
         <div>
           <div class="flex items-baseline gap-3 flex-wrap">
             <span class="inline-flex items-baseline gap-1 whitespace-nowrap">
-              <span class="text-3xl sm:text-4xl font-extrabold text-white font-mono">` + getProductPrice(p).toLocaleString('tr-TR') + `</span>
+              <span class="text-3xl sm:text-4xl font-extrabold text-white font-mono">` + formatPrice(getProductPrice(p)) + `</span>
               <span class="text-lg sm:text-xl text-cyan-400 font-bold">₺</span>
             </span>
             ` + (p.oldPrice ? `
-              <span class="text-sm sm:text-base text-slate-500 line-through font-mono ml-2">` + getProductOldPrice(p).toLocaleString('tr-TR') + ` ₺</span>
+              <span class="text-sm sm:text-base text-slate-500 line-through font-mono ml-2">` + formatPrice(getProductOldPrice(p)) + ` ₺</span>
               <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 rounded-full">
                 %` + Math.round(((getProductOldPrice(p) - getProductPrice(p)) / getProductOldPrice(p)) * 100) + ` İndirim
               </span>
@@ -5906,7 +6023,7 @@ function initProductDetailPage() {
               <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors line-clamp-2 mb-2">` + rel.name + `</h5>
             </a>
             <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between">
-              <span class="text-sm font-extrabold text-white font-mono whitespace-nowrap">` + getProductPrice(rel).toLocaleString('tr-TR') + ` ₺</span>
+              <span class="text-sm font-extrabold text-white font-mono whitespace-nowrap">` + formatPrice(getProductPrice(rel)) + ` ₺</span>
               <a href="` + getProductUrl(rel) + `" class="px-2.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 text-[11px] font-bold transition-all">
                 İncele
               </a>
