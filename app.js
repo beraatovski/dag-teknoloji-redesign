@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3449';
+const DAG_CATALOG_VERSION = '2026.11.02.v3450';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -1557,6 +1557,9 @@ window.handleDemoLogin = function(role = 'customer') {
   closeModal('auth-modal');
   renderUserNav();
   renderProducts();
+  if (document.getElementById('product-detail-hero')) {
+    initProductDetailPage();
+  }
   if (state.isAdmin) {
     showToast(`Yönetici hesabı ile giriş yapıldı: ${demoUser.name}`, 'success');
   } else {
@@ -1603,6 +1606,9 @@ window.handleUserSignup = function(e) {
   closeModal('auth-modal');
   renderUserNav();
   renderProducts();
+  if (document.getElementById('product-detail-hero')) {
+    initProductDetailPage();
+  }
   showToast(`Aramıza hoş geldiniz Sayın ${name}! Hesabınız oluşturuldu.`, 'success');
 };
 
@@ -1613,6 +1619,9 @@ window.userLogout = function() {
   sessionStorage.removeItem('dag_is_admin');
   renderUserNav();
   renderProducts();
+  if (document.getElementById('product-detail-hero')) {
+    initProductDetailPage();
+  }
   closeModal('admin-panel-modal');
   showToast('Oturumunuz başarıyla kapatıldı.');
 };
@@ -1649,6 +1658,9 @@ window.toggleWishlist = function(productId) {
 
   renderUserNav();
   renderProducts();
+  if (document.getElementById('product-detail-hero')) {
+    initProductDetailPage();
+  }
 };
 
 window.openMyOrdersModal = function() {
@@ -2490,6 +2502,7 @@ window.openProductModal = function(productId) {
   const isOutOfStock = stock <= 0;
   const wishlist = (state.currentUser && state.currentUser.wishlist) || [];
   const isFavorited = wishlist.includes(p.id);
+  const isAdmin = !!(state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr' || state.currentUser.email === 'admin@dag.com' || state.isAdmin));
 
   content.innerHTML = `
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -2577,6 +2590,16 @@ window.openProductModal = function(productId) {
             <i data-lucide="message-circle" class="w-5 h-5"></i>
           </a>
         </div>
+
+        ${isAdmin ? `
+          <div class="mt-4 pt-3 border-t border-slate-800">
+            <button onclick="closeModal('product-modal'); openEditProductModal('${p.id}');" class="w-full py-2.5 px-4 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold text-xs flex items-center justify-center gap-2 transition-all">
+              <i data-lucide="edit-3" class="w-4 h-4 text-amber-400"></i>
+              <span>Yönetici Olarak Bu Ürünü Düzenle</span>
+              <span class="px-1.5 py-0.5 text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded font-mono font-bold">ADMIN</span>
+            </button>
+          </div>
+        ` : ''}
       </div>
     </div>
   `;
@@ -2878,19 +2901,41 @@ window.openEditProductModal = function(productId) {
   const p = state.products.find(item => item.id === productId);
   if (!p) return;
 
-  document.getElementById('product-form-title').innerText = 'Ürünü Düzenle';
-  document.getElementById('edit-product-id').value = p.id;
-  document.getElementById('form-prod-name').value = p.name;
-  document.getElementById('form-prod-category').value = p.category;
-  document.getElementById('form-prod-brand').value = p.brand || '';
-  document.getElementById('form-prod-price').value = p.price;
-  document.getElementById('form-prod-old-price').value = p.oldPrice || '';
-  document.getElementById('form-prod-stock').value = p.stock !== undefined ? p.stock : 10;
-  document.getElementById('form-prod-image').value = p.image || p.remoteImage || '';
-  document.getElementById('form-prod-desc').value = p.desc || '';
-  document.getElementById('form-prod-specs').value = (p.specs || []).join(', ');
+  const titleEl = document.getElementById('product-form-title');
+  if (titleEl) titleEl.innerText = 'Ürünü Düzenle: ' + (p.name.length > 35 ? p.name.substring(0, 32) + '...' : p.name);
+  const editIdEl = document.getElementById('edit-product-id');
+  if (editIdEl) editIdEl.value = p.id;
+  const nameEl = document.getElementById('form-prod-name');
+  if (nameEl) nameEl.value = p.name;
+  const catEl = document.getElementById('form-prod-category');
+  if (catEl) catEl.value = p.category;
+  const brandEl = document.getElementById('form-prod-brand');
+  if (brandEl) brandEl.value = p.brand || '';
+  const priceEl = document.getElementById('form-prod-price');
+  if (priceEl) priceEl.value = p.price;
+  const oldPriceEl = document.getElementById('form-prod-old-price');
+  if (oldPriceEl) oldPriceEl.value = p.oldPrice || '';
+  const stockEl = document.getElementById('form-prod-stock');
+  if (stockEl) stockEl.value = p.stock !== undefined ? p.stock : 10;
+  const imgEl = document.getElementById('form-prod-image');
+  if (imgEl) imgEl.value = p.image || p.remoteImage || '';
+  const descEl = document.getElementById('form-prod-desc');
+  if (descEl) descEl.value = p.desc || '';
+  const specsEl = document.getElementById('form-prod-specs');
+  if (specsEl) specsEl.value = (p.specs || []).join(', ');
 
   openModal('edit-product-modal');
+  if (window.lucide) lucide.createIcons();
+};
+
+window.handleAdminEditPrompt = function(productId) {
+  const isAdmin = !!(state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr' || state.currentUser.email === 'admin@dag.com' || state.isAdmin));
+  if (isAdmin) {
+    openEditProductModal(productId);
+  } else {
+    showToast('Bu ürünü düzenlemek için lütfen yetkili yönetici hesabıyla oturum açın.', 'info');
+    openAuthModal('login');
+  }
 };
 
 window.handleSaveProductForm = function(e) {
@@ -2954,6 +2999,17 @@ window.handleSaveProductForm = function(e) {
   renderAdminStats();
   renderAdminProductsTable();
   renderProducts();
+  if (document.getElementById('product-detail-hero')) {
+    initProductDetailPage();
+  }
+  if (window.lucide) lucide.createIcons();
+
+  if (editId) {
+    const updatedProd = state.products.find(item => item.id === editId);
+    if (updatedProd && window.syncProductToOpenCart) {
+      window.syncProductToOpenCart(updatedProd);
+    }
+  }
 };
 
 window.resetToDefaultProducts = function() {
@@ -2976,6 +3032,46 @@ function saveProductsState() {
     console.warn('LocalStorage limit or disabled:', e);
   }
 }
+
+// ==========================================================================
+// OPENCART CANLI SENKRONİZASYON VE STOK KÖPRÜSÜ
+// ==========================================================================
+window.syncProductToOpenCart = async function(p) {
+  if (!p) return;
+  const cfg = JSON.parse(localStorage.getItem('dag_opencart_sync') || 'null') || {
+    enabled: true,
+    endpoint: 'opencart_sync_bridge.php',
+    secretKey: 'DAG_TECH_2026_SYNC'
+  };
+
+  const ocId = p.oc_id || (p.id ? parseInt(p.id.replace('dt-', '')) : null);
+  console.log(`[OpenCart Sync] Ürün: ${p.name} (ID: ${p.id}, OC_ID: ${ocId}), Güncel Stok: ${p.stock}`);
+
+  if (!cfg.enabled || !cfg.endpoint) return;
+
+  try {
+    const res = await fetch(cfg.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        secret: cfg.secretKey,
+        action: 'update_stock',
+        product_id: ocId,
+        sku: p.sku || p.id,
+        quantity: p.stock,
+        price: p.price
+      })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.success) {
+        console.log(`[OpenCart Sync] Başarılı: OpenCart veritabanı güncellendi (${p.stock} adet).`);
+      }
+    }
+  } catch(e) {
+    console.log(`[OpenCart Sync] Köprüye bağlanılamadı (${e.message || e}). Yerel veritabanında saklandı.`);
+  }
+};
 
 // ==========================================================================
 // 8. TOAST NOTIFICATIONS & MODALS
@@ -3061,6 +3157,9 @@ function setupEventListeners() {
           prod.stock = Math.max(0, (prod.stock || 0) - cartItem.quantity);
           totalAmount += cartItem.price * cartItem.quantity;
           itemsSummaryList.push(`${cartItem.quantity}x ${cartItem.name}`);
+          if (window.syncProductToOpenCart) {
+            window.syncProductToOpenCart(prod);
+          }
         }
       });
 
@@ -3373,6 +3472,7 @@ function initProductDetailPage() {
   const isLowStock = stock > 0 && stock <= 5;
   const wishlist = (state.currentUser && state.currentUser.wishlist) || [];
   const isFavorited = wishlist.includes(p.id);
+  const isAdmin = !!(state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr' || state.currentUser.email === 'admin@dag.com' || state.isAdmin));
 
   let stockStatusHtml = '';
   if (isOutOfStock) {
@@ -3478,11 +3578,33 @@ function initProductDetailPage() {
     <div class="lg:col-span-7 space-y-6">
       
       <div>
-        <div class="flex items-center gap-2 mb-2">
-          <span class="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">` + getCategoryName(p.category) + `</span>
-          <span class="text-slate-600">•</span>
-          <span class="text-xs font-mono text-slate-400">SKU: ` + (p.sku || p.id) + `</span>
-          ` + (p.brand ? `<span class="text-xs font-mono bg-slate-800/80 px-2 py-0.5 rounded text-slate-300">` + p.brand + `</span>` : '') + `
+        <div class="flex items-center justify-between gap-3 flex-wrap mb-2">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">` + getCategoryName(p.category) + `</span>
+            <span class="text-slate-600">•</span>
+            <span class="text-xs font-mono text-slate-400">SKU: ` + (p.sku || p.id) + `</span>
+            ` + (p.brand ? `<span class="text-xs font-mono bg-slate-800/80 px-2 py-0.5 rounded text-slate-300">` + p.brand + `</span>` : '') + `
+          </div>
+          ` + (isAdmin ? `
+            <button 
+              onclick="openEditProductModal('` + p.id + `')" 
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold text-xs transition-all shadow-sm hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group"
+              title="Yönetici Olarak Bu Ürünü Düzenle"
+            >
+              <i data-lucide="edit-3" class="w-3.5 h-3.5 text-amber-400 group-hover:rotate-12 transition-transform"></i>
+              <span>Ürünü Düzenle</span>
+              <span class="px-1.5 py-0.2 text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded font-mono font-bold">ADMIN</span>
+            </button>
+          ` : `
+            <button 
+              onclick="handleAdminEditPrompt('` + p.id + `')" 
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-amber-400/40 text-slate-400 hover:text-amber-300 text-[11px] font-medium transition-all group"
+              title="Yönetici girişi yaparak bu ürünü düzenleyebilirsiniz"
+            >
+              <i data-lucide="shield" class="w-3 h-3 text-slate-400 group-hover:text-amber-400"></i>
+              <span>Yönetici: Ürünü Düzenle</span>
+            </button>
+          `) + `
         </div>
 
         <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight mb-3">
@@ -3592,6 +3714,19 @@ function initProductDetailPage() {
           <i data-lucide="message-circle" class="w-4 h-4"></i>
           <span>WhatsApp ile Hızlı Sipariş Ver &amp; Bilgi Al (0507 020 11 98)</span>
         </a>
+
+        <!-- Admin Direct Edit Button -->
+        ` + (isAdmin ? `
+          <div class="pt-2 border-t border-slate-800/80">
+            <button 
+              onclick="openEditProductModal('` + p.id + `')" 
+              class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-400/15 to-amber-500/20 hover:from-amber-500/30 hover:to-amber-400/30 text-amber-300 border border-amber-500/40 hover:border-amber-400/60 font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(245,158,11,0.15)] group"
+            >
+              <i data-lucide="edit" class="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform"></i>
+              <span>Yönetici Paneli: Bu Ürünü Düzenle (Fiyat, Stok, Bilgiler)</span>
+            </button>
+          </div>
+        ` : '') + `
       </div>
 
     </div>
