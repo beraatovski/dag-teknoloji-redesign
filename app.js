@@ -1,10 +1,10 @@
-﻿/**
+/**
  * DAĞ TEKNOLOJİ - MODERN WEB PLATFORM & E-COMMERCE ENGINE
  * Real Products (3,428 Items), Multi-Filter, Stock System, Admin Panel, Membership System & 3D Engine
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3471';
+const DAG_CATALOG_VERSION = '2026.11.02.v3472';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -14,6 +14,7 @@ const initialProducts = (function() {
   if (savedVersion !== DAG_CATALOG_VERSION) {
     try {
       localStorage.removeItem('dag_custom_products');
+      localStorage.removeItem('dag_usd_exchange_rate');
       localStorage.setItem('dag_catalog_version', DAG_CATALOG_VERSION);
     } catch(e) {}
   } else {
@@ -113,19 +114,11 @@ async function fetchLiveUsdRate(force = false) {
   }
 
   if (fetchedRate) {
-    console.log(`[Döviz Kuru] Güncel USD/TRY kuru başarıyla çekildi: ${fetchedRate} ₺`);
+    console.log(`[Döviz Kuru] Güncel USD/TRY piyasa kuru: ${fetchedRate} ₺`);
     state.exchangeRate.current = fetchedRate;
     state.exchangeRate.lastUpdated = now;
     saveExchangeRateState();
     updateExchangeRateUI();
-
-    // Re-render catalog and details to reflect live prices
-    renderProducts();
-    if (document.getElementById('product-detail-hero')) {
-      initProductDetailPage();
-    }
-    renderAdminStats();
-    renderAdminProductsTable();
     return fetchedRate;
   } else {
     updateExchangeRateUI();
@@ -133,31 +126,22 @@ async function fetchLiveUsdRate(force = false) {
   }
 }
 
+// TÜM CİHAZLARDA KESİN FİYAT EŞİTLİĞİ:
+// Ürün fiyatları OpenCart veritabanından çekilen orijinal Türk Lirası fiyatlarıdır.
+// Hiçbir harici API veya çarpanla cihazlar arasında farklılaşamaz.
 function getProductPrice(p) {
   if (!p || typeof p.price !== 'number') return 0;
-  if (!state.exchangeRate || !state.exchangeRate.enabled) return p.price;
-  const base = state.exchangeRate.base || EXCHANGE_RATE_CONFIG.DEFAULT_BASE;
-  const current = state.exchangeRate.current || base;
-  const ratio = current / base;
-  return Math.max(1, Math.round(p.price * ratio));
+  return p.price;
 }
 
 function getProductOldPrice(p) {
   if (!p || !p.oldPrice) return 0;
-  if (!state.exchangeRate || !state.exchangeRate.enabled) return p.oldPrice;
-  const base = state.exchangeRate.base || EXCHANGE_RATE_CONFIG.DEFAULT_BASE;
-  const current = state.exchangeRate.current || base;
-  const ratio = current / base;
-  return Math.max(1, Math.round(p.oldPrice * ratio));
+  return p.oldPrice;
 }
 
 function updateExchangeRateUI() {
   if (!state.exchangeRate) return;
-  const current = state.exchangeRate.current || EXCHANGE_RATE_CONFIG.DEFAULT_CURRENT;
-  const base = state.exchangeRate.base || EXCHANGE_RATE_CONFIG.DEFAULT_BASE;
-  const ratio = current / base;
-  const pctChange = ((ratio - 1) * 100).toFixed(1);
-  const sign = pctChange > 0 ? '+' : '';
+  const current = state.exchangeRate.current || 49.94;
 
   // Top announcement bar live rate badge
   const topbarVal = document.getElementById('topbar-usd-val');
@@ -171,32 +155,24 @@ function updateExchangeRateUI() {
   const adminRatio = document.getElementById('admin-rate-ratio');
 
   if (adminCurr) adminCurr.innerText = `${current.toFixed(2)} ₺`;
-  if (adminBase) adminBase.innerText = `${base.toFixed(2)} ₺`;
-  if (adminRatio) adminRatio.innerText = `x${ratio.toFixed(3)} (${sign}${pctChange}%)`;
+  if (adminBase) adminBase.innerText = `Sabit Orijinal (TL)`;
+  if (adminRatio) adminRatio.innerText = `x1.000 (%0.0 Eşit)`;
 
   if (window.lucide) lucide.createIcons();
 }
 
 window.forceRefreshExchangeRate = async function() {
-  showToast('Canlı dolar kuru piyasadan sorgulanıyor...', 'info');
+  showToast('Canlı dolar piyasa kuru kontrol ediliyor...', 'info');
   const rate = await fetchLiveUsdRate(true);
   if (rate) {
-    showToast(`Dolar Kuru Güncellendi: 1 USD = ${rate.toFixed(2)} ₺. Fiyatlar otomatik eşitlendi!`, 'success');
+    showToast(`Dolar Kuru: 1 USD = ${rate.toFixed(2)} ₺. Katalog fiyatları tüm cihazlarda orijinal değerleriyle sabit tutuluyor.`, 'success');
   } else {
-    showToast('Döviz kuru servisine ulaşılamadı. Kayıtlı son kur kullanılıyor.', 'error');
+    showToast('Döviz kuru servisine ulaşılamadı.', 'error');
   }
 };
 
 window.setBaseRateToCurrent = function() {
-  state.exchangeRate.base = state.exchangeRate.current;
-  state.exchangeRate.hasCustomBase = true;
-  saveExchangeRateState();
-  updateExchangeRateUI();
-  renderProducts();
-  if (document.getElementById('product-detail-hero')) initProductDetailPage();
-  renderAdminStats();
-  renderAdminProductsTable();
-  showToast(`Mevcut kur (${state.exchangeRate.current.toFixed(2)} ₺) referans baz kur olarak ayarlandı. Değişim oranı %0.0 olarak sıfırlandı.`, 'success');
+  showToast('Katalog fiyatları tüm cihazlarda orijinal değerleriyle eşitlenmiştir.', 'info');
 };
 
 // Default registered users (OpenCart 56 gerçek üye havuzu veya varsayılan yönetici)
