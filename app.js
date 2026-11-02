@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3451';
+const DAG_CATALOG_VERSION = '2026.11.02.v3452';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -2249,7 +2249,8 @@ function getCategoryName(cat) {
 }
 
 // ==========================================================================
-// 5. E-COMMERCE SHOPPING CART & REAL STOCK RESERVATION
+// 5. E-COMMERCE SHOPPING CART & STOCK MANAGEMENT
+// (Sepete eklemede stok düşülmez; sadece sipariş onaylandığında stoktan düşülür)
 // ==========================================================================
 window.addToCart = function(productId, qty = 1) {
   const prod = state.products.find(p => p.id === productId);
@@ -2265,7 +2266,7 @@ window.addToCart = function(productId, qty = 1) {
   const currentInCart = existing ? existing.quantity : 0;
 
   if (currentInCart + qty > currentStock) {
-    showToast(`Maksimum stok limitine ulaştınız! Mevcut stok: ${currentStock} adet`, 'error');
+    showToast(`Maksimum mevcut stok limitine (${currentStock} adet) ulaştınız!`, 'error');
     return;
   }
 
@@ -2285,7 +2286,7 @@ window.addToCart = function(productId, qty = 1) {
   saveCart();
   updateCartBadge();
   renderCartDrawer();
-  showToast(`${prod.name} sepete eklendi! (Kalan Stok: ${currentStock - (currentInCart + qty)})`, 'success');
+  showToast(`${prod.name} sepete eklendi!`, 'success');
 };
 
 function saveCart() {
@@ -2914,6 +2915,9 @@ function finalizeSuccessfulOrder(pending) {
   renderProducts();
   renderAdminStats();
   renderAdminProductsTable();
+  if (typeof initProductDetailPage === 'function' && document.getElementById('product-detail-hero')) {
+    initProductDetailPage();
+  }
 
   // Show Success Receipt Modal
   const recId = document.getElementById('receipt-order-id');
