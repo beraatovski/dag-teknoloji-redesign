@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3465';
+const DAG_CATALOG_VERSION = '2026.11.02.v3466';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -2112,7 +2112,7 @@ window.renderProfileWishlist = function() {
           <div class="flex items-center justify-between pt-2 border-t border-slate-800/80">
             <span class="text-sm font-extrabold text-white font-mono">${price.toLocaleString('tr-TR')} ₺</span>
             <div class="flex items-center gap-1.5">
-              <button onclick="addToCart('${p.id}'); window.location.href='sepet.html';" class="p-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 transition-colors" title="Sepete Ekle">
+              <button onclick="addToCart('${p.id}');" class="p-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 transition-colors" title="Sepete Ekle">
                 <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
               </button>
               <button onclick="toggleWishlist('${p.id}'); renderProfileWishlist();" class="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors" title="Favorilerden Çıkar">
@@ -3911,7 +3911,7 @@ window.openProductModal = function(productId) {
               Ürün Şu Anda Tükendi
             </button>
           ` : `
-            <button onclick="addToCart('${p.id}'); closeModal('product-modal'); window.location.href = 'sepet.html';" class="flex-1 py-3 px-4 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md">
+            <button onclick="addToCart('${p.id}'); closeModal('product-modal');" class="flex-1 py-3 px-4 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md">
               <i data-lucide="shopping-cart" class="w-4 h-4"></i>
               <span>Sepete Ekle</span>
             </button>
@@ -5624,7 +5624,7 @@ function initProductDetailPage() {
             </button>
           ` : `
             <button 
-              onclick="addToCart('` + p.id + `', detailSelectedQty); window.location.href = 'sepet.html';" 
+              onclick="addToCart('` + p.id + `', detailSelectedQty);" 
               class="flex-1 py-3.5 px-6 rounded-xl glow-cyan-btn text-slate-950 font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-95 cursor-pointer"
             >
               <i data-lucide="shopping-cart" class="w-4 h-4"></i>
