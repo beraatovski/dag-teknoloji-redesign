@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3446';
+const DAG_CATALOG_VERSION = '2026.11.02.v3447';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -2550,11 +2550,7 @@ window.openProductModal = function(productId) {
           <span class="text-3xl font-extrabold text-white">${getProductPrice(p).toLocaleString('tr-TR')} ₺</span>
           ${p.oldPrice ? `<span class="text-sm text-slate-500 line-through">${getProductOldPrice(p).toLocaleString('tr-TR')} ₺</span>` : ''}
           <span class="text-xs text-emerald-400 font-medium">KDV Dahil</span>
-          ${state.exchangeRate && state.exchangeRate.current ? `
-            <span class="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-              ~ ${(getProductPrice(p) / state.exchangeRate.current).toFixed(2)} USD
-            </span>
-          ` : ''}
+          
         </div>
 
         <div class="flex items-center gap-2.5">
@@ -3515,11 +3511,7 @@ function initProductDetailPage() {
           </div>
           <div class="text-[11px] text-slate-400 mt-1 flex items-center gap-2 flex-wrap">
             <span>Fiyatlara KDV dahildir • Kurumsal fatura düzenlenir.</span>
-            ` + (state.exchangeRate && state.exchangeRate.current ? `
-              <span class="text-emerald-400/90 font-mono text-[10px] bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                (~ ` + (getProductPrice(p) / state.exchangeRate.current).toFixed(2) + ` USD • Canlı Kur: ` + state.exchangeRate.current.toFixed(2) + ` ₺)
-              </span>
-            ` : '') + `
+            
           </div>
         </div>
 
