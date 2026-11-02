@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3453';
+const DAG_CATALOG_VERSION = '2026.11.02.v3454';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -3347,6 +3347,11 @@ window.openNewProductModal = function() {
 };
 
 window.openEditProductModal = function(productId) {
+  const isAdmin = !!(state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr' || state.currentUser.email === 'admin@dag.com' || state.isAdmin));
+  if (!isAdmin) {
+    showToast('Bu işlemi gerçekleştirmek için yetkili yönetici girişi yapmalısınız.', 'error');
+    return;
+  }
   const p = state.products.find(item => item.id === productId);
   if (!p) return;
 
@@ -3987,16 +3992,7 @@ function initProductDetailPage() {
               <span>Ürünü Düzenle</span>
               <span class="px-1.5 py-0.2 text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded font-mono font-bold">ADMIN</span>
             </button>
-          ` : `
-            <button 
-              onclick="handleAdminEditPrompt('` + p.id + `')" 
-              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-amber-400/40 text-slate-400 hover:text-amber-300 text-[11px] font-medium transition-all group"
-              title="Yönetici girişi yaparak bu ürünü düzenleyebilirsiniz"
-            >
-              <i data-lucide="shield" class="w-3 h-3 text-slate-400 group-hover:text-amber-400"></i>
-              <span>Yönetici: Ürünü Düzenle</span>
-            </button>
-          `) + `
+          ` : '') + `
         </div>
 
         <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight mb-3">
