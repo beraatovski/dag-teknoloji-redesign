@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3460';
+const DAG_CATALOG_VERSION = '2026.11.02.v3461';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -1811,35 +1811,74 @@ window.toggleWishlist = function(productId) {
 };
 
 window.openMyOrdersModal = function() {
-  if (!state.currentUser) return;
+  if (!state.currentUser) {
+    if (typeof openAuthModal === 'function') openAuthModal('login');
+    return;
+  }
   const u = state.currentUser;
   const listEl = document.getElementById('user-orders-list');
   const emptyEl = document.getElementById('user-orders-empty');
 
-  const orders = u.orders || [];
-  if (orders.length === 0) {
+  const userOrderIds = (u.orders || []).map(o => typeof o === 'string' ? o.replace('ORD-', '') : (o.id ? String(o.id).replace('ORD-', '') : ''));
+  const userEmail = (u.email || '').toLowerCase().trim();
+  const userPhone = (u.phone || '').replace(/\D/g, '');
+  const ocCustId = (u.id || '').replace('oc-usr-', '');
+
+  const matchedOrders = (state.orders || []).filter(o => {
+    const oId = String(o.id || '').replace('ORD-', '');
+    if (userOrderIds.includes(oId)) return true;
+    if (userEmail && o.email && o.email.toLowerCase().trim() === userEmail) return true;
+    if (ocCustId && o.customer_id && String(o.customer_id) === ocCustId) return true;
+    if (userPhone && userPhone.length >= 7 && o.phone && o.phone.replace(/\D/g, '').includes(userPhone)) return true;
+    return false;
+  }).sort((a, b) => (parseInt(b.id) || 0) - (parseInt(a.id) || 0));
+
+  if (matchedOrders.length === 0) {
     if (listEl) listEl.innerHTML = '';
     if (emptyEl) emptyEl.classList.remove('hidden');
   } else {
     if (emptyEl) emptyEl.classList.add('hidden');
     if (listEl) {
-      listEl.innerHTML = orders.map(o => `
-        <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="text-xs font-mono font-bold text-cyan-400">#ORD-${o.id}</span>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold">${o.status || 'Hazırlanıyor'}</span>
+      listEl.innerHTML = matchedOrders.map(o => {
+        const isCompleted = (o.status || '').toLowerCase().includes('tamam') || o.statusId === '5';
+        return `
+          <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700/80 flex flex-col gap-3 transition-all hover:border-cyan-500/40">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-700/60 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono font-bold text-cyan-400">#ORD-${o.id}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full ${isCompleted ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'} font-bold">
+                  ${o.status || 'Hazırlanıyor'}
+                </span>
+                <span class="text-[11px] text-slate-400 font-mono">${o.date || '-'}</span>
+              </div>
+              <div class="text-right">
+                <span class="text-sm font-extrabold text-white font-mono">${(parseFloat(o.total) || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺</span>
+              </div>
             </div>
-            <p class="text-xs text-white font-medium line-clamp-1">${o.itemsSummary || (o.itemsCount + ' Adet Ürün')}</p>
-            <span class="text-[11px] text-slate-400 font-mono">${o.date}</span>
-          </div>
 
-          <div class="text-right flex sm:flex-col justify-between items-center sm:items-end">
-            <span class="text-sm font-extrabold text-white font-mono">${(o.total || 0).toLocaleString('tr-TR')} ₺</span>
-            <span class="text-[10px] text-cyan-400">Perpa Depo Teslim</span>
+            <!-- Kalemler -->
+            <div class="space-y-1.5">
+              ${(o.items && o.items.length > 0) ? o.items.map(it => `
+                <div class="flex items-center justify-between text-xs bg-slate-900/40 px-2.5 py-1.5 rounded-lg border border-slate-800/80">
+                  <span class="text-slate-200 font-medium">
+                    <span class="text-cyan-400 font-mono font-bold mr-1">${it.quantity || 1}x</span> ${it.name || it.model}
+                  </span>
+                  <span class="text-slate-300 font-mono">${((parseFloat(it.price) || 0) * (it.quantity || 1)).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺</span>
+                </div>
+              `).join('') : `
+                <p class="text-xs text-slate-300 font-medium">${o.itemsSummary || (o.itemsCount ? o.itemsCount + ' Adet Ürün' : 'Sipariş Detayı')}</p>
+              `}
+            </div>
+            
+            ${(o.address || o.city) ? `
+              <div class="text-[11px] text-slate-400 font-mono flex items-center gap-1.5 pt-1.5 border-t border-slate-800/80">
+                <i data-lucide="truck" class="w-3.5 h-3.5 text-cyan-400 shrink-0"></i>
+                <span class="truncate">Teslimat Adresi: ${o.address || ''} ${o.city ? '(' + o.city + ')' : ''}</span>
+              </div>
+            ` : ''}
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
   }
 
@@ -2323,7 +2362,7 @@ function renderProducts() {
             </a>
 
             <div class="flex flex-wrap gap-1 mb-5">
-              ${(p.specs || []).slice(0, 2).map(s => `
+              ${(getProductQuickSpecs(p) || []).slice(0, 2).map(s => `
                 <span class="text-[10px] bg-slate-800/80 border border-slate-700/60 text-slate-300 px-2 py-0.5 rounded">
                   ${s}
                 </span>
@@ -2511,29 +2550,17 @@ function ensureCartDrawerElements() {
 }
 
 window.toggleCartDrawer = function(forceOpen) {
-  const { drawer, backdrop } = ensureCartDrawerElements();
-
-  const isOpen = !drawer.classList.contains('hidden') && !drawer.classList.contains('translate-x-full');
-  const shouldOpen = forceOpen !== undefined ? forceOpen : !isOpen;
-
-  if (shouldOpen) {
-    renderCartDrawer();
-    drawer.classList.remove('hidden');
-    backdrop.classList.remove('hidden');
-    requestAnimationFrame(() => {
-      drawer.classList.remove('translate-x-full');
-      backdrop.classList.remove('opacity-0');
-      backdrop.classList.add('opacity-100');
-    });
-  } else {
-    drawer.classList.add('translate-x-full');
-    backdrop.classList.add('opacity-0');
-    setTimeout(() => {
-      drawer.classList.add('hidden');
-      backdrop.classList.add('hidden');
-    }, 300);
+  if (forceOpen === false) {
+    const drawer = document.getElementById('cart-drawer');
+    const backdrop = document.getElementById('cart-backdrop');
+    if (drawer) drawer.classList.add('hidden', 'translate-x-full');
+    if (backdrop) backdrop.classList.add('hidden', 'opacity-0');
+    return;
   }
+  // Sepet her kontrol edilmek istendiğinde doğrudan özel sepet sayfasına yönlendir
+  window.location.href = 'sepet.html';
 };
+window.openCartModal = window.toggleCartDrawer;
 
 function renderCartDrawer() {
   const container = document.getElementById('cart-items-container');
@@ -3761,11 +3788,19 @@ function renderAdminOrdersTable() {
 
   container.innerHTML = displayOrders.map((o, idx) => {
     const isCompleted = (o.status || '').toLowerCase().includes('tamam') || o.statusId === '5';
+    const custIdentifier = o.customer_id ? ('oc-usr-' + o.customer_id) : (o.email || '');
     return `
       <tr class="border-b border-slate-800/80 hover:bg-slate-900/40 transition-colors">
-        <td class="py-3 px-4 text-xs font-mono text-cyan-400 font-bold">#ORD-${o.id || (1000 + idx)}</td>
+        <td class="py-3 px-4 text-xs font-mono text-cyan-400 font-bold">
+          <button onclick="openCustomerOrdersModal('${custIdentifier}')" class="text-cyan-400 hover:text-cyan-300 hover:underline font-bold text-xs font-mono flex items-center gap-1.5 cursor-pointer text-left" title="Sipariş Kalemlerini ve Müşteri Detaylarını İncele">
+            <span>#ORD-${o.id || (1000 + idx)}</span>
+            <i data-lucide="eye" class="w-3 h-3 opacity-60"></i>
+          </button>
+        </td>
         <td class="py-3 px-4 text-xs">
-          <div class="font-bold text-white">${o.customer || 'İsimsiz Müşteri'}</div>
+          <button onclick="openCustomerOrdersModal('${custIdentifier}')" class="font-bold text-white hover:text-cyan-400 transition-colors text-left flex items-center gap-1">
+            <span>${o.customer || 'İsimsiz Müşteri'}</span>
+          </button>
           ${o.company ? `<div class="text-[10px] text-slate-400 font-mono">${o.company}</div>` : ''}
           ${o.city ? `<div class="text-[10px] text-slate-500">${o.city}</div>` : ''}
         </td>
@@ -3854,7 +3889,22 @@ function renderAdminUsersTable() {
     const isBerat = (u.email && u.email.toLowerCase() === 'beratakkurt346@gmail.com');
     const isAdmin = isBerat || u.role === 'admin';
     const isCorporate = (u.accountType === 'corporate' || (u.company && u.company.trim().length > 0));
-    const orderCount = Array.isArray(u.orders) ? u.orders.length : 0;
+    
+    // Kullanıcının sipariş sayısını hesapla
+    const userOrderIds = (u.orders || []).map(o => typeof o === 'string' ? o.replace('ORD-', '') : (o.id ? String(o.id).replace('ORD-', '') : ''));
+    const userEmail = (u.email || '').toLowerCase().trim();
+    const userPhone = (u.phone || '').replace(/\D/g, '');
+    const ocCustId = (u.id || '').replace('oc-usr-', '');
+
+    const userOrders = (state.orders || []).filter(o => {
+      const oId = String(o.id || '').replace('ORD-', '');
+      if (userOrderIds.includes(oId)) return true;
+      if (userEmail && o.email && o.email.toLowerCase().trim() === userEmail) return true;
+      if (ocCustId && o.customer_id && String(o.customer_id) === ocCustId) return true;
+      if (userPhone && userPhone.length >= 7 && o.phone && o.phone.replace(/\D/g, '').includes(userPhone)) return true;
+      return false;
+    });
+    const orderCount = Math.max((u.orders || []).length, userOrders.length);
 
     return `
       <tr class="hover:bg-slate-900/40 transition-colors">
@@ -3898,20 +3948,35 @@ function renderAdminUsersTable() {
           `}
         </td>
         <td class="py-3 px-4 font-mono">
-          <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[11px] font-semibold">${orderCount} Sipariş</span>
-        </td>
-        <td class="py-3 px-4 text-right">
-          ${isBerat ? `
-            <span class="text-[11px] text-amber-400/80 italic font-mono pr-2">Sabit Sistem Yöneticisi</span>
-          ` : isAdmin ? `
-            <button onclick="demoteUserFromAdmin('${u.id || u.email}')" class="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/30 text-xs font-semibold transition-all">
-              Admin Yetkisini Al
+          ${orderCount > 0 ? `
+            <button onclick="openCustomerOrdersModal('${u.id || u.email}')" class="px-2.5 py-1 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm group cursor-pointer" title="Sipariş Detaylarını ve Geçmişini İncele">
+              <i data-lucide="receipt" class="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform"></i>
+              <span>${orderCount} Sipariş</span>
+              <i data-lucide="eye" class="w-3 h-3 text-cyan-400 opacity-70"></i>
             </button>
           ` : `
-            <button onclick="promoteUserToAdmin('${u.id || u.email}')" class="px-3 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 hover:text-amber-200 border border-amber-500/30 text-xs font-semibold transition-all">
-              + Admin Yap
-            </button>
+            <span class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-500 text-xs font-mono">0 Sipariş</span>
           `}
+        </td>
+        <td class="py-3 px-4 text-right">
+          <div class="flex items-center justify-end gap-1.5">
+            ${orderCount > 0 ? `
+              <button onclick="openCustomerOrdersModal('${u.id || u.email}')" class="p-1.5 rounded-lg bg-slate-800 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 border border-slate-700/80 text-xs transition-colors" title="Sipariş Geçmişini Görüntüle">
+                <i data-lucide="history" class="w-3.5 h-3.5 text-cyan-400"></i>
+              </button>
+            ` : ''}
+            ${isBerat ? `
+              <span class="text-[11px] text-amber-400/80 italic font-mono pr-2">Sabit Sistem Yöneticisi</span>
+            ` : isAdmin ? `
+              <button onclick="demoteUserFromAdmin('${u.id || u.email}')" class="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/30 text-xs font-semibold transition-all">
+                Admin Yetkisini Al
+              </button>
+            ` : `
+              <button onclick="promoteUserToAdmin('${u.id || u.email}')" class="px-3 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 hover:text-amber-200 border border-amber-500/30 text-xs font-semibold transition-all">
+                + Admin Yap
+              </button>
+            `}
+          </div>
         </td>
       </tr>
     `;
@@ -3921,6 +3986,162 @@ function renderAdminUsersTable() {
 }
 
 window.renderAdminUsersTable = renderAdminUsersTable;
+
+// Üyenin tüm geçmiş siparişlerini detaylı listeleyen modal
+window.openCustomerOrdersModal = function(identifier) {
+  if (!identifier) return;
+  const user = (state.users || []).find(u => (u.id && u.id === identifier) || (u.email && u.email.toLowerCase() === identifier.toLowerCase()));
+  if (!user) {
+    showToast('Kullanıcı bulunamadı.', 'warning');
+    return;
+  }
+
+  // Kullanıcının siparişlerini bul
+  const userOrderIds = (user.orders || []).map(o => typeof o === 'string' ? o.replace('ORD-', '') : (o.id ? String(o.id).replace('ORD-', '') : ''));
+  const userEmail = (user.email || '').toLowerCase().trim();
+  const userPhone = (user.phone || '').replace(/\D/g, '');
+  const ocCustId = (user.id || '').replace('oc-usr-', '');
+
+  const matchedOrders = (state.orders || []).filter(o => {
+    const oId = String(o.id || '').replace('ORD-', '');
+    if (userOrderIds.includes(oId)) return true;
+    if (userEmail && o.email && o.email.toLowerCase().trim() === userEmail) return true;
+    if (ocCustId && o.customer_id && String(o.customer_id) === ocCustId) return true;
+    if (userPhone && userPhone.length >= 7 && o.phone && o.phone.replace(/\D/g, '').includes(userPhone)) return true;
+    return false;
+  }).sort((a, b) => (parseInt(b.id) || 0) - (parseInt(a.id) || 0));
+
+  let modal = document.getElementById('customer-orders-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'customer-orders-modal';
+    modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto hidden';
+    document.body.appendChild(modal);
+  }
+
+  const isBerat = (user.email && user.email.toLowerCase() === 'beratakkurt346@gmail.com');
+  const isAdmin = isBerat || user.role === 'admin';
+  const totalSpent = matchedOrders.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0);
+
+  modal.innerHTML = `
+    <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-md" onclick="closeModal('customer-orders-modal')"></div>
+    <div class="relative w-full max-w-3xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl p-5 sm:p-7 max-h-[90vh] flex flex-col z-10 animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Başlık & Kullanıcı Özeti -->
+      <div class="flex items-start justify-between pb-4 border-b border-slate-800 shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl ${isAdmin ? 'bg-amber-500/20 border border-amber-500/40 text-amber-300' : 'bg-cyan-500/20 border border-cyan-500/30 text-cyan-300'} flex items-center justify-center font-bold text-lg shrink-0">
+            ${(user.name || 'U').charAt(0).toUpperCase()}
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h3 class="text-lg font-bold text-white">${user.name || 'İsimsiz Müşteri'}</h3>
+              ${isAdmin ? '<span class="px-2 py-0.5 rounded text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">Admin</span>' : '<span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-300 border border-slate-700">Müşteri</span>'}
+              ${user.company ? '<span class="px-2 py-0.5 rounded text-[10px] bg-blue-500/20 text-blue-300 border border-blue-500/30 font-semibold flex items-center gap-1"><i data-lucide="building" class="w-3 h-3"></i>' + user.company + '</span>' : ''}
+            </div>
+            <div class="flex flex-wrap items-center gap-3 text-xs text-slate-400 mt-1 font-mono">
+              <span class="flex items-center gap-1"><i data-lucide="mail" class="w-3.5 h-3.5 text-slate-500"></i> ${user.email || '-'}</span>
+              <span class="flex items-center gap-1"><i data-lucide="phone" class="w-3.5 h-3.5 text-slate-500"></i> ${user.phone || '-'}</span>
+            </div>
+          </div>
+        </div>
+        <button onclick="closeModal('customer-orders-modal')" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Özet Kartları -->
+      <div class="grid grid-cols-3 gap-3 my-4 shrink-0">
+        <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-3">
+          <div class="text-[11px] text-slate-400">Toplam Sipariş</div>
+          <div class="text-lg font-extrabold text-white font-mono mt-0.5">${matchedOrders.length} Adet</div>
+        </div>
+        <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-3">
+          <div class="text-[11px] text-slate-400">Toplam Ciro / Harcama</div>
+          <div class="text-lg font-extrabold text-emerald-400 font-mono mt-0.5">${totalSpent.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺</div>
+        </div>
+        <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-3">
+          <div class="text-[11px] text-slate-400">Kayıt / Üyelik Tarihi</div>
+          <div class="text-xs font-semibold text-slate-300 font-mono mt-1.5 truncate">${user.dateAdded || 'Mevcut Müşteri'}</div>
+        </div>
+      </div>
+
+      ${user.address ? `
+        <div class="mb-4 px-3 py-2 rounded-xl bg-slate-800/30 border border-slate-800 text-xs text-slate-400 flex items-start gap-2 shrink-0">
+          <i data-lucide="map-pin" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+          <div><strong class="text-slate-300">Kayıtlı Adres:</strong> ${user.address}</div>
+        </div>
+      ` : ''}
+
+      <!-- Sipariş Listesi -->
+      <div class="flex-1 overflow-y-auto pr-1 space-y-3 custom-scrollbar">
+        ${matchedOrders.length === 0 ? `
+          <div class="text-center py-12 text-slate-500">
+            <i data-lucide="package-x" class="w-12 h-12 mx-auto mb-2 opacity-40"></i>
+            <p class="text-sm font-medium">Bu üyeye ait henüz kayıtlı bir sipariş bulunamadı.</p>
+          </div>
+        ` : matchedOrders.map(o => {
+          const isDone = (o.status && o.status.toLowerCase().includes('tamam')) || o.statusId === '5' || o.statusId === 5;
+          return `
+            <div class="bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 transition-all hover:border-cyan-500/40">
+              <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 mb-2.5 border-b border-slate-700/60">
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded-lg bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold">#ORD-${o.id}</span>
+                  <span class="text-xs font-mono text-slate-400 flex items-center gap-1">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${o.date || '-'}
+                  </span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold ${isDone ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'} flex items-center gap-1">
+                    <i data-lucide="${isDone ? 'check-circle' : 'clock'}" class="w-3 h-3"></i>
+                    ${o.status || 'İşlemde'}
+                  </span>
+                  <span class="text-sm font-extrabold text-white font-mono ml-2">
+                    ${(parseFloat(o.total) || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺
+                  </span>
+                </div>
+              </div>
+
+              <!-- Kalemler -->
+              <div class="space-y-1.5">
+                ${(o.items && o.items.length > 0) ? o.items.map(it => `
+                  <div class="flex items-center justify-between text-xs bg-slate-900/60 px-3 py-2 rounded-lg border border-slate-800/80">
+                    <div class="flex items-center gap-2 pr-2">
+                      <span class="w-5 h-5 rounded bg-slate-800 text-cyan-400 font-mono font-bold text-[10px] flex items-center justify-center shrink-0">${it.quantity || 1}x</span>
+                      <span class="text-slate-200 font-medium">${it.name || it.model || 'Ürün'}</span>
+                    </div>
+                    <div class="text-right font-mono text-slate-300 shrink-0">
+                      ${((parseFloat(it.price) || 0) * (it.quantity || 1)).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺
+                    </div>
+                  </div>
+                `).join('') : `
+                  <div class="text-xs text-slate-300 py-1 font-mono">${o.itemsSummary || (o.itemsCount ? o.itemsCount + ' Adet Ürün' : 'Sipariş Kalemi')}</div>
+                `}
+              </div>
+
+              ${(o.address || o.city) ? `
+                <div class="mt-2.5 pt-2 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center gap-1.5 font-mono">
+                  <i data-lucide="truck" class="w-3 h-3 text-cyan-400 shrink-0"></i>
+                  <span class="truncate">Teslimat: ${o.address || ''} ${o.city ? '(' + o.city + ')' : ''}</span>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('')}
+      </div>
+
+      <div class="pt-4 mt-2 border-t border-slate-800 flex justify-end shrink-0">
+        <button onclick="closeModal('customer-orders-modal')" class="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-medium text-xs transition-colors">
+          Kapat
+        </button>
+      </div>
+
+    </div>
+  `;
+
+  openModal('customer-orders-modal');
+  if (window.lucide) lucide.createIcons();
+};
 
 window.promoteUserToAdmin = function(identifier) {
   const user = state.users.find(u => (u.id === identifier || (u.email && u.email.toLowerCase() === identifier.toLowerCase())));
@@ -4299,6 +4520,25 @@ function showToast(message, type = 'info') {
 }
 
 function setupEventListeners() {
+  // Sayfa içi hash bağlantılarına (Hakkımızda, Hizmetlerimiz, İletişim vb.) tıklandığında
+  // URL linkini (#about-section vb.) değiştirmeden yumuşak kaydırma
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const targetHash = a.getAttribute('href');
+    if (targetHash && targetHash !== '#' && targetHash.length > 1) {
+      const targetElement = document.querySelector(targetHash);
+      if (targetElement) {
+        e.preventDefault();
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Adres çubuğundaki hash'i kaldır / URL'i temiz tut
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+      }
+    }
+  });
+
   // Mobile Nav Toggle
   const mobileToggle = document.getElementById('mobile-menu-btn');
   const mobileNav = document.getElementById('mobile-menu');
@@ -4377,11 +4617,93 @@ window.switchDetailMainImage = function(src, btnEl) {
   }
 };
 
+function getProductQuickSpecs(p) {
+  if (!p) return ['Orijinal Garanti', 'Perpa Stok', 'Aynı Gün Kargo'];
+  const name = (p.name || '').toLowerCase();
+  const cat = p.category || '';
+
+  // 1. Lazer Gravür & Kesim Makineleri
+  if (name.includes('lazer') || name.includes('laser') || name.includes('falcon') || name.includes('ray') || name.includes('gravür') || name.includes('gravur')) {
+    const power = name.includes('40w') ? '40W Optik Güç' : name.includes('22w') ? '22W Optik Güç' : name.includes('20w') ? '20W Optik Güç' : name.includes('10w') ? '10W Optik Güç' : 'Hassas Lazer Başlığı';
+    return [power, '400x415mm Çalışma Alanı', '0.06mm Ultra Odak Noktası', 'LightBurn & Air Assist'];
+  }
+
+  // 2. 3D Tarayıcılar (Scanners)
+  if (name.includes('tarayıcı') || name.includes('tarayici') || name.includes('scan') || name.includes('ferret') || name.includes('raptor') || name.includes('otter') || name.includes('lizard')) {
+    const acc = name.includes('raptor') ? '0.02 mm Metroloji' : '0.05 mm Hassasiyet';
+    return [acc, '60 FPS Hızlı Tarama', '24-Bit Renkli RGB Kamera', 'OBJ / STL / PLY CAD Çıktı'];
+  }
+
+  // 3. Reçine (SLA/DLP/LCD) 3D Yazıcılar
+  if (name.includes('reçine') || name.includes('recine') || name.includes('resin') || name.includes('halot') || name.includes('mars') || name.includes('photon') || name.includes('saturn')) {
+    return ['12K/14K Mono LCD', '35 µm Yüksek Çözünürlük', 'COB Entegre Işık Kaynağı', 'Dahili Aktif Hava Filtresi'];
+  }
+
+  // 4. FDM 3D Yazıcılar
+  if (cat === 'printers' || name.includes('yazıcı') || name.includes('yazici') || name.includes('printer') || name.includes('bambu') || name.includes('flsun') || name.includes('k1') || name.includes('ender') || name.includes('cr-m4')) {
+    if (name.includes('flsun')) {
+      return ['1000+ mm/s Delta Hız', '350°C All-Metal Hotend', 'Aktif Titreşim Dengeleme', 'Otomatik Kalibrasyon'];
+    }
+    if (name.includes('bambu')) {
+      return ['500 mm/s CoreXY Hız', 'Tam Otomatik Kalibrasyon', 'AMS Çoklu Renk Desteği', 'Dahili AI Kamera'];
+    }
+    if (name.includes('k1')) {
+      return ['600 mm/s Hızlı CoreXY', '300°C Hızlı Isınan Hotend', 'Hands-Free Seviyeleme', 'Dahili G-Sensör'];
+    }
+    return ['500 mm/s Maks. Hız', '300°C All-Metal Nozzle', 'Otomatik Tabla Seviyeleme', 'PEI Manyetik Tabla'];
+  }
+
+  // 5. Filamentler
+  if (cat === 'filaments' || name.includes('filament') || name.includes('pla') || name.includes('petg') || name.includes('abs') || name.includes('tpu') || name.includes('asa')) {
+    if (name.includes('petg')) {
+      return ['1.75 mm ±0.02mm', 'Darbe & Kimyasal Direnci', '230°C - 250°C Baskı', '1 Kg Düğümsüz Sarım'];
+    }
+    if (name.includes('tpu') || name.includes('esnek')) {
+      return ['Esnek 95A Sertlik', 'Yüksek Aşınma Dayanımı', '210°C - 230°C Baskı', '1.75 mm Hassas Çap'];
+    }
+    if (name.includes('abs') || name.includes('asa')) {
+      return ['Yüksek Isı & Darbe Dayanımı', 'Dış Mekan & UV Direnci', '240°C - 260°C Baskı', 'Kapalı Kasa Uyumlu'];
+    }
+    if (name.includes('karbon') || name.includes('carbon') || name.includes('cf')) {
+      return ['Karbon Elyaf Takviyeli', 'Ultra Yüksek Rijitlik', 'Endüstriyel Mukavemet', '1.75 mm Çap'];
+    }
+    return ['1.75 mm ±0.02mm Tolerans', 'Düğümsüz Robotik Sarım', '195°C - 225°C Baskı', '1 Kg Net Vakumlu Paket'];
+  }
+
+  // 6. Lazer Toner Kartuşları
+  if (cat === 'toners' || name.includes('toner') || name.includes('kartuş') || name.includes('kartus')) {
+    const color = name.includes('cyan') || name.includes('mavi') ? 'Mavi (Cyan)' : name.includes('magenta') || name.includes('kırmızı') ? 'Kırmızı (Magenta)' : name.includes('yellow') || name.includes('sarı') ? 'Sarı (Yellow)' : 'Derin Siyah';
+    return ['A+ Premium Muadil', 'Akıllı Sıfır Çip', color, 'ISO 9001 Standart'];
+  }
+
+  // 7. Fotokopi & Lazer Yazıcı Parçaları (Drum, Bıçak, Merdane, Fuser Film, Dişli)
+  if (name.includes('drum') || name.includes('bıçak') || name.includes('bicak') || name.includes('blade') || name.includes('film') || name.includes('merdane') || name.includes('roller') || name.includes('fuser') || name.includes('developer') || name.includes('paten')) {
+    return ['Uzun Ömürlü OPC Alaşım', 'Yüksek Aşınma Direnci', 'Birebir Uyumlu Ölçü', 'Net & Lekesiz Baskı'];
+  }
+
+  // 8. 3D Yazıcı Mekanik & Elektronik Yedek Parçaları (Nozzle, Hotend, Boğaz, Extruder, Motor, Tabla)
+  if (name.includes('nozzle') || name.includes('hotend') || name.includes('boğaz') || name.includes('bogaz') || name.includes('blok') || name.includes('ekstruder') || name.includes('extruder') || name.includes('motor') || name.includes('tabla') || name.includes('pei') || name.includes('anakart') || name.includes('termistör')) {
+    if (name.includes('nozzle')) {
+      return ['Mikron CNC İşleme', 'M6 / Yüksek Isı İletkenliği', 'Aşınmaya Karşı Dayanıklı', 'Geniş Flaman Uyumu'];
+    }
+    if (name.includes('tabla') || name.includes('pei')) {
+      return ['Dokulu PEI Yay Çeliği', 'Kusursuz İlk Katman', 'Kolay Parça Çıkarma', 'Manyetik Güçlü Taban'];
+    }
+    return ['CNC Mikron Tolerans', 'Yüksek Termal İletkenlik', 'Kolay Montaj & Geniş Uyumluluk', 'Dağ Teknoloji Güvencesi'];
+  }
+
+  // Varsayılan
+  return ['Perpa Merkez Stok', 'Aynı Gün Hızlı Kargo', 'Orijinal Tedarik', 'Dağ Teknoloji Güvencesi'];
+}
+window.getProductQuickSpecs = getProductQuickSpecs;
+
 function getProductDetailedSpecs(p) {
   const specs = [];
   const name = (p.name || '').toLowerCase();
+  const cat = p.category || '';
   
-  if (p.category === 'printers') {
+  // 1. KATEGORİ: 3D YAZICILAR & LAZER MAKİNELERİ
+  if (cat === 'printers' || name.includes('yazıcı') || name.includes('yazici') || name.includes('printer') || name.includes('lazer') || name.includes('laser') || name.includes('scan')) {
     if (name.includes('bambu') && name.includes('a1 mini')) {
       specs.push({ key: 'Baskı Teknolojisi', val: 'FDM (Fused Deposition Modeling)' });
       specs.push({ key: 'Baskı Hacmi', val: '180 x 180 x 180 mm' });
@@ -4394,6 +4716,15 @@ function getProductDetailedSpecs(p) {
       specs.push({ key: 'Kamera & İzleme', val: 'Dahili Düşük Kare Hızlı İzleme & Hızlandırılmış Çekim Kamerası' });
       specs.push({ key: 'Bağlantı Türleri', val: 'Wi-Fi (Bambu Handy App & Bambu Studio), MicroSD' });
       specs.push({ key: 'Gövde Boyutları & Ağırlık', val: '347 x 315 x 365 mm • Net: 5.5 kg' });
+    } else if (name.includes('bambu')) {
+      specs.push({ key: 'Baskı Teknolojisi', val: 'Yüksek Hızlı CoreXY FDM' });
+      specs.push({ key: 'Baskı Hacmi', val: '256 x 256 x 256 mm' });
+      specs.push({ key: 'Maksimum Baskı Hızı', val: '500 mm/s (İvmelenme: 20.000 mm/s²)' });
+      specs.push({ key: 'Nozzle Sıcaklığı', val: 'Maks. 300°C Sertleştirilmiş Çelik Hotend' });
+      specs.push({ key: 'Tabla Sıcaklığı', val: 'Maks. 100°C PEI Dokulu Manyetik Tabla' });
+      specs.push({ key: 'Çoklu Renk Desteği', val: 'AMS / AMS Lite ile 16 Renk Baskı Desteği' });
+      specs.push({ key: 'Sensörler', val: 'Filament Tükenme Sensörü, Titreşim Kompenzasyonu, Otomatik Yatak Kalibrasyonu' });
+      specs.push({ key: 'Bağlantı', val: 'Wi-Fi, Bambu Bus, Bluetooth' });
     } else if (name.includes('flsun')) {
       specs.push({ key: 'Baskı Teknolojisi', val: 'Yüksek Hızlı Delta FDM Teknolojisi' });
       specs.push({ key: 'Baskı Hacmi', val: name.includes('s1') ? 'Ø 320 x 430 mm Ultra Geniş' : 'Ø 260 x 330 mm' });
@@ -4405,9 +4736,18 @@ function getProductDetailedSpecs(p) {
       specs.push({ key: 'Kurutma Kutusu', val: name.includes('s1') ? 'Entegre Filament Kurutma Bölmesi Dahil' : 'Opsiyonel' });
       specs.push({ key: 'Ekran & İşletim Sistemi', val: '7 inç Geniş IPS Dokunmatik Ekran • Klipper Tabanlı Flsun OS' });
       specs.push({ key: 'Bağlantı', val: 'Wi-Fi, Ethernet, USB Disk' });
-    } else if (name.includes('lazer') || name.includes('falcon') || name.includes('ray')) {
+    } else if (name.includes('k1') || name.includes('k1 max') || name.includes('k1c')) {
+      specs.push({ key: 'Baskı Teknolojisi', val: 'Kapalı Kasa Yüksek Hızlı CoreXY FDM' });
+      specs.push({ key: 'Baskı Hacmi', val: name.includes('max') ? '300 x 300 x 300 mm' : '220 x 220 x 250 mm' });
+      specs.push({ key: 'Maksimum Baskı Hızı', val: '600 mm/s (İvmelenme: 20.000 mm/s²)' });
+      specs.push({ key: 'Nozzle Sıcaklığı & Boğaz', val: 'Maks. 300°C Bimetal Boğaz & Titanyum/Bakır Alaşım' });
+      specs.push({ key: 'Tabla Sıcaklığı', val: 'Maks. 100°C - 120°C Esnek PEI Yatak' });
+      specs.push({ key: 'Ekstrüzyon Tipi', val: 'Çift Dişli Doğrudan (Direct Drive) Ekstruder' });
+      specs.push({ key: 'Seviyeleme Sistemi', val: 'Hands-Free Tam Otomatik Gerinim Sensörlü Kalibrasyon' });
+      specs.push({ key: 'Dahili Sensörler', val: 'G-Sensörü (Input Shaping), Kapı Algılama, Hava Filtresi' });
+    } else if (name.includes('lazer') || name.includes('laser') || name.includes('falcon') || name.includes('ray')) {
       specs.push({ key: 'Cihaz Tipi', val: 'Endüstriyel Kapalı Kasa Lazer Gravür & Kesim Makinesi' });
-      specs.push({ key: 'Optik Lazer Gücü', val: name.includes('40w') ? '40W Gerçek Çıkış Gücü (4x Diyot Birleştirme)' : '20W Diyot Lazer' });
+      specs.push({ key: 'Optik Lazer Gücü', val: name.includes('40w') ? '40W Gerçek Çıkış Gücü (4x Diyot Birleştirme)' : name.includes('22w') ? '22W Optik Güç' : '20W Diyot Lazer' });
       specs.push({ key: 'Lazer Dalgaboyu', val: '455 ± 5 nm Güçlü Mavi Lazer' });
       specs.push({ key: 'Çalışma / Gravür Alanı', val: '400 x 415 mm Geniş Çalışma Tablası' });
       specs.push({ key: 'Maksimum Gravür Hızı', val: '25.000 mm/dakika' });
@@ -4416,7 +4756,7 @@ function getProductDetailedSpecs(p) {
       specs.push({ key: 'Hava Desteği (Air Assist)', val: 'Entegre Akıllı Ayarlanabilir Hava Pompası Dahil' });
       specs.push({ key: 'Duman Tahliye', val: 'Dahili Güçlü Egzoz Fanı ve Duman Borusu' });
       specs.push({ key: 'Uyumlu Yazılımlar', val: 'LightBurn, LaserGRBL, Creality Falcon Studio' });
-    } else if (name.includes('tarayıcı') || name.includes('scan') || name.includes('ferret') || name.includes('raptor') || name.includes('otter')) {
+    } else if (name.includes('tarayıcı') || name.includes('tarayici') || name.includes('scan') || name.includes('ferret') || name.includes('raptor') || name.includes('otter') || name.includes('lizard')) {
       specs.push({ key: 'Tarama Teknolojisi', val: name.includes('raptor') ? 'Hibrit Mavi Lazer + NIR Kızılötesi Yapılandırılmış Işık' : 'NIR Kızılötesi Yapılandırılmış Çift Kamera' });
       specs.push({ key: 'Metroloji Doğruluğu', val: name.includes('raptor') ? '0.02 mm @ 100mm (Ultra Yüksek Hassasiyet)' : '0.05 mm' });
       specs.push({ key: 'Tarama Hızı', val: '60 FPS / Saniyede 2 Milyon Nokta Yakalama' });
@@ -4425,34 +4765,82 @@ function getProductDetailedSpecs(p) {
       specs.push({ key: 'Çıktı Formatları', val: 'OBJ, STL, PLY (3D Baskı ve CAD Uyumlu)' });
       specs.push({ key: 'Uyumlu İşletim Sistemleri', val: 'Windows 10/11 64-bit, macOS, Android, iOS' });
       specs.push({ key: 'Ağırlık & Ergonomi', val: 'Taşınabilir Hafif Alüminyum Gövde (380g)' });
+    } else if (name.includes('reçine') || name.includes('recine') || name.includes('resin') || name.includes('halot') || name.includes('mars') || name.includes('photon') || name.includes('saturn')) {
+      specs.push({ key: 'Baskı Teknolojisi', val: 'MSLA / LCD Tabanlı Fotopolimer Reçine Kürleme' });
+      specs.push({ key: 'Ekran Çözünürlüğü', val: '12K Mono LCD (11520 x 5120 Piksel)' });
+      specs.push({ key: 'XY Piksel Hassasiyeti', val: '19 x 24 µm Mikron Düzeyinde Keskinlik' });
+      specs.push({ key: 'Işık Kaynağı', val: 'Entegre COB Işık Kaynağı + Fresnel Kırılma Lensi' });
+      specs.push({ key: 'Katman Kalınlığı', val: '0.01 - 0.2 mm Hassas Adımlama' });
+      specs.push({ key: 'Baskı Hızı', val: 'Maksimum 70 mm/saat' });
+      specs.push({ key: 'Hava Filtresi', val: 'Dahili Aktif Karbon Koku Önleme Filtresi' });
+      specs.push({ key: 'Dilimleme Yazılımı', val: 'Chitubox, Lychee Slicer, Creality Halot Box' });
     } else {
-      specs.push({ key: 'Baskı Teknolojisi', val: 'Endüstriyel FDM / Lazer Üretim Sistemi' });
+      specs.push({ key: 'Baskı Teknolojisi', val: 'Endüstriyel FDM Hassas Üretim Sistemi' });
+      specs.push({ key: 'Baskı Hacmi', val: name.includes('cr-m4') ? '450 x 450 x 470 mm Ultra Devasa' : '220 x 220 x 250 mm Standart' });
+      specs.push({ key: 'Nozzle Sıcaklığı', val: 'Maks. 300°C Pirinç / Bimetal Nozzle' });
+      specs.push({ key: 'Tabla Sıcaklığı', val: 'Maks. 100°C Isıtmalı Manyetik PEI Tabla' });
+      specs.push({ key: 'Seviyeleme', val: 'CR Touch / BL Touch Otomatik 16 Nokta Kalibrasyon' });
       specs.push({ key: 'Kalite Standartları', val: 'Mikron Düzeyi Hassasiyet, CE Sertifikalı' });
-      specs.push({ key: 'Garanti', val: '2 Yıl Resmi Dağ Teknoloji Distribütör Garantisi' });
     }
-  } else if (p.category === 'filaments') {
-    specs.push({ key: 'Malzeme Türü', val: name.includes('petg') ? 'PETG (Polietilen Tereftalat Glikol)' : name.includes('tpu') ? 'Esnek TPU 95A' : name.includes('abs') ? 'ABS Endüstriyel' : 'PLA+ (Polilaktik Asit - Yüksek Mukavemet)' });
+  } 
+  // 2. KATEGORİ: FİLAMENTLER & SARF MALZEMELERİ
+  else if (cat === 'filaments' || name.includes('filament') || name.includes('pla') || name.includes('petg') || name.includes('abs') || name.includes('tpu') || name.includes('asa')) {
+    const isPetg = name.includes('petg');
+    const isTpu = name.includes('tpu') || name.includes('esnek');
+    const isAbs = name.includes('abs') || name.includes('asa');
+    const isCf = name.includes('karbon') || name.includes('carbon') || name.includes('cf');
+
+    specs.push({ key: 'Malzeme Türü', val: isCf ? 'PLA-CF / PETG-CF (Karbon Fiber Takviyeli)' : isPetg ? 'PETG (Polietilen Tereftalat Glikol)' : isTpu ? 'Esnek Termoplastik Poliüretan (TPU 95A)' : isAbs ? 'ABS / ASA Endüstriyel Mukavemet' : 'PLA+ (Yüksek Mukavemetli Polilaktik Asit)' });
     specs.push({ key: 'Filament Çapı & Tolerans', val: '1.75 mm ± 0.02 mm Hassas Lazer Kalibrasyonlu' });
     specs.push({ key: 'Net Filament Ağırlığı', val: '1.000 g (1 Kg Makara Dahil ~1.25 Kg)' });
-    specs.push({ key: 'Önerilen Nozzle Sıcaklığı', val: name.includes('petg') ? '220°C - 250°C' : name.includes('tpu') ? '210°C - 230°C' : '195°C - 225°C' });
-    specs.push({ key: 'Önerilen Tabla Sıcaklığı', val: name.includes('petg') ? '70°C - 80°C' : name.includes('tpu') ? '50°C - 60°C' : '50°C - 65°C' });
-    specs.push({ key: 'Önerilen Baskı Hızı', val: '50 - 300 mm/s (Yüksek Hızlı Yazıcı Uyumlu)' });
+    specs.push({ key: 'Önerilen Nozzle Sıcaklığı', val: isPetg ? '220°C - 250°C' : isTpu ? '210°C - 230°C' : isAbs ? '240°C - 260°C' : '195°C - 225°C' });
+    specs.push({ key: 'Önerilen Tabla Sıcaklığı', val: isPetg ? '70°C - 80°C' : isTpu ? '50°C - 60°C' : isAbs ? '90°C - 105°C' : '50°C - 65°C' });
+    specs.push({ key: 'Önerilen Baskı Hızı', val: name.includes('hyper') ? 'Maksimum 600 mm/s (Ultra Yüksek Akış)' : '50 - 300 mm/s Yüksek Hız Desteği' });
     specs.push({ key: 'Sarım Tipi', val: 'Düğümsüz (Tangle-Free) Robotik Hassas Hat Sarımı' });
     specs.push({ key: 'Paketleme Standardı', val: 'Vakumlu Alüminyum/PE Poşet, Silika Jel Nem Koruyucu' });
-    specs.push({ key: 'Baskı Özellikleri', val: 'Çarpılma (Warping) Yapmaz, Kokusuz, Yüksek Katman Yapışması' });
-  } else if (p.category === 'toners') {
+    specs.push({ key: 'Baskı Özellikleri', val: isTpu ? '95A Esneklik, Yüksek Darbe ve Aşınma Direnci' : isPetg ? 'Suya ve Kimyasallara Dayanıklı, Sıfır Koku' : 'Çarpılma (Warping) Yapmaz, Kokusuz, Yüksek Katman Yapışması' });
+  } 
+  // 3. KATEGORİ: LAZER TONER & KARTUŞLAR
+  else if (cat === 'toners' || name.includes('toner') || name.includes('kartuş') || name.includes('kartus')) {
+    const isCyan = name.includes('cyan') || name.includes('mavi');
+    const isMagenta = name.includes('magenta') || name.includes('kırmızı') || name.includes('kirmizi');
+    const isYellow = name.includes('yellow') || name.includes('sarı') || name.includes('sari');
+    const colorText = isCyan ? 'Mavi (Cyan)' : isMagenta ? 'Kırmızı (Magenta)' : isYellow ? 'Sarı (Yellow)' : 'Derin Siyah (Black)';
+
     specs.push({ key: 'Ürün Sınıfı', val: 'A+ Kalite Premium Muadil Lazer Toner' });
-    specs.push({ key: 'Baskı Kapasitesi', val: 'Yaklaşık 1.000 - 2.500 Sayfa (A4 %5 Sayfa Doluluk Oranında)' });
-    specs.push({ key: 'Çip Entegrasyonu', val: 'Yeni Nesil Sıfır Akıllı Çip (Tak-Çalıştır, Yazılım Engeline Takılmaz)' });
-    specs.push({ key: 'Baskı Rengi', val: name.includes('cyan') || name.includes('mavi') ? 'Mavi (Cyan)' : name.includes('magenta') || name.includes('kırmızı') ? 'Kırmızı (Magenta)' : name.includes('yellow') || name.includes('sarı') ? 'Sarı (Yellow)' : 'Derin Siyah (Black)' });
-    specs.push({ key: 'OPC Drum', val: 'Uzun Ömürlü, Yüksek Çözünürlüklü Sıfır Drum Ünitesi' });
+    specs.push({ key: 'Baskı Rengi', val: colorText });
+    specs.push({ key: 'Baskı Kapasitesi', val: name.includes('yüksek') || name.includes('high') ? 'Yaklaşık 3.000 - 5.000 Sayfa (A4 %5 Dolulukta)' : 'Yaklaşık 1.500 - 2.600 Sayfa (A4 %5 Dolulukta)' });
+    specs.push({ key: 'Çip Entegrasyonu', val: 'Yeni Nesil Sıfır Akıllı Çip (Tak-Çalıştır, Firmware Engeline Takılmaz)' });
+    specs.push({ key: 'OPC Drum Kalitesi', val: 'Uzun Ömürlü, Çizilmeye Dirençli Japon Standart Drum' });
+    specs.push({ key: 'Manyetik Merdane', val: 'Homojen Toz Dağılımı Sağlayan Mag Roller Ünitesi' });
     specs.push({ key: 'Sertifikalar', val: 'ISO 9001:2015, ISO 14001, CE, RoHS Belgeli' });
-    specs.push({ key: 'Garanti', val: '%100 Birebir Değişim ve Yazıcı Dostu Garanti' });
-  } else {
-    specs.push({ key: 'Parça Grubu', val: '3D Yazıcı & CNC Mekanik / Elektronik Yedek Parça' });
-    specs.push({ key: 'Malzeme', val: 'Yüksek Isı İletkenli Pirinç / Sertleştirilmiş Çelik / Bimetal' });
-    specs.push({ key: 'Uyumlu Modeller', val: 'Creality, Bambu Lab, Anycubic, Voron, Prusa Uyumlu' });
-    specs.push({ key: 'Kalite Güvencesi', val: 'Mikron Düzeyi CNC İşleme Toleransı' });
+    specs.push({ key: 'Garanti', val: '%100 Birebir Değişim ve Yazıcı Dostu Dağ Teknoloji Garantisi' });
+  } 
+  // 4. KATEGORİ: FOTOKOPİ MAKİNESİ PARÇALARI (Drum, Bıçak, Merdane, Fuser Film, Dişli)
+  else if (name.includes('drum') || name.includes('bıçak') || name.includes('bicak') || name.includes('blade') || name.includes('film') || name.includes('merdane') || name.includes('roller') || name.includes('fuser') || name.includes('developer') || name.includes('paten')) {
+    specs.push({ key: 'Parça Sınıfı', val: 'Endüstriyel Fotokopi & Lazer Yazıcı Sarf / Mekanik Parça' });
+    specs.push({ key: 'Malzeme Bileşeni', val: name.includes('drum') ? 'Organik Foto İletken (OPC) Çok Katmanlı Kaplama' : name.includes('bıçak') ? 'Hassas Taşlanmış Poliüretan Esnek Bıçak' : name.includes('film') ? 'Teflon / Metal Alaşımlı Yüksek Isı Fuser Kovanı' : 'Yüksek Sürtünmeli Doğal Silikon Kauçuk' });
+    specs.push({ key: 'Kullanım Ömrü / Baskı Kapasitesi', val: name.includes('drum') ? 'Yaklaşık 50.000 - 150.000 Sayfa' : 'Yaklaşık 30.000 - 60.000 Sayfa' });
+    specs.push({ key: 'Uyum Standartları', val: 'Ricoh, Kyocera, Canon, Konica Minolta, Xerox Fotokopi Uyumlu' });
+    specs.push({ key: 'Baskı Kalitesi', val: 'Çizgi, Leke ve Arka Plan Griliği Yapmayan Orijinal Standart' });
+    specs.push({ key: 'Isı ve Aşınma Direnci', val: '220°C Sürekli Fırınlama Isısına Tam Dayanıklı' });
+    specs.push({ key: 'Test & Kontrol', val: '%100 Fabrika Çıkış Testli ve Vakumlu Muhafazalı' });
+  }
+  // 5. KATEGORİ: 3D YAZICI YEDEK PARÇA & MEKANİK
+  else if (name.includes('nozzle') || name.includes('hotend') || name.includes('boğaz') || name.includes('bogaz') || name.includes('ekstruder') || name.includes('extruder') || name.includes('tabla') || name.includes('pei') || name.includes('motor') || name.includes('anakart') || name.includes('fan')) {
+    specs.push({ key: 'Parça Grubu', val: '3D Yazıcı & CNC Mekanik / Elektronik Bileşen' });
+    specs.push({ key: 'Malzeme', val: name.includes('nozzle') ? 'Sertleştirilmiş Çelik / Pirinç / Bimetal Alaşım' : name.includes('tabla') ? 'Dokulu PEI Kaplı Yay Çeliği & Manyetik Taban' : name.includes('boğaz') ? 'Titanyum Alaşım & Bakır Bimetal Isı Bariyeri' : 'Havacılık Sınıfı Alüminyum & CNC Çelik' });
+    specs.push({ key: 'Maksimum Çalışma Sıcaklığı', val: name.includes('hotend') || name.includes('nozzle') ? 'Maksimum 300°C - 500°C Sürekli Isı Dayanımı' : 'Maksimum 120°C Tabla Sıcaklığı' });
+    specs.push({ key: 'Bağlantı ve Vida Ölçüsü', val: name.includes('nozzle') ? 'Standart M6 Diş / Bambu / Creality K1 Hızlı Değişim Uyumlu' : 'Standart Endüstriyel Montaj Delikleri' });
+    specs.push({ key: 'Uyumlu Markalar', val: 'Creality, Bambu Lab, Anycubic, Flsun, Voron, Prusa' });
+    specs.push({ key: 'İşleme Toleransı', val: '±0.01 mm CNC Mikron Düzeyi Hassas İşleme' });
+  }
+  // 6. GENEL / DİĞER
+  else {
+    specs.push({ key: 'Ürün Grubu', val: 'Endüstriyel 3D Baskı, Lazer ve Büro Teknolojileri' });
+    specs.push({ key: 'Kalite Güvencesi', val: 'A+ Kalite Standartları, CE ve RoHS Uyumlu' });
+    specs.push({ key: 'Kullanım Alanı', val: 'Profesyonel İmalat, Prototipleme ve Kurumsal Ofis Baskısı' });
+    specs.push({ key: 'Teknik Servis', val: 'Dağ Teknoloji Perpa Ticaret Merkezi Teknik Destek' });
   }
 
   specs.push({ key: 'Menşei / Dağıtıcı', val: 'Dağ Teknoloji Perpa Ticaret Merkezi / İthalatçı Güvenceli' });
@@ -4786,7 +5174,7 @@ function initProductDetailPage() {
 
       <!-- Quick Specs Pills -->
       <div class="flex flex-wrap gap-2">
-        ` + (p.specs || ['Endüstriyel Kalite', 'Perpa Servis Desteği', 'Aynı Gün Kargo']).map(s => `
+        ` + getProductQuickSpecs(p).map(s => `
           <span class="text-xs bg-slate-800/80 border border-slate-700/80 text-slate-200 px-3 py-1 rounded-xl flex items-center gap-1.5">
             <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i>
             <span>` + s + `</span>
@@ -4820,7 +5208,7 @@ function initProductDetailPage() {
           ` : `
             <div class="flex-1 flex items-center gap-2.5 flex-wrap">
               <button 
-                onclick="addToCart('` + p.id + `', detailSelectedQty); toggleCartDrawer(true);" 
+                onclick="addToCart('` + p.id + `', detailSelectedQty); window.location.href = 'sepet.html';" 
                 class="flex-1 min-w-[130px] py-3.5 px-3 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg transition-transform active:scale-95"
               >
                 <i data-lucide="shopping-cart" class="w-4 h-4"></i>
