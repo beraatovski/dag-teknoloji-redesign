@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3452';
+const DAG_CATALOG_VERSION = '2026.11.02.v3453';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -4117,19 +4117,6 @@ function initProductDetailPage() {
           <i data-lucide="message-circle" class="w-4 h-4"></i>
           <span>WhatsApp ile Hızlı Sipariş Ver &amp; Bilgi Al (0507 020 11 98)</span>
         </a>
-
-        <!-- Admin Direct Edit Button -->
-        ` + (isAdmin ? `
-          <div class="pt-2 border-t border-slate-800/80">
-            <button 
-              onclick="openEditProductModal('` + p.id + `')" 
-              class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-400/15 to-amber-500/20 hover:from-amber-500/30 hover:to-amber-400/30 text-amber-300 border border-amber-500/40 hover:border-amber-400/60 font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(245,158,11,0.15)] group"
-            >
-              <i data-lucide="edit" class="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform"></i>
-              <span>Yönetici Paneli: Bu Ürünü Düzenle (Fiyat, Stok, Bilgiler)</span>
-            </button>
-          </div>
-        ` : '') + `
       </div>
 
     </div>
