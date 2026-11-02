@@ -52,6 +52,13 @@
 
   <!-- Custom Styles -->
   <link rel="stylesheet" href="styles.css?v=20261101v18">
+  <script>
+    (function() {
+      var p = new URLSearchParams(window.location.search);
+      var target = p.get('stok') || p.get('kod') || p.get('sku') || p.get('id') || '';
+      window.location.replace('urun.html' + (target ? '?stok=' + encodeURIComponent(target) : ''));
+    })();
+  </script>
 </head>
 <body class="bg-[#07090e] text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950 w-full max-w-full">
 
@@ -1586,6 +1593,6 @@
 
   <!-- PRODUCTS DATABASE & MAIN SCRIPT -->
   <script src="products.js?v=20261102v3449"></script>
-  <script src="app.js?v=20261102v3456"></script>
+  <script src="app.js?v=20261102v3457"></script>
 </body>
 </html>

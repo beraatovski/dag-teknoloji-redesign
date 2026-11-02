@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3456';
+const DAG_CATALOG_VERSION = '2026.11.02.v3457';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -29,8 +29,11 @@ const initialProducts = (function() {
   }
 
   // Load fresh canonical 3,428 products from window.DAG_PRODUCTS
-  if ((products.length < 3428 || products.length === 0) && window.DAG_PRODUCTS) {
-    products = JSON.parse(JSON.stringify(window.DAG_PRODUCTS));
+  if (window.DAG_PRODUCTS) {
+    const raw = Array.isArray(window.DAG_PRODUCTS) ? window.DAG_PRODUCTS : (window.DAG_PRODUCTS.value || []);
+    if ((products.length < 3428 || products.length === 0) && raw.length > 0) {
+      products = JSON.parse(JSON.stringify(raw));
+    }
   }
 
   return products;
@@ -321,6 +324,24 @@ function isUserAdmin() {
 }
 window.isUserAdmin = isUserAdmin;
 
+// GÃœVENLÄ° VE STANDART STOK KODU (SKU) & ÃœRÃœN LÄ°NKÄ° ÃœRETÄ°CÄ°
+function getProductSku(p) {
+  if (!p) return '';
+  if (p.sku && typeof p.sku === 'string' && !p.sku.includes(' ') && p.sku.length <= 25 && p.sku !== p.name) {
+    return p.sku.toUpperCase();
+  }
+  const numId = (p.id || '').replace(/^dt-?/i, '');
+  return 'DT-' + (numId || '1001');
+}
+window.getProductSku = getProductSku;
+
+function getProductUrl(p) {
+  if (!p) return 'urun.html';
+  const sku = getProductSku(p);
+  return 'urun.html?stok=' + encodeURIComponent(sku);
+}
+window.getProductUrl = getProductUrl;
+
 // Material calculation metrics
 const MATERIAL_DATA = {
   pla: { name: 'PLA+ Hyper Pro', pricePerGram: 0.85, density: 1.24, timeFactor: 1.0, strength: '8/10' },
@@ -382,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchLiveUsdRate(false);
   }, 60 * 60 * 1000);
 
-  if (window.location.pathname.includes('urun-detay.html')) {
+  if (document.getElementById('product-detail-hero')) {
     initProductDetailPage();
   }
   if (window.lucide) lucide.createIcons();
@@ -1831,7 +1852,7 @@ window.handleSaveProfile = function(e) {
 // ==========================================================================
 function getFilteredProducts() {
   const f = state.filters;
-  const isHomePage = !window.location.pathname.includes('urunler.html') && !window.location.pathname.includes('urun-detay.html');
+  const isHomePage = !window.location.pathname.includes('urunler.html') && !window.location.pathname.includes('urun.html') && !window.location.pathname.includes('urun-detay.html');
   let items = state.products.filter(p => {
     if (isHomePage && p.category !== 'printers') return false;
     if (f.category !== 'all' && p.category !== f.category) return false;
@@ -1873,7 +1894,7 @@ function renderBrandFilters() {
   const container = document.getElementById('brand-filters-container');
   if (!container) return;
 
-  const isHomePage = !window.location.pathname.includes('urunler.html') && !window.location.pathname.includes('urun-detay.html');
+  const isHomePage = !window.location.pathname.includes('urunler.html') && !window.location.pathname.includes('urun.html') && !window.location.pathname.includes('urun-detay.html');
   const relevantProducts = isHomePage ? state.products.filter(p => p.category === 'printers') : state.products;
 
   const brandsSet = new Set();
@@ -2052,9 +2073,10 @@ function renderProductCardVisualHtml(p, isOutOfStock) {
   var brandLabel = p.brand ? '<span class="absolute top-2.5 left-2.5 text-[9px] tracking-wider font-mono text-cyan-300 bg-slate-900/95 px-2 py-0.5 rounded border border-slate-800 z-10 shadow-sm">' + p.brand + '</span>' : '';
   var perpaLabel = '<span class="absolute bottom-2.5 right-2.5 text-[9px] tracking-wider font-mono text-slate-400 bg-slate-900/95 px-1.5 py-0.5 rounded border border-slate-800 uppercase z-10 shadow-sm">Perpa Stok</span>';
   var safeName = (p.name || '').replace(/<[^>]*>/g, ' ').replace(/"/g, '&quot;').replace(/\s+/g, ' ').trim();
+  var prodUrl = getProductUrl(p);
 
   if (imgUrl) {
-    return '<a href="urun-detay.html?id=' + p.id + '" class="w-full h-44 rounded-xl bg-slate-950/70 border border-slate-800/80 p-3 flex items-center justify-center relative overflow-hidden group-hover:border-cyan-500/40 transition-all block cursor-pointer" title="' + safeName + ' - Detaylı Sayfaya Git">' +
+    return '<a href="' + prodUrl + '" class="w-full h-44 rounded-xl bg-slate-950/70 border border-slate-800/80 p-3 flex items-center justify-center relative overflow-hidden group-hover:border-cyan-500/40 transition-all block cursor-pointer" title="' + safeName + ' - ÃœrÃ¼n SayfasÄ±na Git">' +
       '<img src="' + imgUrl + '" alt="' + safeName + '" class="max-h-full max-w-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300 ' + (isOutOfStock ? 'grayscale-[60%]' : '') + '" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML = getFallbackSchematicHtml(\'' + p.category + '\', \'' + encodeURIComponent(p.brand || '') + '\', \'' + encodeURIComponent(p.sku || '') + '\', \'' + p.id + '\');" />' +
       brandLabel +
       perpaLabel +
@@ -2062,21 +2084,20 @@ function renderProductCardVisualHtml(p, isOutOfStock) {
   }
 
   // Industrial Technical Component Schematic Display for products without local photography
-  return '<a href="urun-detay.html?id=' + p.id + '" class="w-full h-44 rounded-xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-slate-800/90 p-3 flex flex-col items-center justify-center relative overflow-hidden group-hover:border-cyan-500/50 transition-all block cursor-pointer group/schematic" title="' + safeName + ' - Teknik Özellikleri İncele">' +
+  return '<a href="' + prodUrl + '" class="w-full h-44 rounded-xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-slate-800/90 p-3 flex flex-col items-center justify-center relative overflow-hidden group-hover:border-cyan-500/50 transition-all block cursor-pointer group/schematic" title="' + safeName + ' - Teknik Ã–zellikleri Ä°ncele">' +
     '<div class="absolute inset-0 bg-[radial-gradient(#00f0ff_1px,transparent_1px)] [background-size:14px_14px] opacity-10 pointer-events-none"></div>' +
     '<div class="absolute w-24 h-24 rounded-full bg-cyan-500/5 filter blur-xl pointer-events-none group-hover/schematic:bg-cyan-500/10 transition-colors"></div>' +
     '<div class="relative z-10 flex flex-col items-center justify-center my-auto transition-transform duration-300 group-hover/schematic:scale-105">' +
       getCategorySchematicSvg(p.category, "w-14 h-14 drop-shadow-[0_0_8px_rgba(0,240,255,0.2)]") +
       '<div class="mt-2 text-center">' +
-        '<span class="block text-[10px] font-mono font-bold tracking-wider text-cyan-400 uppercase leading-none">' + (p.brand || 'DAĞ TEKNOLOJİ') + '</span>' +
-        '<span class="block text-[9px] font-mono text-slate-400 mt-1 leading-none line-clamp-1 max-w-[140px]">' + (p.sku || 'YEDEK PARÇA') + '</span>' +
+        '<span class="block text-[10px] font-mono font-bold tracking-wider text-cyan-400 uppercase leading-none">' + (p.brand || 'DAÄ TEKNOLOJÄ°') + '</span>' +
+        '<span class="block text-[9px] font-mono text-cyan-300 mt-1 leading-none line-clamp-1 max-w-[140px]">' + getProductSku(p) + '</span>' +
       '</div>' +
     '</div>' +
     brandLabel +
     perpaLabel +
   '</a>';
 }
-
 window.getFallbackSchematicHtml = function(category, brandEnc, skuEnc, id) {
   var brand = decodeURIComponent(brandEnc || '');
   var sku = decodeURIComponent(skuEnc || '');
@@ -2202,13 +2223,13 @@ function renderProducts() {
             </div>
 
             <!-- Tıklanabilir Ürün Başlığı -->
-            <a href="urun-detay.html?id=${p.id}" class="block group/title" title="${safeName} - Detaylı Sayfaya Git">
+            <a href="${getProductUrl(p)}" class="block group/title" title="${safeName} - Detaylı Sayfaya Git">
               <h3 class="text-sm font-bold text-white group-hover/title:text-cyan-400 transition-colors mb-1.5 line-clamp-2">
                 ${safeName}
               </h3>
             </a>
             
-            <a href="urun-detay.html?id=${p.id}" class="text-xs text-slate-400 hover:text-slate-200 line-clamp-2 mb-4 leading-relaxed block" title="Detayları İncele">
+            <a href="${getProductUrl(p)}" class="text-xs text-slate-400 hover:text-slate-200 line-clamp-2 mb-4 leading-relaxed block" title="Detayları İncele">
               ${safeSub}
             </a>
 
@@ -3938,12 +3959,32 @@ function initProductDetailPage() {
   if (!heroEl) return;
 
   const urlParams = new URLSearchParams(window.location.search);
-  const prodId = urlParams.get('id');
-  let p = state.products.find(item => item.id === prodId);
+  const stockParam = (urlParams.get('stok') || urlParams.get('kod') || urlParams.get('sku') || urlParams.get('id') || '').trim();
+  
+  let p = null;
+  if (stockParam) {
+    const upperParam = stockParam.toUpperCase();
+    const lowerParam = stockParam.toLowerCase();
+    p = state.products.find(item => 
+      (item.sku && item.sku.toUpperCase() === upperParam) ||
+      (item.id && item.id.toLowerCase() === lowerParam) ||
+      (item.id && item.id.toLowerCase() === ('dt-' + lowerParam)) ||
+      (item.oc_id && item.oc_id.toString() === stockParam)
+    );
+  }
   if (!p) {
     p = state.products.find(item => item.category === 'printers') || state.products[0];
   }
   if (!p) return;
+
+  // Temiz URL: Linkte 'urun-detay' yazÄ±sÄ± olmasÄ±n, Ã¼rÃ¼nÃ¼n stok kodu gÃ¶zÃ¼ksÃ¼n
+  try {
+    const currentSku = getProductSku(p);
+    const targetUrl = 'urun.html?stok=' + encodeURIComponent(currentSku);
+    if (!window.location.pathname.endsWith('urun.html') || urlParams.get('stok') !== currentSku) {
+      history.replaceState(null, '', targetUrl);
+    }
+  } catch(e) {}
 
   detailSelectedQty = 1;
   document.title = p.name + ' | DAĞ TEKNOLOJİ';
@@ -4036,7 +4077,7 @@ function initProductDetailPage() {
 
   heroEl.innerHTML = `
     <!-- Left Column: Visual Gallery (Col 5) -->
-    <div class="lg:col-span-5 space-y-4">
+    <div class="lg:col-span-5 flex flex-col justify-between space-y-4">
       <div class="glass-panel p-6 rounded-3xl border border-slate-800 relative group overflow-hidden bg-slate-950/70">
         <!-- Floating Badges -->
         <div class="absolute top-4 left-4 z-10 flex flex-wrap items-center gap-2">
@@ -4046,7 +4087,7 @@ function initProductDetailPage() {
         <span class="absolute top-4 right-4 z-10 text-[10px] tracking-wider font-mono text-slate-400 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800 uppercase">Perpa B/825</span>
 
         <!-- Large Main Image View -->
-        <div class="w-full h-80 sm:h-96 rounded-2xl bg-slate-900/50 p-6 flex items-center justify-center relative overflow-hidden">
+        <div class="w-full h-[410px] sm:h-[460px] lg:h-[490px] rounded-2xl bg-slate-900/50 p-6 flex items-center justify-center relative overflow-hidden">
           ` + mainVisualHtml + `
         </div>
       </div>
@@ -4074,7 +4115,7 @@ function initProductDetailPage() {
         <div class="flex items-center gap-2 flex-wrap mb-2">
           <span class="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">` + getCategoryName(p.category) + `</span>
           <span class="text-slate-600">•</span>
-          <span class="text-xs font-mono text-slate-400">SKU: ` + (p.sku || p.id) + `</span>
+          <span class="text-xs font-mono font-bold text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 px-2.5 py-1 rounded-lg">STOK KODU: ` + getProductSku(p) + `</span>
           ` + (p.brand ? `<span class="text-xs font-mono bg-slate-800/80 px-2 py-0.5 rounded text-slate-300">` + p.brand + `</span>` : '') + `
         </div>
 
@@ -4284,12 +4325,12 @@ function initProductDetailPage() {
             ` + renderProductCardVisualHtml(rel, false) + `
           </div>
           <div class="p-4 pt-2 flex-1 flex flex-col justify-between">
-            <a href="urun-detay.html?id=` + rel.id + `" class="block">
+            <a href="` + getProductUrl(rel) + `" class="block">
               <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors line-clamp-2 mb-2">` + rel.name + `</h5>
             </a>
             <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between">
               <span class="text-sm font-extrabold text-white font-mono whitespace-nowrap">` + getProductPrice(rel).toLocaleString('tr-TR') + ` ₺</span>
-              <a href="urun-detay.html?id=` + rel.id + `" class="px-2.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 text-[11px] font-bold transition-all">
+              <a href="` + getProductUrl(rel) + `" class="px-2.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 text-[11px] font-bold transition-all">
                 İncele
               </a>
             </div>
