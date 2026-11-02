@@ -3836,6 +3836,10 @@ function initProductDetailPage() {
     switchDetailTab(initialTab);
   }
 
+  if (urlParams.get('open_edit') === '1' && isAdmin) {
+    setTimeout(() => openEditProductModal(p.id), 100);
+  }
+
   if (window.lucide) lucide.createIcons();
 }
 
