@@ -1,10 +1,10 @@
-﻿/**
+/**
  * DAĞ TEKNOLOJİ - MODERN WEB PLATFORM & E-COMMERCE ENGINE
  * Real Products (3,428 Items), Multi-Filter, Stock System, Admin Panel, Membership System & 3D Engine
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3448';
+const DAG_CATALOG_VERSION = '2026.11.02.v3449';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');

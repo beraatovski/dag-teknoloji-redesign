@@ -1,4 +1,4 @@
-﻿// DAĞ TEKNOLOJİ - CATALOG DATABASE
+﻿// DAÄ TEKNOLOJÄ° - CATALOG DATABASE
 window.DAG_PRODUCTS = [
     {
         "id":  "dt-4816",
@@ -1781,7 +1781,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_yellow.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/prod_4754.jpg"
@@ -1812,7 +1812,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_magenta.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/prod_4753.jpg"
@@ -2060,7 +2060,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/prod_4651.jpg"
@@ -2091,7 +2091,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/prod_4634.jpg"
@@ -2308,7 +2308,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_magenta.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/prod_3894.jpg"
@@ -2339,7 +2339,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_yellow.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/prod_3893.jpg"
@@ -2370,7 +2370,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_cyan.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/prod_3892.jpg"
@@ -2401,7 +2401,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/prod_3891.jpg"
@@ -6556,7 +6556,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "disc",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -7641,7 +7641,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "disc",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -7672,7 +7672,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "disc",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -7703,7 +7703,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "disc",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -7734,7 +7734,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "disc",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -7796,7 +7796,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "disc",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -9315,7 +9315,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_cyan.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -9873,7 +9873,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_yellow.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -9904,7 +9904,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_magenta.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -9935,7 +9935,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_cyan.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -11764,7 +11764,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -12012,7 +12012,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_magenta.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -12043,7 +12043,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_yellow.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -12074,7 +12074,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_cyan.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -12105,7 +12105,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -15949,7 +15949,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mp_toner_bottle.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -16600,7 +16600,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mp_toner_bottle.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -17344,7 +17344,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mp_toner_bottle.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -24288,7 +24288,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mp_toner_bottle.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -25745,7 +25745,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_sp_laser_cartridge.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -26334,7 +26334,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_yellow.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -26365,7 +26365,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_magenta.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -26396,7 +26396,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_cyan.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -26427,7 +26427,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -26458,7 +26458,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -27760,7 +27760,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mp_toner_bottle.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -28690,7 +28690,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_yellow.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -28721,7 +28721,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_magenta.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -28752,7 +28752,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_cyan.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -28783,7 +28783,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -29527,7 +29527,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_sp_laser_cartridge.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -30364,7 +30364,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_yellow.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -30395,7 +30395,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_magenta.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -30426,7 +30426,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_cyan.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -30457,7 +30457,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -33433,7 +33433,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -33495,7 +33495,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -33805,7 +33805,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_cyan.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -33836,7 +33836,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mp_toner_bottle.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -33898,7 +33898,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_sp_laser_cartridge.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -33929,7 +33929,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_yellow.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -33960,7 +33960,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_magenta.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -33991,7 +33991,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_cyan.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -34022,7 +34022,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -34425,7 +34425,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -34921,7 +34921,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -34983,7 +34983,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -35231,7 +35231,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -35262,7 +35262,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_magenta.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -35293,7 +35293,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_yellow.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -35324,7 +35324,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mp_toner_bottle.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -35386,7 +35386,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -35789,7 +35789,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_sp_laser_cartridge.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -36285,7 +36285,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_magenta.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -36316,7 +36316,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_yellow.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -36347,7 +36347,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_cyan.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -36378,7 +36378,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -36533,7 +36533,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -38517,7 +38517,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -39168,7 +39168,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -41121,7 +41121,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mp_toner_bottle.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -41245,7 +41245,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -42547,7 +42547,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mp_toner_bottle.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -44252,7 +44252,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_sp_laser_cartridge.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -47135,7 +47135,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_yellow.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -47290,7 +47290,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mp_toner_bottle.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -49832,7 +49832,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_cyan.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -49894,7 +49894,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_magenta.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -49925,7 +49925,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_cyan.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -50328,7 +50328,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_yellow.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -50359,7 +50359,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_mpc_black.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -54607,7 +54607,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drum_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -54824,7 +54824,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -54855,7 +54855,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -55041,7 +55041,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -55103,7 +55103,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -55134,7 +55134,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -55258,7 +55258,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -55289,7 +55289,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -55320,7 +55320,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -55351,7 +55351,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -55413,7 +55413,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -55444,7 +55444,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_developer_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -55568,7 +55568,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -55847,7 +55847,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -55878,7 +55878,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -56095,7 +56095,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -56219,7 +56219,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -56560,7 +56560,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -56591,7 +56591,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -56622,7 +56622,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -56653,7 +56653,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -57428,7 +57428,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -57459,7 +57459,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_developer_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -57490,7 +57490,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -57893,7 +57893,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -57924,7 +57924,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_transfer_belt.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -57955,7 +57955,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -57986,7 +57986,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -58265,7 +58265,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -58358,7 +58358,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_transfer_belt.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -58513,7 +58513,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -58606,7 +58606,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -58668,7 +58668,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -58730,7 +58730,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -59071,7 +59071,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -59319,7 +59319,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -59443,7 +59443,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_transfer_belt.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -59722,7 +59722,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -59753,7 +59753,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -59784,7 +59784,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -59815,7 +59815,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -60001,7 +60001,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -60063,7 +60063,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -60094,7 +60094,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -60156,7 +60156,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_transfer_belt.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -60187,7 +60187,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -60218,7 +60218,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -60280,7 +60280,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -60435,7 +60435,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -61086,7 +61086,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -61117,7 +61117,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_transfer_belt.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -61520,7 +61520,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_developer_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -61613,7 +61613,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -61799,7 +61799,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -61830,7 +61830,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -61861,7 +61861,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -61892,7 +61892,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -61954,7 +61954,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -62016,7 +62016,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -62233,7 +62233,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -62264,7 +62264,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -62667,7 +62667,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_transfer_belt.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -62822,7 +62822,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -63163,7 +63163,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -63225,7 +63225,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -63380,7 +63380,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -63535,7 +63535,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -63597,7 +63597,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -63628,7 +63628,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -63659,7 +63659,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -67937,7 +67937,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -76648,7 +76648,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -76741,7 +76741,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -80120,7 +80120,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -80151,7 +80151,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -85173,7 +85173,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -85452,7 +85452,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -85545,7 +85545,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -85576,7 +85576,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -85793,7 +85793,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -86041,7 +86041,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -86940,7 +86940,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -86971,7 +86971,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -87002,7 +87002,7 @@ window.DAG_PRODUCTS = [
         "badge":  "PERPA STOK",
         "badgeColor":  "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -88738,7 +88738,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -88769,7 +88769,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -88800,7 +88800,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -88862,7 +88862,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -88893,7 +88893,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -88986,7 +88986,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89017,7 +89017,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89048,7 +89048,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89234,7 +89234,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89265,7 +89265,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89296,7 +89296,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89327,7 +89327,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_transfer_belt.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89451,7 +89451,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89482,7 +89482,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89544,7 +89544,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89575,7 +89575,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89637,7 +89637,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89699,7 +89699,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89792,7 +89792,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89823,7 +89823,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89854,7 +89854,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89885,7 +89885,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -89978,7 +89978,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -90009,7 +90009,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -90040,7 +90040,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -90195,7 +90195,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -90319,7 +90319,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -90350,7 +90350,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -90381,7 +90381,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -90412,7 +90412,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -90443,7 +90443,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -90505,7 +90505,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_developer_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -90753,7 +90753,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -90784,7 +90784,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -90815,7 +90815,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91001,7 +91001,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91125,7 +91125,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91156,7 +91156,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91187,7 +91187,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91218,7 +91218,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91249,7 +91249,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91280,7 +91280,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91466,7 +91466,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91528,7 +91528,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91559,7 +91559,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91776,7 +91776,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91869,7 +91869,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91900,7 +91900,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -91993,7 +91993,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -92024,7 +92024,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -92055,7 +92055,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -92086,7 +92086,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -92303,7 +92303,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -92334,7 +92334,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -92365,7 +92365,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -92396,7 +92396,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -92427,7 +92427,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -92458,7 +92458,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -92644,7 +92644,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -92954,7 +92954,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -93078,7 +93078,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_developer_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -93109,7 +93109,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -93140,7 +93140,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -93233,7 +93233,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -93264,7 +93264,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -93729,7 +93729,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -93977,7 +93977,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -94225,7 +94225,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -94256,7 +94256,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -94287,7 +94287,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -94349,7 +94349,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -94690,7 +94690,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -95093,7 +95093,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -95527,7 +95527,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -95651,7 +95651,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drum_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -95682,7 +95682,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drum_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -95713,7 +95713,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drum_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -96023,7 +96023,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_cleaning_blade.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -96302,7 +96302,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -97015,7 +97015,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_feed_roller.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -97077,7 +97077,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -97511,7 +97511,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -97666,7 +97666,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -98224,7 +98224,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -98937,7 +98937,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_drive_gear.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -99433,7 +99433,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -101510,7 +101510,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -101541,7 +101541,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -101975,7 +101975,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -102440,7 +102440,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -102471,7 +102471,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -102750,7 +102750,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_imaging_unit.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
@@ -104796,7 +104796,7 @@ window.DAG_PRODUCTS = [
         "badge":  "STOKTA YOK",
         "badgeColor":  "bg-red-500/20 text-red-400 border-red-500/30",
         "icon":  "box",
-        "image":  "assets/products/ricoh_supplies.jpg",
+        "image":  "assets/products/ricoh_opc_drum.jpg",
         "remoteImage":  "https://dagteknoloji.com.tr/image/catalog/aksa/resim-yok.jpg",
         "images":  [
                        "assets/products/oc_6511cea836.jpg"
