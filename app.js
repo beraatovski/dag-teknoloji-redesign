@@ -4256,6 +4256,19 @@ function initProductDetailPage() {
     }, 200);
   }
 
+  if (urlParams.get('test_receipt') === '1') {
+    setTimeout(() => {
+      const recId = document.getElementById('receipt-order-id');
+      const recMethod = document.getElementById('receipt-payment-method');
+      const recTotal = document.getElementById('receipt-total-amount');
+      if (recId) recId.innerText = '#DT-94821';
+      if (recMethod) recMethod.innerText = 'Kredi Kartı (3D Secure Onaylı) - 6 Taksit';
+      if (recTotal) recTotal.innerText = '107.840 ₺';
+      openModal('order-success-modal');
+      if (window.lucide) lucide.createIcons();
+    }, 200);
+  }
+
   if (window.lucide) lucide.createIcons();
 }
 
