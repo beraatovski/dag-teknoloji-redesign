@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3469';
+const DAG_CATALOG_VERSION = '2026.11.02.v3470';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -2855,7 +2855,7 @@ window.addToCart = function(productId, qty = 1, triggerBtn = null) {
     if (btn) {
       const originalHtml = btn.innerHTML;
       const originalClass = btn.className;
-      btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>✓ Sepete Eklendi!</span>`;
+      btn.innerHTML = `<span>✓ Sepete Eklendi!</span>`;
       btn.classList.remove('glow-cyan-btn');
       btn.classList.add('!bg-emerald-500', '!text-slate-950', 'shadow-lg', 'shadow-emerald-500/30', 'scale-[1.02]');
       if (window.lucide) lucide.createIcons();
@@ -2878,7 +2878,7 @@ window.addToCart = function(productId, qty = 1, triggerBtn = null) {
               <i data-lucide="check" class="w-4 h-4"></i>
             </div>
             <div>
-              <p class="text-xs font-bold text-white leading-tight">✓ Ürün Sepetinize Eklendi!</p>
+              <p class="text-xs font-bold text-white leading-tight">Ürün Sepetinize Eklendi!</p>
               <p class="text-[11px] text-emerald-400 font-medium">Bu üründen toplam ${totalInCartForThis} adet sepetinizde</p>
             </div>
           </div>
