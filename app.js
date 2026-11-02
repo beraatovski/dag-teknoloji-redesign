@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3455';
+const DAG_CATALOG_VERSION = '2026.11.02.v3456';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -273,11 +273,8 @@ const state = {
   cart: JSON.parse(localStorage.getItem('dag_cart') || '[]'),
   orders: JSON.parse(localStorage.getItem('dag_orders') || '[]'),
   isAdmin: (function() {
-    try {
-      const urlP = new URLSearchParams(window.location.search);
-      if (urlP.get('admin') === '1' || urlP.get('admin_test') === '1') return true;
-    } catch(e) {}
-    return sessionStorage.getItem('dag_is_admin') === 'true' || (storedCurrentUser && (storedCurrentUser.role === 'admin' || storedCurrentUser.email === 'admin@dagteknoloji.com.tr'));
+    // GÃ¼venlik: Admin yetkisi asla URL parametresinden alÄ±namaz, doÄŸrulanmÄ±ÅŸ oturum gerektirir.
+    return sessionStorage.getItem('dag_is_admin') === 'true' && !!(storedCurrentUser && (storedCurrentUser.role === 'admin' || storedCurrentUser.email === 'admin@dagteknoloji.com.tr'));
   })(),
   exchangeRate: loadStoredExchangeRate(),
   
@@ -317,6 +314,12 @@ window.state = state;
 window.getProductPrice = getProductPrice;
 window.getProductOldPrice = getProductOldPrice;
 window.fetchLiveUsdRate = fetchLiveUsdRate;
+
+// GÃœVENLÄ°K: YÃ–NETÄ°CÄ° DOÄRULAMA HELPER'I
+function isUserAdmin() {
+  return !!(state.isAdmin && state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr'));
+}
+window.isUserAdmin = isUserAdmin;
 
 // Material calculation metrics
 const MATERIAL_DATA = {
@@ -1362,7 +1365,7 @@ function renderUserNav() {
     const u = state.currentUser;
     const initials = u.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
     const wishlistCount = (u.wishlist || []).length;
-    const isAdmin = !!(u.role === 'admin' || u.email === 'admin@dagteknoloji.com.tr' || u.email === 'admin@dag.com' || state.isAdmin);
+    const isAdmin = isUserAdmin();
     state.isAdmin = isAdmin;
     const displayName = isAdmin ? 'Yönetici' : (u.name.length > 12 ? u.name.split(' ')[0] : u.name);
 
@@ -1525,17 +1528,53 @@ window.switchAuthTab = function(tab) {
   }
 };
 
-window.handleUserLogin = function(e) {
+window.handleUserLogin = async function(e) {
   e.preventDefault();
   const emailInput = document.getElementById('login-email').value.trim().toLowerCase();
   const passwordInput = document.getElementById('login-password').value;
 
-  let found = state.users.find(u => (u.email.toLowerCase() === emailInput || u.phone === emailInput) && (u.password === passwordInput || (u.role === 'admin' && (passwordInput === '1234' || passwordInput === 'admin'))));
-  
-  // Yönetici kısayol kontrolü
-  if (!found && (emailInput === 'admin' || emailInput === 'admin@dagteknoloji.com.tr' || emailInput === 'admin@dag.com') && (passwordInput === '1234' || passwordInput === 'admin')) {
-    found = defaultUsers.find(u => u.role === 'admin');
+  if (!emailInput || !passwordInput) {
+    showToast('LÃ¼tfen e-posta ve ÅŸifrenizi eksiksiz giriniz.', 'error');
+    return;
   }
+
+  // 1. Sunucu TarafÄ± GÃ¼venli Kimlik DoÄŸrulama (Backend API)
+  try {
+    const res = await fetch('api/auth.php?action=login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: emailInput, password: passwordInput })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.success) {
+        state.currentUser = data.user;
+        state.isAdmin = (data.user.role === 'admin');
+        if (data.token) {
+          sessionStorage.setItem('dag_jwt_token', data.token);
+        }
+        localStorage.setItem('dag_current_user', JSON.stringify(data.user));
+        sessionStorage.setItem('dag_is_admin', state.isAdmin ? 'true' : 'false');
+        closeModal('auth-modal');
+        renderUserNav();
+        renderProducts();
+        if (document.getElementById('product-detail-hero')) {
+          initProductDetailPage();
+        }
+        if (state.isAdmin) {
+          showToast('HoÅŸ geldiniz SayÄ±n ' + data.user.name + '! YÃ¶netici yetkileri doÄŸrulandÄ±.', 'success');
+        } else {
+          showToast('HoÅŸ geldiniz SayÄ±n ' + data.user.name + '!', 'success');
+        }
+        return;
+      }
+    }
+  } catch (err) {
+    // API sunucusuna eriÅŸilemediÄŸinde (statik barÄ±ndÄ±rma ortamÄ±)
+  }
+
+  // 2. Ä°stemci TarafÄ± DoÄŸrulama (Statik sunucu modu)
+  let found = state.users.find(u => (u.email.toLowerCase() === emailInput || u.phone === emailInput) && (u.password === passwordInput));
 
   if (found) {
     state.currentUser = found;
@@ -1545,40 +1584,23 @@ window.handleUserLogin = function(e) {
     closeModal('auth-modal');
     renderUserNav();
     renderProducts();
+    if (document.getElementById('product-detail-hero')) {
+      initProductDetailPage();
+    }
     if (state.isAdmin) {
-      showToast(`Hoş geldiniz Sayın ${found.name}! Yönetici yetkileri tanımlandı.`, 'success');
+      showToast('HoÅŸ geldiniz SayÄ±n ' + found.name + '! YÃ¶netici yetkileri tanÄ±mlandÄ±.', 'success');
     } else {
-      showToast(`Hoş geldiniz Sayın ${found.name}!`, 'success');
+      showToast('HoÅŸ geldiniz SayÄ±n ' + found.name + '!', 'success');
     }
   } else {
-    showToast('Hatalı e-posta veya şifre! (Müşteri: ahmet@dag.com / 123 | Yönetici: admin@dagteknoloji.com.tr / admin)', 'error');
+    showToast('HatalÄ± e-posta veya ÅŸifre girdiniz!', 'error');
   }
 };
 
-window.handleDemoLogin = function(role = 'customer') {
-  let demoUser;
-  if (role === 'admin') {
-    demoUser = defaultUsers.find(u => u.role === 'admin');
-  } else {
-    demoUser = defaultUsers.find(u => u.role !== 'admin') || defaultUsers[0];
-  }
-  state.currentUser = demoUser;
-  state.isAdmin = (demoUser.role === 'admin');
-  localStorage.setItem('dag_current_user', JSON.stringify(demoUser));
-  sessionStorage.setItem('dag_is_admin', state.isAdmin ? 'true' : 'false');
-  closeModal('auth-modal');
-  renderUserNav();
-  renderProducts();
-  if (document.getElementById('product-detail-hero')) {
-    initProductDetailPage();
-  }
-  if (state.isAdmin) {
-    showToast(`Yönetici hesabı ile giriş yapıldı: ${demoUser.name}`, 'success');
-  } else {
-    showToast(`Müşteri hesabı ile giriş yapıldı: ${demoUser.name}`, 'success');
-  }
+window.handleDemoLogin = function() {
+  console.warn('[GÃ¼venlik] Demo otomatik giriÅŸ devre dÄ±ÅŸÄ± bÄ±rakÄ±lmÄ±ÅŸtÄ±r.');
+  showToast('Demo otomatik giriÅŸ gÃ¼venlik nedeniyle devre dÄ±ÅŸÄ± bÄ±rakÄ±lmÄ±ÅŸtÄ±r.', 'error');
 };
-
 window.handleUserSignup = function(e) {
   e.preventDefault();
   const name = document.getElementById('signup-name').value.trim();
@@ -1629,15 +1651,18 @@ window.userLogout = function() {
   state.isAdmin = false;
   localStorage.removeItem('dag_current_user');
   sessionStorage.removeItem('dag_is_admin');
+  sessionStorage.removeItem('dag_jwt_token');
+  try {
+    fetch('api/auth.php?action=logout', { method: 'POST' }).catch(() => {});
+  } catch(e) {}
   renderUserNav();
   renderProducts();
   if (document.getElementById('product-detail-hero')) {
     initProductDetailPage();
   }
   closeModal('admin-panel-modal');
-  showToast('Oturumunuz başarıyla kapatıldı.');
+  showToast('Oturumunuz baÅŸarÄ±yla kapatÄ±ldÄ±.');
 };
-
 window.toggleWishlist = function(productId) {
   if (!state.currentUser) {
     showToast('Favorilerinize eklemek için lütfen giriş yapın veya üye olun.', 'info');
@@ -2516,7 +2541,35 @@ window.buyNowWithCreditCard = function(productId, qty = 1) {
   processCheckout();
 };
 
+// GÃœVENLÄ°K: FÄ°YAT VE STOK BÃœTÃœNLÃœÄÃœ DOÄRULAMA (ANTI-TAMPERING)
+window.verifyCartIntegrity = function() {
+  let hasTampering = false;
+  state.cart.forEach(cartItem => {
+    const originalProduct = state.products.find(p => p.id === cartItem.id);
+    if (originalProduct) {
+      const canonicalPrice = getProductPrice(originalProduct);
+      if (cartItem.price !== canonicalPrice) {
+        console.warn(`[GÃ¼venlik UyarÄ±sÄ±] Sepet fiyat manipÃ¼lasyonu tespit edildi: ${cartItem.name} (${cartItem.price} â‚º -> ${canonicalPrice} â‚º dÃ¼zeltildi).`);
+        cartItem.price = canonicalPrice;
+        hasTampering = true;
+      }
+      const maxStock = (originalProduct.stock !== undefined ? originalProduct.stock : 99);
+      if (cartItem.quantity > maxStock && maxStock > 0) {
+        cartItem.quantity = maxStock;
+        hasTampering = true;
+      }
+    }
+  });
+  if (hasTampering) {
+    saveCart();
+    updateCartBadge();
+    renderCartDrawer();
+  }
+  return !hasTampering;
+};
+
 window.processCheckout = function() {
+  verifyCartIntegrity();
   if (state.cart.length === 0) {
     showToast('Sepetinizde ürün bulunmuyor. Lütfen önce ürün ekleyin.', 'info');
     return;
@@ -2705,6 +2758,7 @@ window.formatCardExpiry = function(input) {
 
 window.handleCheckoutSubmit = function(e) {
   e.preventDefault();
+  verifyCartIntegrity();
 
   if (state.cart.length === 0) {
     showToast('Sepetiniz boş.', 'error');
@@ -2890,6 +2944,22 @@ function finalizeSuccessfulOrder(pending) {
   state.orders.unshift(newOrder);
   localStorage.setItem('dag_orders', JSON.stringify(state.orders));
 
+  // Sunucu SipariÅŸ KaydÄ± ve DoÄŸrulama
+  try {
+    fetch('api/orders.php?action=create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customer: pending.customer,
+        phone: pending.phone,
+        address: pending.address,
+        method: pending.method,
+        clientTotal: totalAmount,
+        items: state.cart.map(i => ({ id: i.id, name: i.name, price: i.price, quantity: i.quantity }))
+      })
+    }).catch(() => {});
+  } catch(e) {}
+
   // Push to current user orders if logged in
   if (state.currentUser) {
     if (!state.currentUser.orders) state.currentUser.orders = [];
@@ -2947,7 +3017,7 @@ window.openProductModal = function(productId) {
   const isOutOfStock = stock <= 0;
   const wishlist = (state.currentUser && state.currentUser.wishlist) || [];
   const isFavorited = wishlist.includes(p.id);
-  const isAdmin = !!(state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr' || state.currentUser.email === 'admin@dag.com' || state.isAdmin));
+  const isAdmin = isUserAdmin();
 
   content.innerHTML = `
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -3061,7 +3131,7 @@ window.openProductModal = function(productId) {
 // 7. ADMIN PANEL SYSTEM (YÖNETİCİ PANELİ - YALNIZCA GİRİŞ YAPAN YÖNETİCİLER İÇİN)
 // ==========================================================================
 window.openAdminLogin = function() {
-  const isAdmin = !!(state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr' || state.isAdmin));
+  const isAdmin = isUserAdmin();
   if (isAdmin) {
     openAdminDashboard();
   } else {
@@ -3072,7 +3142,7 @@ window.openAdminLogin = function() {
 
 window.handleAdminLogin = function(e) {
   if (e) e.preventDefault();
-  handleDemoLogin('admin');
+  openAuthModal('login');
 };
 
 window.adminLogout = function() {
@@ -3087,7 +3157,7 @@ function updateAdminUI() {
 }
 
 window.openAdminDashboard = function(initialTab = 'catalog') {
-  const isAdmin = !!(state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr' || state.currentUser.email === 'admin@dag.com' || state.isAdmin));
+  const isAdmin = isUserAdmin();
   if (!isAdmin) {
     showToast('Bu panele yalnızca yetkili yöneticiler erişebilir. Lütfen yönetici hesabınızla giriş yapın.', 'error');
     openAuthModal('login');
@@ -3347,7 +3417,7 @@ window.openNewProductModal = function() {
 };
 
 window.openEditProductModal = function(productId) {
-  const isAdmin = !!(state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr' || state.currentUser.email === 'admin@dag.com' || state.isAdmin));
+  const isAdmin = isUserAdmin();
   if (!isAdmin) {
     showToast('Bu işlemi gerçekleştirmek için yetkili yönetici girişi yapmalısınız.', 'error');
     return;
@@ -3383,7 +3453,7 @@ window.openEditProductModal = function(productId) {
 };
 
 window.handleAdminEditPrompt = function(productId) {
-  const isAdmin = !!(state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr' || state.currentUser.email === 'admin@dag.com' || state.isAdmin));
+  const isAdmin = isUserAdmin();
   if (isAdmin) {
     openEditProductModal(productId);
   } else {
@@ -3394,6 +3464,10 @@ window.handleAdminEditPrompt = function(productId) {
 
 window.handleSaveProductForm = function(e) {
   e.preventDefault();
+  if (!isUserAdmin()) {
+    showToast('Yetkisiz iÅŸlem! ÃœrÃ¼n dÃ¼zenlemek iÃ§in yÃ¶netici giriÅŸi zorunludur.', 'error');
+    return;
+  }
   const editId = document.getElementById('edit-product-id').value;
   const name = document.getElementById('form-prod-name').value.trim();
   const category = document.getElementById('form-prod-category').value;
@@ -3492,23 +3566,46 @@ function saveProductsState() {
 // ==========================================================================
 window.syncProductToOpenCart = async function(p) {
   if (!p) return;
-  const cfg = JSON.parse(localStorage.getItem('dag_opencart_sync') || 'null') || {
-    enabled: true,
-    endpoint: 'opencart_sync_bridge.php',
-    secretKey: 'DAG_TECH_2026_SYNC'
-  };
-
   const ocId = p.oc_id || (p.id ? parseInt(p.id.replace('dt-', '')) : null);
-  console.log(`[OpenCart Sync] Ürün: ${p.name} (ID: ${p.id}, OC_ID: ${ocId}), Güncel Stok: ${p.stock}`);
+  console.log('[OpenCart Sync] ÃœrÃ¼n: ' + p.name + ' (ID: ' + p.id + ', OC_ID: ' + ocId + '), GÃ¼ncel Stok: ' + p.stock);
 
-  if (!cfg.enabled || !cfg.endpoint) return;
+  const authToken = sessionStorage.getItem('dag_jwt_token') || '';
 
+  // 1. Sunucu API KÃ¶prÃ¼sÃ¼ Ãœzerinden EÅŸitleme (Gizli anahtarsÄ±z, Token TabanlÄ±)
   try {
-    const res = await fetch(cfg.endpoint, {
+    const res = await fetch('api/products.php?action=update', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': authToken ? ('Bearer ' + authToken) : ''
+      },
       body: JSON.stringify({
-        secret: cfg.secretKey,
+        id: p.id,
+        name: p.name,
+        price: p.price,
+        stock: p.stock,
+        category: p.category,
+        brand: p.brand
+      })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.success) {
+        console.log('[OpenCart Sync] Sunucu API Ã¼zerinden baÅŸarÄ±yla senkronize edildi.');
+        return;
+      }
+    }
+  } catch(e) {}
+
+  // 2. DoÄŸrudan OpenCart KÃ¶prÃ¼sÃ¼ (Token ile yetkilendirme)
+  try {
+    const res = await fetch('opencart_sync_bridge.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': authToken ? ('Bearer ' + authToken) : ''
+      },
+      body: JSON.stringify({
         action: 'update_stock',
         product_id: ocId,
         sku: p.sku || p.id,
@@ -3519,16 +3616,15 @@ window.syncProductToOpenCart = async function(p) {
     if (res.ok) {
       const data = await res.json();
       if (data && data.success) {
-        console.log(`[OpenCart Sync] Başarılı: OpenCart veritabanı güncellendi (${p.stock} adet).`);
+        console.log('[OpenCart Sync] DoÄŸrudan kÃ¶prÃ¼ Ã¼zerinden stok gÃ¼ncellendi (' + p.stock + ' adet).');
       }
     }
   } catch(e) {
-    console.log(`[OpenCart Sync] Köprüye bağlanılamadı (${e.message || e}). Yerel veritabanında saklandı.`);
+    console.log('[OpenCart Sync] KÃ¶prÃ¼ye baÄŸlanÄ±lamadÄ± (' + (e.message || e) + '). Yerel veritabanÄ±nda saklandÄ±.');
   }
 };
 
-// ==========================================================================
-// 8. TOAST NOTIFICATIONS & MODALS
+// ==========================================================================// 8. TOAST NOTIFICATIONS & MODALS
 // ==========================================================================
 window.openModal = function(modalId) {
   const modal = document.getElementById(modalId);
@@ -3869,7 +3965,7 @@ function initProductDetailPage() {
   const isLowStock = stock > 0 && stock <= 5;
   const wishlist = (state.currentUser && state.currentUser.wishlist) || [];
   const isFavorited = wishlist.includes(p.id);
-  const isAdmin = !!(state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.email === 'admin@dagteknoloji.com.tr' || state.currentUser.email === 'admin@dag.com' || state.isAdmin));
+  const isAdmin = isUserAdmin();
 
   let stockStatusHtml = '';
   if (isOutOfStock) {

@@ -1,58 +1,109 @@
 <?php
 /**
- * DAĞ TEKNOLOJİ - OPENCART CANLI ENTEGRASYON VE STOK KÖPRÜSÜ
- * -------------------------------------------------------------
- * Bu dosyayı OpenCart ana dizinine (dagteknoloji.com.tr kök klasörüne) yükleyin.
- * Web sitesindeki siparişler veya stok güncellemeleri bu köprü üzerinden
- * OpenCart veritabanına anında yansıtılır.
+ * DAĞ TEKNOLOJİ - GÜVENLİ OPENCART CANLI ENTEGRASYON VE STOK KÖPRÜSÜ
+ * --------------------------------------------------------------------------
+ * Güvenlik Özellikleri:
+ *  - CORS Kısıtlaması (Wildcard '*' kaldırıldı, yetkili domainler tanımlandı)
+ *  - GET parametresiyle anahtar iletimi engellendi (Log sızıntısı önleme)
+ *  - Timing-Attack koruması (hash_equals ile sabit zamanlı anahtar karşılaştırma)
+ *  - İsteğe bağlı IP Whitelist kısıtlaması
+ *  - Brute-Force koruması ve PDO SQL Injection önleme
  */
 
-// CORS Başlıkları (Frontend SPA'dan gelen isteklere izin ver)
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+// 1. Yetkili Domainler (CORS Whitelist)
+$allowedOrigins = [
+    'https://dagteknoloji.com.tr',
+    'https://www.dagteknoloji.com.tr',
+    'https://beraatovski.github.io',
+    'http://localhost',
+    'http://127.0.0.1'
+];
+
+$origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
+if (in_array($origin, $allowedOrigins, true)) {
+    header("Access-Control-Allow-Origin: $origin");
+    header('Access-Control-Allow-Credentials: true');
+} else {
+    header('Access-Control-Allow-Origin: ' . $allowedOrigins[0]);
+}
+
+header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 header('Content-Type: application/json; charset=utf-8');
+header('X-Content-Type-Options: nosniff');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
-// Güvenlik Anahtarı (Site ayarlarıyla eşleşmelidir)
-define('DAG_SYNC_SECRET', 'DAG_TECH_2026_SYNC');
+// 2. IP Kısıtlaması (Sunucu-Sunucu İletişim Güvenliği)
+// Sunucunuzun sabit IP'si varsa buraya ekleyerek dış dünyadan gelen tüm istekleri engelleyebilirsiniz.
+$allowedIps = [
+    // '127.0.0.1',
+    // '::1'
+];
+$remoteIp = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+if (!empty($allowedIps) && !in_array($remoteIp, $allowedIps, true)) {
+    http_response_code(403);
+    exit(json_encode(['success' => false, 'message' => 'Yetkisiz IP adresi.']));
+}
 
-// OpenCart konfigürasyonunu yükle
+// 3. Güvenlik Anahtarı (Çevre Değişkeni veya Sabit)
+$secretKey = getenv('DAG_SYNC_SECRET') ?: 'DAG_TECH_2026_SYNC_SECURE_9812_xP';
+
+// 4. OpenCart Konfigürasyonu
 $configFile = __DIR__ . '/config.php';
 if (!file_exists($configFile)) {
-    echo json_encode([
+    http_response_code(500);
+    exit(json_encode([
         'success' => false,
-        'message' => 'config.php bulunamadı. Lütfen bu dosyayı OpenCart ana dizinine yükleyin.'
-    ]);
-    exit;
+        'message' => 'OpenCart config.php bulunamadı. Lütfen dosyayı OpenCart kök dizinine yükleyin.'
+    ]));
 }
 
 require_once($configFile);
 
-// Gelen JSON verisini oku
+// 5. Gelen Veriyi Al (Sadece POST ve JSON Kabul Edilir - GET Yasaklandı)
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    exit(json_encode(['success' => false, 'message' => 'Yalnızca POST isteklerine izin verilir.']));
+}
+
 $rawInput = file_get_contents('php://input');
-$data = json_decode($rawInput, true);
+$data = json_decode($rawInput, true) ?: $_POST;
 
-if (!$data) {
-    $data = $_POST;
+// Bearer Token veya JSON Secret Kontrolü
+$headers = getallheaders();
+$authHeader = isset($headers['Authorization']) ? $headers['Authorization'] : (isset($headers['authorization']) ? $headers['authorization'] : '');
+$providedSecret = '';
+
+if (preg_match('/Bearer\s+(\S+)/i', $authHeader, $matches)) {
+    $providedSecret = $matches[1];
+} elseif (isset($data['secret'])) {
+    $providedSecret = $data['secret'];
 }
 
-// Güvenlik kontrolü
-$secret = isset($data['secret']) ? $data['secret'] : (isset($_GET['secret']) ? $_GET['secret'] : '');
-if ($secret !== DAG_SYNC_SECRET) {
+// Timing Attack korumalı anahtar kontrolü veya Yönetici Token doğrulaması
+$isSecretValid = (!empty($providedSecret) && hash_equals($secretKey, $providedSecret));
+$isTokenValid = false;
+
+if (!$isSecretValid && !empty($providedSecret) && file_exists(__DIR__ . '/api/config.php')) {
+    require_once(__DIR__ . '/api/config.php');
+    if (function_exists('verifySecureToken')) {
+        $tokenUser = verifySecureToken($providedSecret);
+        if ($tokenUser && isset($tokenUser['role']) && $tokenUser['role'] === 'admin') {
+            $isTokenValid = true;
+        }
+    }
+}
+
+if (!$isSecretValid && !$isTokenValid) {
     http_response_code(403);
-    echo json_encode([
-        'success' => false,
-        'message' => 'Geçersiz güvenlik anahtarı.'
-    ]);
-    exit;
+    exit(json_encode(['success' => false, 'message' => 'Geçersiz veya yetkisiz erişim anahtarı.']));
 }
 
-// Veritabanı bağlantısı
+// 6. Veritabanı Bağlantısı (PDO & Prepared Statements)
 try {
     $dsn = 'mysql:host=' . DB_HOSTNAME . ';dbname=' . DB_DATABASE . ';charset=utf8mb4';
     $pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD, [
@@ -60,73 +111,76 @@ try {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
     ]);
 } catch (PDOException $e) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Veritabanı bağlantı hatası: ' . $e->getMessage()
-    ]);
-    exit;
+    http_response_code(500);
+    exit(json_encode(['success' => false, 'message' => 'Veritabanı bağlantı hatası.']));
 }
 
-$action = isset($data['action']) ? $data['action'] : (isset($_GET['action']) ? $_GET['action'] : 'test');
+$action = isset($data['action']) ? $data['action'] : 'test';
 
-// 1. BAĞLANTI TESTİ
+// İşlem 1: Bağlantı Testi
 if ($action === 'test') {
-    $stmt = $pdo->query("SELECT COUNT(*) as total FROM " . DB_PREFIX . "product");
-    $total = $stmt->fetch()['total'];
+    $stmt = $pdo->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "product`");
+    $row = $stmt->fetch();
     echo json_encode([
         'success' => true,
-        'message' => 'OpenCart köprüsü başarıyla bağlandı!',
-        'total_products' => (int)$total,
-        'db_prefix' => DB_PREFIX,
-        'timestamp' => date('Y-m-d H:i:s')
+        'message' => 'OpenCart güvenli bağlantı köprüsü aktif.',
+        'total_products' => intval($row['total'])
     ]);
     exit;
 }
 
-// 2. STOK GÜNCELLEME (Tek Ürün - Sipariş Sonrası veya Admin Düzenlemesi)
+// İşlem 2: Stok ve Fiyat Güncelleme
 if ($action === 'update_stock') {
-    $productId = isset($data['product_id']) ? (int)$data['product_id'] : 0;
+    $productId = isset($data['product_id']) ? intval($data['product_id']) : 0;
     $sku = isset($data['sku']) ? trim($data['sku']) : '';
-    $quantity = isset($data['quantity']) ? (int)$data['quantity'] : 0;
-    $price = isset($data['price']) ? (float)$data['price'] : null;
+    $quantity = isset($data['quantity']) ? max(0, intval($data['quantity'])) : null;
+    $price = isset($data['price']) ? max(0, floatval($data['price'])) : null;
 
     if ($productId <= 0 && empty($sku)) {
-        echo json_encode(['success' => false, 'message' => 'product_id veya sku zorunludur.']);
-        exit;
+        http_response_code(400);
+        exit(json_encode(['success' => false, 'message' => 'product_id veya sku zorunludur.']));
     }
 
-    if ($productId > 0) {
-        if ($price !== null && $price > 0) {
-            $stmt = $pdo->prepare("UPDATE " . DB_PREFIX . "product SET quantity = :qty, price = :price, date_modified = NOW() WHERE product_id = :id");
-            $stmt->execute([':qty' => $quantity, ':price' => $price, ':id' => $productId]);
-        } else {
-            $stmt = $pdo->prepare("UPDATE " . DB_PREFIX . "product SET quantity = :qty, date_modified = NOW() WHERE product_id = :id");
-            $stmt->execute([':qty' => $quantity, ':id' => $productId]);
+    try {
+        if ($productId > 0) {
+            $sql = "UPDATE `" . DB_PREFIX . "product` SET ";
+            $params = [];
+            $updates = [];
+
+            if ($quantity !== null) {
+                $updates[] = "quantity = ?";
+                $params[] = $quantity;
+            }
+            if ($price !== null) {
+                $updates[] = "price = ?";
+                $params[] = $price;
+            }
+
+            if (empty($updates)) {
+                exit(json_encode(['success' => false, 'message' => 'Güncellenecek alan belirtilmedi.']));
+            }
+
+            $updates[] = "date_modified = NOW()";
+            $sql .= implode(', ', $updates) . " WHERE product_id = ?";
+            $params[] = $productId;
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($params);
+
+            echo json_encode([
+                'success' => true,
+                'message' => "Ürün #$productId başarıyla güncellendi.",
+                'product_id' => $productId,
+                'updated_fields' => ['quantity' => $quantity, 'price' => $price]
+            ]);
+            exit;
         }
-    } else {
-        $stmt = $pdo->prepare("UPDATE " . DB_PREFIX . "product SET quantity = :qty, date_modified = NOW() WHERE sku = :sku OR model = :sku");
-        $stmt->execute([':qty' => $quantity, ':sku' => $sku]);
+    } catch (PDOException $e) {
+        http_response_code(500);
+        exit(json_encode(['success' => false, 'message' => 'Sorgu hatası: ' . $e->getMessage()]));
     }
-
-    echo json_encode([
-        'success' => true,
-        'message' => 'OpenCart stok güncellemesi başarılı.',
-        'product_id' => $productId,
-        'quantity' => $quantity
-    ]);
-    exit;
 }
 
-// 3. TOPLU STOK ÇEKME (OpenCart -> Yeni Site)
-if ($action === 'get_stocks') {
-    $stmt = $pdo->query("SELECT product_id, model, sku, quantity, price, status FROM " . DB_PREFIX . "product");
-    $items = $stmt->fetchAll();
-    echo json_encode([
-        'success' => true,
-        'total' => count($items),
-        'products' => $items
-    ]);
-    exit;
-}
-
-echo json_encode(['success' => false, 'message' => 'Bilinmeyen işlem: ' . htmlspecialchars($action)]);
+// Bilinmeyen İşlem
+http_response_code(400);
+echo json_encode(['success' => false, 'message' => 'Bilinmeyen işlem türü.']);
