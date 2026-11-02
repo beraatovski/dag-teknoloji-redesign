@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth overflow-x-hidden">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Üye Profili &amp; Hesap Yönetimi | DAĞ TEKNOLOJİ</title>
+  <meta name="description" content="Dağ Teknoloji Üye Profili - Geçmiş siparişlerinizi görüntüleyin, adres bilgilerinizi ve şifrenizi güvenle yönetin.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261101v13">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#07090e',
+              surface: '#0f172a',
+              card: '#131d36',
+              border: '#1e293b',
+              accent: '#00f0ff',
+              cyan: '#00d2ff',
+              blue: '#0052cc',
+              purple: '#8b5cf6'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"Space Grotesk"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css?v=20261101v18">
+</head>
+<body class="bg-[#07090e] text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950 w-full max-w-full min-h-screen flex flex-col justify-between">
+
+  <!-- TOP ANNOUNCEMENT BAR -->
+  <div class="bg-gradient-to-r from-slate-950 via-cyan-950/40 to-slate-950 border-b border-cyan-500/20 py-1.5 sm:py-2 px-3 sm:px-4 text-xs overflow-hidden w-full">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 flex items-center justify-between gap-2 text-slate-300 w-full">
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-semibold shrink-0">
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span> PERPA MERKEZLİ
+        </span>
+        <span class="hidden md:inline text-slate-300">Perpa Ticaret Merkezi 8. Kat B Blok No:825 Şişli / İstanbul</span>
+      </div>
+
+      <div class="flex items-center gap-3 sm:gap-6 shrink-0">
+        <span class="hidden lg:inline text-slate-400">Hızlı Kargo &amp; Aynı Gün Elden Teslimat</span>
+        <a href="tel:+905070201198" class="text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors text-xs sm:text-sm">
+          <i data-lucide="phone-call" class="w-3.5 h-3.5"></i> 0507 020 11 98
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING MASTER NAVBAR -->
+  <header class="sticky top-2 sm:top-3 z-50 px-2 sm:px-4 lg:px-6 transition-all duration-300 pointer-events-none w-full max-w-full">
+    <div class="max-w-7xl mx-auto w-full">
+      <div class="bg-slate-900/90 backdrop-blur-xl border border-cyan-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_20px_rgba(0,240,255,0.08)] hover:border-cyan-500/40 rounded-2xl px-3 sm:px-4 lg:px-5 py-2 sm:py-2.5 flex items-center justify-between gap-2 lg:gap-4 transition-all pointer-events-auto">
+        
+        <!-- Logo -->
+        <div class="flex items-center justify-start shrink-0">
+          <a href="index.html" class="flex items-center group shrink-0" title="Dağ Teknoloji">
+            <img src="assets/logo.svg?v=20261101v13" alt="Dağ Teknoloji" class="h-6 sm:h-7 md:h-8 xl:h-9 w-auto brand-logo-img transition-transform duration-300 group-hover:scale-105">
+          </a>
+        </div>
+
+        <!-- Desktop Menu -->
+        <nav class="hidden lg:flex items-center justify-center gap-1 xl:gap-2 shrink min-w-0">
+          <a href="index.html" class="inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-xl hover:bg-slate-800/80 text-slate-300 hover:text-cyan-400 font-medium text-xs xl:text-sm transition-all shrink-0">
+            <i data-lucide="home" class="w-3.5 h-3.5 text-slate-400"></i>
+            <span>Ana Sayfa</span>
+          </a>
+
+          <a href="urunler.html" class="inline-flex items-center gap-1.5 xl:gap-2 px-2.5 xl:px-3.5 py-1.5 xl:py-2 rounded-xl hover:bg-slate-800/80 text-slate-300 hover:text-cyan-400 font-medium text-xs xl:text-sm transition-all shrink-0">
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-slate-400"></i>
+            <span>Ürünler</span>
+          </a>
+
+          <a href="index.html#calc-section" class="inline-flex items-center gap-1 xl:gap-1.5 px-2.5 xl:px-3.5 py-1.5 xl:py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700/80 hover:border-cyan-400/60 text-slate-200 hover:text-cyan-300 font-semibold text-xs xl:text-sm transition-all shadow-sm shrink-0">
+            <i data-lucide="calculator" class="w-3.5 h-3.5 xl:w-4 xl:h-4 text-cyan-400"></i>
+            <span>3D Maliyet</span>
+            <span class="px-1.5 py-0.2 text-[9px] xl:text-[10px] bg-cyan-500/20 text-cyan-400 rounded-full border border-cyan-500/30 font-mono">Canlı</span>
+          </a>
+
+          <a href="index.html#services-section" class="hidden xl:inline-block px-2.5 py-1.5 rounded-xl hover:bg-slate-800/80 text-slate-300 hover:text-cyan-400 font-medium text-xs xl:text-sm transition-all shrink-0">Hizmetlerimiz</a>
+          <a href="index.html#contact-section" class="px-2.5 py-1.5 rounded-xl hover:bg-slate-800/80 text-slate-300 hover:text-cyan-400 font-medium text-xs xl:text-sm transition-all shrink-0">İletişim</a>
+        </nav>
+
+        <!-- Right Side Nav Actions -->
+        <div class="flex items-center justify-end gap-1.5 sm:gap-2 shrink-0">
+          <a href="https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizden%20yaz%C4%B1yorum." target="_blank" class="hidden 2xl:flex p-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all shadow-sm w-9 sm:w-10 h-9 sm:h-10 items-center justify-center shrink-0" title="WhatsApp Destek Hattı">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+          </a>
+
+          <!-- Cart Button -->
+          <a href="sepet.html" class="relative p-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 hover:border-cyan-400/60 text-slate-200 hover:text-cyan-400 transition-all w-8 sm:w-9 h-8 sm:h-9 flex items-center justify-center shrink-0" title="Alışveriş Sepetim">
+            <i data-lucide="shopping-cart" class="w-4 h-4 sm:w-4.5 sm:h-4.5"></i>
+            <span id="cart-badge-count" class="hidden absolute -top-1.5 -right-1.5 w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full bg-cyan-400 text-slate-950 font-bold text-[10px] sm:text-[11px] flex items-center justify-center shadow-md">0</span>
+          </a>
+
+          <!-- User Nav Container -->
+          <div id="user-nav-container" class="shrink-0"></div>
+
+          <!-- Mobile Menu Toggle -->
+          <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-xl bg-slate-800 text-slate-200 border border-slate-700 hover:border-cyan-400/60 transition-colors w-8 sm:w-9 h-8 sm:h-9 flex items-center justify-center shrink-0" title="Menüyü Aç">
+            <i data-lucide="menu" class="w-4.5 h-4.5"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- MOBILE DROPDOWN MENU -->
+      <div id="mobile-menu" class="hidden lg:hidden mt-2 border border-slate-800/90 bg-slate-950/95 backdrop-blur-xl rounded-2xl p-5 space-y-3 shadow-2xl pointer-events-auto">
+        <a href="index.html" class="block p-2 text-sm font-medium text-slate-200 hover:text-cyan-400">Ana Sayfa</a>
+        <a href="urunler.html" class="block p-2 text-sm font-medium text-slate-200 hover:text-cyan-400">Ürünler Kataloğu &amp; Stok</a>
+        <a href="sepet.html" class="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800 text-white font-bold text-sm">
+          <span class="flex items-center gap-2">
+            <i data-lucide="shopping-cart" class="w-4 h-4 text-cyan-400"></i>
+            <span>Alışveriş Sepetim</span>
+          </span>
+          <span class="mobile-cart-badge px-2 py-0.5 text-xs bg-cyan-500 text-slate-950 rounded-full font-bold">0 Ürün</span>
+        </a>
+        <div id="mobile-user-nav-container" class="pt-2 border-t border-slate-800"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN PROFILE PAGE CONTENT -->
+  <main id="profile-page-main" class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 w-full">
+    
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-2 text-xs text-slate-400 mb-6 font-mono">
+      <a href="index.html" class="hover:text-cyan-400 transition-colors">Ana Sayfa</a>
+      <span>/</span>
+      <span class="text-cyan-300 font-semibold">Üye Profili &amp; Hesap Yönetimi</span>
+    </nav>
+
+    <!-- 1. GUEST VIEW (If Not Logged In) -->
+    <div id="profile-guest-view" class="hidden glass-panel p-8 sm:p-12 rounded-3xl border border-slate-800 text-center max-w-xl mx-auto my-12 space-y-5 shadow-2xl">
+      <div class="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center mx-auto shadow-[0_0_25px_rgba(0,240,255,0.15)]">
+        <i data-lucide="user-lock" class="w-8 h-8"></i>
+      </div>
+      <div>
+        <h2 class="text-xl sm:text-2xl font-extrabold text-white">Hesabınıza Giriş Yapın</h2>
+        <p class="text-sm text-slate-400 mt-2 leading-relaxed">
+          Geçmiş siparişlerinizi incelemek, teslimat adreslerinizi ve hesap şifrenizi yönetmek için lütfen oturum açınız.
+        </p>
+      </div>
+      <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+        <button onclick="openAuthModal('login')" class="w-full sm:w-auto px-6 py-3.5 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg">
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          <span>Giriş Yap</span>
+        </button>
+        <button onclick="openAuthModal('register')" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs uppercase tracking-wider border border-slate-700 transition-colors">
+          Yeni Üyelik Oluştur
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. AUTHENTICATED MEMBER DASHBOARD VIEW -->
+    <div id="profile-auth-view" class="hidden space-y-6">
+
+      <!-- Profile Header Hero Card -->
+      <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800/90 bg-gradient-to-r from-slate-900/90 via-slate-900/60 to-slate-950 shadow-2xl flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        
+        <div class="flex items-start sm:items-center gap-4 sm:gap-5">
+          <!-- Avatar Initial Circle -->
+          <div id="page-profile-avatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-600/30 border-2 border-cyan-400/50 text-cyan-300 flex items-center justify-center font-extrabold text-2xl sm:text-3xl shrink-0 shadow-[0_0_20px_rgba(0,240,255,0.2)]">
+            U
+          </div>
+          <div class="space-y-1">
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <h1 id="page-profile-name" class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">Kullanıcı</h1>
+              <span id="page-profile-role-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Müşteri</span>
+              <span id="page-profile-company-badge" class="hidden px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30"></span>
+            </div>
+            <div class="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-slate-400 font-mono pt-1">
+              <span class="flex items-center gap-1.5"><i data-lucide="mail" class="w-3.5 h-3.5 text-slate-500"></i> <span id="page-profile-email">-</span></span>
+              <span class="flex items-center gap-1.5"><i data-lucide="phone" class="w-3.5 h-3.5 text-slate-500"></i> <span id="page-profile-phone">-</span></span>
+              <span class="flex items-center gap-1.5 text-slate-500"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> <span id="page-profile-date">-</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Actions -->
+        <div class="flex items-center gap-2.5 shrink-0">
+          <div id="page-profile-admin-btn-box"></div>
+          <button onclick="userLogout()" class="px-4 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 font-semibold text-xs flex items-center gap-2 transition-all">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <span>Çıkış Yap</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- 3 Quick Stats Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div onclick="switchProfilePageTab('orders')" class="glass-panel p-5 rounded-2xl border border-slate-800/80 hover:border-cyan-500/50 hover:bg-slate-900/80 transition-all cursor-pointer group">
+          <div class="flex items-center justify-between text-slate-400 mb-2">
+            <span class="text-xs font-mono uppercase tracking-wider">Kayıtlı Siparişler</span>
+            <div class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <i data-lucide="package" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div id="page-profile-stat-orders" class="text-2xl font-extrabold text-white font-mono">0 Adet</div>
+          <span class="text-[11px] text-cyan-400 font-medium mt-1 inline-block">Sipariş geçmişini incele &rarr;</span>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-slate-800/80">
+          <div class="flex items-center justify-between text-slate-400 mb-2">
+            <span class="text-xs font-mono uppercase tracking-wider">Toplam Alışveriş / Ciro</span>
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+              <i data-lucide="wallet" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div id="page-profile-stat-spent" class="text-2xl font-extrabold text-emerald-400 font-mono">0,00 ₺</div>
+          <span class="text-[11px] text-slate-500 mt-1 inline-block">Tamamlanan sipariş tutarı</span>
+        </div>
+
+        <div onclick="switchProfilePageTab('profile')" class="glass-panel p-5 rounded-2xl border border-slate-800/80 hover:border-blue-500/50 hover:bg-slate-900/80 transition-all cursor-pointer group">
+          <div class="flex items-center justify-between text-slate-400 mb-2">
+            <span class="text-xs font-mono uppercase tracking-wider">Fatura &amp; Teslimat Adresi</span>
+            <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <i data-lucide="map-pin" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div id="page-profile-stat-address-status" class="text-sm font-bold text-white truncate mt-1">Tanımlı</div>
+          <span class="text-[11px] text-blue-400 font-medium mt-1 inline-block">Adresi düzenle &rarr;</span>
+        </div>
+      </div>
+
+      <!-- Main Profile Dashboard Tabs & Content -->
+      <div class="glass-panel rounded-3xl border border-slate-800/90 overflow-hidden shadow-2xl">
+        
+        <!-- Tab Navigation Buttons -->
+        <div class="bg-slate-950/80 border-b border-slate-800 px-4 sm:px-6 flex items-center gap-2 overflow-x-auto">
+          <button id="page-tab-btn-orders" onclick="switchProfilePageTab('orders')" class="py-4 px-4 text-xs sm:text-sm font-bold border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 transition-all shrink-0">
+            <i data-lucide="package" class="w-4 h-4"></i>
+            <span>Sipariş Geçmişim</span>
+            <span id="page-badge-orders-count" class="px-2 py-0.5 rounded-full text-[10px] bg-cyan-500/20 text-cyan-300 font-mono">0</span>
+          </button>
+
+          <button id="page-tab-btn-profile" onclick="switchProfilePageTab('profile')" class="py-4 px-4 text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all shrink-0">
+            <i data-lucide="user-check" class="w-4 h-4"></i>
+            <span>Hesap &amp; Adres Bilgilerim</span>
+          </button>
+
+          <button id="page-tab-btn-security" onclick="switchProfilePageTab('security')" class="py-4 px-4 text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all shrink-0">
+            <i data-lucide="key-round" class="w-4 h-4"></i>
+            <span>Şifre Değiştir &amp; Güvenlik</span>
+          </button>
+
+          <button id="page-tab-btn-wishlist" onclick="switchProfilePageTab('wishlist')" class="py-4 px-4 text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all shrink-0">
+            <i data-lucide="heart" class="w-4 h-4"></i>
+            <span>Favorilerim</span>
+            <span id="page-badge-wishlist-count" class="px-2 py-0.5 rounded-full text-[10px] bg-rose-500/20 text-rose-300 font-mono">0</span>
+          </button>
+        </div>
+
+        <!-- TAB 1: SİPARİŞ GEÇMİŞİM -->
+        <div id="page-tab-orders" class="p-5 sm:p-8 space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <div>
+              <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="receipt" class="w-5 h-5 text-cyan-400"></i>
+                <span>Tüm Siparişleriniz</span>
+              </h3>
+              <p class="text-xs text-slate-400 mt-0.5">Siparişlerinizin durumunu, ürün kalemlerini ve fatura detaylarını inceleyebilirsiniz.</p>
+            </div>
+            <a href="urunler.html" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-cyan-300 border border-slate-700 transition-colors flex items-center gap-1.5 font-medium">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              <span>Yeni Sipariş Ver</span>
+            </a>
+          </div>
+
+          <!-- Orders List Container -->
+          <div id="page-profile-orders-list" class="space-y-3.5">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </div>
+
+        <!-- TAB 2: HESAP & ADRES BİLGİLERİ -->
+        <div id="page-tab-profile" class="hidden p-5 sm:p-8 space-y-6 max-w-2xl">
+          <div class="pb-3 border-b border-slate-800">
+            <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="user-check" class="w-5 h-5 text-blue-400"></i>
+              <span>Kişisel &amp; Fatura Bilgileri</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Burada güncellediğiniz bilgiler sonraki siparişlerinizde otomatik doldurulur.</p>
+          </div>
+
+          <form onsubmit="handleSaveProfile(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Ad Soyad *</label>
+              <input type="text" id="page-profile-input-name" required class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700/80 text-white text-xs sm:text-sm focus:border-cyan-400 focus:outline-none transition-colors">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">E-Posta Adresi (Kullanıcı Adı)</label>
+                <div class="relative">
+                  <input type="email" id="page-profile-input-email" disabled class="w-full px-4 py-2.5 rounded-xl bg-slate-900/50 border border-slate-800 text-slate-400 text-xs sm:text-sm cursor-not-allowed">
+                  <span class="absolute right-3 top-2.5 text-[10px] font-mono font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-1.5 py-0.5 rounded">Doğrulanmış</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Telefon Numarası *</label>
+                <input type="tel" id="page-profile-input-phone" required class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700/80 text-white text-xs sm:text-sm focus:border-cyan-400 focus:outline-none transition-colors">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Firma / Kurum Unvanı (Kurumsal Fatura İçin)</label>
+              <input type="text" id="page-profile-input-company" placeholder="Kurumsal fatura kesilecek şirket adı..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700/80 text-white text-xs sm:text-sm focus:border-cyan-400 focus:outline-none transition-colors">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Teslimat ve Fatura Adresi *</label>
+              <textarea id="page-profile-input-address" rows="3" required placeholder="Açık adres, bina/daire no, ilçe ve il..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700/80 text-white text-xs sm:text-sm focus:border-cyan-400 focus:outline-none transition-colors"></textarea>
+            </div>
+
+            <div class="pt-2">
+              <button type="submit" class="px-6 py-3 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-95">
+                <i data-lucide="check" class="w-4 h-4"></i>
+                <span>Bilgilerimi Güncelle</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- TAB 3: ŞİFRE DEĞİŞTİR & GÜVENLİK -->
+        <div id="page-tab-security" class="hidden p-5 sm:p-8 space-y-6 max-w-xl">
+          <div class="pb-3 border-b border-slate-800">
+            <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="lock" class="w-5 h-5 text-amber-400"></i>
+              <span>Hesap Şifresini Değiştir</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Hesabınızın güvenliği için düzenli aralıklarla şifrenizi yenilemeniz tavsiye edilir.</p>
+          </div>
+
+          <!-- Security Tip Box -->
+          <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-start gap-3 text-xs text-amber-300/90 leading-relaxed">
+            <i data-lucide="shield-alert" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
+            <div>
+              Şifreniz en az <strong>6 karakter</strong> olmalı ve tahmin edilmesi zor harf, rakam ve semboller içermelidir.
+            </div>
+          </div>
+
+          <form onsubmit="handleChangePassword(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Mevcut Şifreniz *</label>
+              <div class="relative">
+                <input type="password" id="profile-current-password" required placeholder="Mevcut kullandığınız şifre..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700/80 text-white text-xs sm:text-sm focus:border-amber-400 focus:outline-none transition-colors">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Yeni Şifre (En az 6 karakter) *</label>
+                <input type="password" id="profile-new-password" minlength="6" required placeholder="Yeni şifreniz..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700/80 text-white text-xs sm:text-sm focus:border-cyan-400 focus:outline-none transition-colors">
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Yeni Şifre Tekrar *</label>
+                <input type="password" id="profile-confirm-password" minlength="6" required placeholder="Yeni şifre tekrar..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700/80 text-white text-xs sm:text-sm focus:border-cyan-400 focus:outline-none transition-colors">
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <button type="submit" class="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(245,158,11,0.2)] transition-transform active:scale-95">
+                <i data-lucide="key" class="w-4 h-4"></i>
+                <span>Şifremi Güncelle</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- TAB 4: FAVORİLERİM -->
+        <div id="page-tab-wishlist" class="hidden p-5 sm:p-8 space-y-4">
+          <div class="pb-3 border-b border-slate-800">
+            <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="heart" class="w-5 h-5 text-rose-400"></i>
+              <span>Favori Ürünleriniz</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Daha sonra satın almak üzere beğendiğiniz ve takip ettiğiniz ürünler.</p>
+          </div>
+
+          <div id="page-profile-wishlist-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-950 border-t border-slate-800/80 py-8 px-4 text-xs text-slate-400 w-full mt-12">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <img src="assets/logo.svg?v=20261101v13" alt="Dağ Teknoloji" class="h-6 w-auto opacity-70">
+        <span>&copy; 2026 Dağ Teknoloji - Perpa Ticaret Merkezi B Blok Kat: 8 No: 825 Şişli / İstanbul</span>
+      </div>
+      <div class="flex items-center gap-4 text-slate-400">
+        <a href="index.html" class="hover:text-cyan-400 transition-colors">Ana Sayfa</a>
+        <a href="urunler.html" class="hover:text-cyan-400 transition-colors">Ürünler</a>
+        <a href="sepet.html" class="hover:text-cyan-400 transition-colors">Sepetim</a>
+        <a href="tel:+905070201198" class="hover:text-cyan-400 transition-colors">0507 020 11 98</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- AUTH MODAL (Login & Register) -->
+  <div id="auth-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="closeModal('auth-modal')" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+    <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 z-10 shadow-2xl">
+      <button onclick="closeModal('auth-modal')" class="absolute top-5 right-5 p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center justify-center gap-4 mb-6 border-b border-slate-800 pb-3">
+        <button id="auth-tab-login" onclick="switchAuthTab('login')" class="text-sm font-bold text-cyan-400 border-b-2 border-cyan-400 pb-1">Giriş Yap</button>
+        <button id="auth-tab-register" onclick="switchAuthTab('register')" class="text-sm font-bold text-slate-400 hover:text-white pb-1">Kayıt Ol</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" onsubmit="handleUserLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">E-Posta Adresi veya Telefon *</label>
+          <input type="text" id="login-email" required placeholder="beratakkurt346@gmail.com" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Şifre *</label>
+          <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+        <button type="submit" class="w-full py-3.5 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          <span>Oturum Aç</span>
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" onsubmit="handleUserRegister(event)" class="hidden space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Ad Soyad *</label>
+          <input type="text" id="reg-name" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">E-Posta Adresi *</label>
+          <input type="email" id="reg-email" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Telefon *</label>
+          <input type="tel" id="reg-phone" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Şifre *</label>
+          <input type="password" id="reg-password" minlength="6" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+          <span>Hesap Oluştur</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CUSTOMER ORDERS MODAL -->
+  <div id="customer-orders-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto"></div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- PRODUCTS DATABASE & MAIN SCRIPT -->
+  <script src="products.js?v=20261102v3449"></script>
+  <script src="data/opencart_users.js?v=20261102v3460"></script>
+  <script src="data/opencart_orders.js?v=20261102v3460"></script>
+  <script src="app.js?v=20261102v3462"></script>
+</body>
+</html>

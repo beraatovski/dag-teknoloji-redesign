@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3461';
+const DAG_CATALOG_VERSION = '2026.11.02.v3462';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -422,6 +422,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (document.getElementById('cart-page-container')) {
     initCartPage();
+  }
+  if (document.getElementById('profile-page-main')) {
+    initProfilePage();
   }
 
   try {
@@ -1464,6 +1467,33 @@ function renderUserNav() {
             </div>
           ` : ''}
 
+          <!-- Üye Profili & Hesap Yönetim Merkezi Linki -->
+          <a href="profil.html" onclick="toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-white hover:bg-slate-800 flex items-center justify-between transition-colors bg-cyan-500/10 border border-cyan-500/25 font-bold mb-1 shadow-sm">
+            <span class="flex items-center gap-2">
+              <i data-lucide="user" class="w-4 h-4 text-cyan-400"></i>
+              <span>Profilim &amp; Hesabım</span>
+            </span>
+            <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-mono">YÖNET</span>
+          </a>
+
+          <a href="profil.html?tab=orders" onclick="toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center justify-between transition-colors">
+            <span class="flex items-center gap-2">
+              <i data-lucide="package" class="w-4 h-4 text-emerald-400"></i>
+              <span>Sipariş Geçmişim</span>
+            </span>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.2 rounded-full font-mono font-bold">${(u.orders || []).length}</span>
+          </a>
+
+          <a href="profil.html?tab=security" onclick="toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center gap-2 transition-colors">
+            <i data-lucide="key-round" class="w-4 h-4 text-amber-400"></i>
+            <span>Şifre Değiştir</span>
+          </a>
+
+          <a href="profil.html?tab=profile" onclick="toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center gap-2 transition-colors">
+            <i data-lucide="user-check" class="w-4 h-4 text-blue-400"></i>
+            <span>Hesap &amp; Adres Bilgilerim</span>
+          </a>
+
           <a href="sepet.html" onclick="toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center justify-between transition-colors">
             <span class="flex items-center gap-2">
               <i data-lucide="shopping-cart" class="w-4 h-4 text-cyan-400"></i>
@@ -1472,26 +1502,13 @@ function renderUserNav() {
             <span class="mobile-cart-badge text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.2 rounded-full font-mono">0</span>
           </a>
 
-          <button onclick="openMyOrdersModal(); toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center justify-between transition-colors">
-            <span class="flex items-center gap-2">
-              <i data-lucide="package" class="w-4 h-4 text-cyan-400"></i>
-              <span>Siparişlerim</span>
-            </span>
-            <span class="text-[10px] bg-cyan-500/20 text-cyan-400 px-1.5 py-0.2 rounded-full font-mono">${(u.orders || []).length}</span>
-          </button>
-
-          <button onclick="openWishlistModal(); toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center justify-between transition-colors">
+          <a href="profil.html?tab=wishlist" onclick="toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center justify-between transition-colors">
             <span class="flex items-center gap-2">
               <i data-lucide="heart" class="w-4 h-4 text-rose-400"></i>
               <span>Favorilerim</span>
             </span>
             <span class="text-[10px] bg-rose-500/20 text-rose-400 px-1.5 py-0.2 rounded-full font-mono">${wishlistCount}</span>
-          </button>
-
-          <button onclick="openProfileModal(); toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center gap-2 transition-colors">
-            <i data-lucide="user-check" class="w-4 h-4 text-emerald-400"></i>
-            <span>Hesap Bilgilerim</span>
-          </button>
+          </a>
 
           <div class="border-t border-slate-800/80 pt-1 mt-1">
             <button onclick="userLogout()" class="w-full text-left px-3 py-2 rounded-xl text-xs text-rose-400 hover:bg-rose-500/10 flex items-center gap-2 transition-colors">
@@ -1512,15 +1529,35 @@ function renderUserNav() {
               <div>
                 <div class="text-xs font-bold text-white flex items-center gap-1.5">
                   <span>${u.name}</span>
-          ${isAdmin ? `<span class="hidden md:inline px-1.5 py-0.2 text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 rounded font-mono font-bold">ADMIN</span>` : ''}
+                  ${isAdmin ? `<span class="px-1.5 py-0.2 text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 rounded font-mono font-bold">ADMIN</span>` : ''}
                 </div>
                 <div class="text-[10px] text-cyan-400 font-mono">${u.email}</div>
               </div>
             </div>
             <button onclick="userLogout()" class="text-xs text-rose-400 hover:underline">Çıkış</button>
           </div>
+          
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <a href="profil.html" class="py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 border border-slate-700">
+              <i data-lucide="user" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <span>Profilim</span>
+            </a>
+            <a href="profil.html?tab=orders" class="py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 border border-slate-700">
+              <i data-lucide="package" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>Siparişlerim</span>
+            </a>
+            <a href="profil.html?tab=security" class="py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 border border-slate-700">
+              <i data-lucide="key-round" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span>Şifre Değiştir</span>
+            </a>
+            <a href="sepet.html" class="py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 border border-slate-700">
+              <i data-lucide="shopping-cart" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <span>Sepetim</span>
+            </a>
+          </div>
+
           ${isAdmin ? `
-            <button onclick="openAdminDashboard()" class="w-full py-2 px-3 rounded-lg bg-cyan-500 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5">
+            <button onclick="openAdminDashboard()" class="w-full py-2 px-3 rounded-lg bg-cyan-500 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 mt-1">
               <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
               <span>Yönetici Kontrol Paneli</span>
             </button>
@@ -1692,6 +1729,9 @@ window.handleUserLogin = async function(e) {
     if (document.getElementById('product-detail-hero')) {
       initProductDetailPage();
     }
+    if (document.getElementById('profile-page-main')) {
+      initProfilePage();
+    }
     if (state.isAdmin) {
       showToast('Hoş geldiniz Sayın ' + found.name + '! Yönetici yetkileri doğrulandı.', 'success');
     } else {
@@ -1770,8 +1810,11 @@ window.userLogout = function() {
   if (document.getElementById('product-detail-hero')) {
     initProductDetailPage();
   }
+  if (document.getElementById('profile-page-main')) {
+    initProfilePage();
+  }
   closeModal('admin-panel-modal');
-  showToast('Oturumunuz baÅŸarÄ±yla kapatÄ±ldÄ±.');
+  showToast('Oturumunuz başarıyla kapatıldı.', 'info');
 };
 window.toggleWishlist = function(productId) {
   if (!state.currentUser) {
@@ -1941,38 +1984,398 @@ window.openWishlistModal = function() {
   if (window.lucide) lucide.createIcons();
 };
 
-window.openProfileModal = function() {
+window.switchProfilePageTab = function(tabName = 'orders') {
+  const tabs = ['orders', 'profile', 'security', 'wishlist'];
+  tabs.forEach(t => {
+    const pane = document.getElementById(`page-tab-${t}`);
+    const btn = document.getElementById(`page-tab-btn-${t}`);
+    if (pane) pane.classList.toggle('hidden', t !== tabName);
+    if (btn) {
+      if (t === tabName) {
+        btn.className = 'py-4 px-4 text-xs sm:text-sm font-bold border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 transition-all shrink-0';
+      } else {
+        btn.className = 'py-4 px-4 text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all shrink-0';
+      }
+    }
+  });
+
+  if (tabName === 'orders') renderProfileOrdersList();
+  if (tabName === 'wishlist') renderProfileWishlist();
+
+  if (window.history && window.history.replaceState) {
+    const url = new URL(window.location);
+    url.searchParams.set('tab', tabName);
+    window.history.replaceState(null, '', url);
+  }
+
+  if (window.lucide) lucide.createIcons();
+};
+
+window.renderProfileOrdersList = function() {
   if (!state.currentUser) return;
   const u = state.currentUser;
+  const listEl = document.getElementById('page-profile-orders-list');
+  if (!listEl) return;
 
-  document.getElementById('profile-name').value = u.name;
-  document.getElementById('profile-email').value = u.email;
-  document.getElementById('profile-phone').value = u.phone || '';
-  document.getElementById('profile-company').value = u.company || '';
-  document.getElementById('profile-address').value = u.address || '';
+  const userOrderIds = (u.orders || []).map(o => typeof o === 'string' ? o.replace('ORD-', '') : (o.id ? String(o.id).replace('ORD-', '') : ''));
+  const userEmail = (u.email || '').toLowerCase().trim();
+  const userPhone = (u.phone || '').replace(/\D/g, '');
+  const ocCustId = (u.id || '').replace('oc-usr-', '');
 
-  openModal('user-profile-modal');
+  const matchedOrders = (state.orders || []).filter(o => {
+    const oId = String(o.id || '').replace('ORD-', '');
+    if (userOrderIds.includes(oId)) return true;
+    if (userEmail && o.email && o.email.toLowerCase().trim() === userEmail) return true;
+    if (ocCustId && o.customer_id && String(o.customer_id) === ocCustId) return true;
+    if (userPhone && userPhone.length >= 7 && o.phone && o.phone.replace(/\D/g, '').includes(userPhone)) return true;
+    return false;
+  }).sort((a, b) => (parseInt(b.id) || 0) - (parseInt(a.id) || 0));
+
+  if (matchedOrders.length === 0) {
+    listEl.innerHTML = `
+      <div class="text-center py-12 text-slate-500 bg-slate-900/40 rounded-2xl border border-slate-800">
+        <i data-lucide="package-open" class="w-12 h-12 mx-auto mb-3 opacity-40"></i>
+        <p class="text-sm font-semibold text-slate-300">Henüz kayıtlı bir siparişiniz bulunmuyor.</p>
+        <p class="text-xs text-slate-500 mt-1">3D Yazıcı, filament ve yedek parça kataloğumuzdan sipariş verebilirsiniz.</p>
+        <a href="urunler.html" class="inline-flex items-center gap-1.5 mt-4 px-4 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500 hover:text-slate-950 font-bold text-xs transition-all">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i> Ürünleri İncele
+        </a>
+      </div>
+    `;
+  } else {
+    listEl.innerHTML = matchedOrders.map(o => {
+      const isDone = (o.status && o.status.toLowerCase().includes('tamam')) || o.statusId === '5' || o.statusId === 5;
+      return `
+        <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-4 sm:p-5 transition-all hover:border-cyan-500/40">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-800">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-lg bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold">#ORD-${o.id}</span>
+              <span class="text-xs font-mono text-slate-400 flex items-center gap-1">
+                <i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${o.date || '-'}
+              </span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold ${isDone ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'} flex items-center gap-1">
+                <i data-lucide="${isDone ? 'check-circle' : 'clock'}" class="w-3 h-3"></i>
+                ${o.status || 'İşlemde'}
+              </span>
+              <span class="text-sm sm:text-base font-extrabold text-white font-mono">
+                ${(parseFloat(o.total) || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺
+              </span>
+            </div>
+          </div>
+
+          <!-- Kalemler -->
+          <div class="space-y-1.5 mb-3">
+            ${(o.items && o.items.length > 0) ? o.items.map(it => `
+              <div class="flex items-center justify-between text-xs bg-slate-950/60 px-3 py-2 rounded-xl border border-slate-800/80">
+                <div class="flex items-center gap-2 pr-2">
+                  <span class="w-5 h-5 rounded bg-slate-800 text-cyan-400 font-mono font-bold text-[10px] flex items-center justify-center shrink-0">${it.quantity || 1}x</span>
+                  <span class="text-slate-200 font-medium">${it.name || it.model || 'Ürün'}</span>
+                </div>
+                <div class="text-right font-mono text-slate-300 shrink-0 font-semibold">
+                  ${((parseFloat(it.price) || 0) * (it.quantity || 1)).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺
+                </div>
+              </div>
+            `).join('') : `
+              <div class="text-xs text-slate-300 py-1 font-mono">${o.itemsSummary || (o.itemsCount ? o.itemsCount + ' Adet Ürün' : 'Sipariş Kalemi')}</div>
+            `}
+          </div>
+
+          ${(o.address || o.city) ? `
+            <div class="pt-2.5 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center gap-1.5 font-mono">
+              <i data-lucide="truck" class="w-3.5 h-3.5 text-cyan-400 shrink-0"></i>
+              <span class="truncate">Teslimat Adresi: ${o.address || ''} ${o.city ? '(' + o.city + ')' : ''}</span>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  if (window.lucide) lucide.createIcons();
+};
+
+window.renderProfileWishlist = function() {
+  if (!state.currentUser) return;
+  const u = state.currentUser;
+  const gridEl = document.getElementById('page-profile-wishlist-grid');
+  if (!gridEl) return;
+
+  const favIds = u.wishlist || [];
+  const favProducts = (state.products || []).filter(p => favIds.includes(p.id));
+
+  if (favProducts.length === 0) {
+    gridEl.innerHTML = `
+      <div class="col-span-full text-center py-12 text-slate-500 bg-slate-900/40 rounded-2xl border border-slate-800">
+        <i data-lucide="heart" class="w-12 h-12 mx-auto mb-3 opacity-30 text-rose-400"></i>
+        <p class="text-sm font-semibold text-slate-300">Henüz favori ürününüz bulunmuyor.</p>
+        <p class="text-xs text-slate-500 mt-1">Beğendiğiniz ürünlerin üzerindeki kalp ikonuna tıklayarak favorilerinize ekleyebilirsiniz.</p>
+        <a href="urunler.html" class="inline-flex items-center gap-1.5 mt-4 px-4 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500 hover:text-slate-950 font-bold text-xs transition-all">
+          Ürünleri Keşfet
+        </a>
+      </div>
+    `;
+  } else {
+    gridEl.innerHTML = favProducts.map(p => {
+      const price = getProductPrice(p);
+      const img = (p.gallery && p.gallery.length > 0) ? p.gallery[0] : (p.image || 'assets/placeholder.png');
+      return `
+        <div class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-cyan-500/50 flex flex-col justify-between transition-all group">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-16 h-16 rounded-xl bg-slate-950 p-1 flex items-center justify-center shrink-0 border border-slate-800">
+              <img src="${img}" alt="${p.name}" class="w-full h-full object-contain">
+            </div>
+            <div class="min-w-0 flex-1">
+              <a href="urun.html?stok=${getProductSku(p)}" class="text-xs font-bold text-white hover:text-cyan-400 line-clamp-2 transition-colors">
+                ${p.name}
+              </a>
+              <span class="text-[10px] font-mono text-cyan-400 mt-0.5 block">STOK KODU: ${getProductSku(p)}</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between pt-2 border-t border-slate-800/80">
+            <span class="text-sm font-extrabold text-white font-mono">${price.toLocaleString('tr-TR')} ₺</span>
+            <div class="flex items-center gap-1.5">
+              <button onclick="addToCart('${p.id}'); window.location.href='sepet.html';" class="p-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 transition-colors" title="Sepete Ekle">
+                <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="toggleWishlist('${p.id}'); renderProfileWishlist();" class="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors" title="Favorilerden Çıkar">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  if (window.lucide) lucide.createIcons();
+};
+
+window.initProfilePage = function() {
+  const container = document.getElementById('profile-page-main');
+  if (!container) return;
+
+  const guestView = document.getElementById('profile-guest-view');
+  const authView = document.getElementById('profile-auth-view');
+
+  if (!state.currentUser) {
+    if (guestView) guestView.classList.remove('hidden');
+    if (authView) authView.classList.add('hidden');
+    if (window.lucide) lucide.createIcons();
+    return;
+  }
+
+  if (guestView) guestView.classList.add('hidden');
+  if (authView) authView.classList.remove('hidden');
+
+  const u = state.currentUser;
+  const isBerat = (u.email && u.email.toLowerCase() === 'beratakkurt346@gmail.com');
+  const isAdmin = isBerat || u.role === 'admin';
+
+  // Hero bilgilerini doldur
+  const avatarEl = document.getElementById('page-profile-avatar');
+  const nameEl = document.getElementById('page-profile-name');
+  const emailEl = document.getElementById('page-profile-email');
+  const phoneEl = document.getElementById('page-profile-phone');
+  const dateEl = document.getElementById('page-profile-date');
+  const roleBadgeEl = document.getElementById('page-profile-role-badge');
+  const companyBadgeEl = document.getElementById('page-profile-company-badge');
+  const adminBtnBox = document.getElementById('page-profile-admin-btn-box');
+
+  if (avatarEl) avatarEl.innerText = (u.name || 'U').charAt(0).toUpperCase();
+  if (nameEl) nameEl.innerText = u.name || 'İsimsiz Üye';
+  if (emailEl) emailEl.innerText = u.email || '—';
+  if (phoneEl) phoneEl.innerText = u.phone || 'Telefon Belirtilmemiş';
+  if (dateEl) dateEl.innerText = 'Üyelik: ' + (u.dateAdded || 'Aktif Üye');
+
+  if (roleBadgeEl) {
+    if (isAdmin) {
+      roleBadgeEl.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-[0_0_12px_rgba(245,158,11,0.2)]';
+      roleBadgeEl.innerText = isBerat ? 'Ana Yönetici (Admin)' : 'Yönetici (Admin)';
+    } else if (u.accountType === 'corporate' || (u.company && u.company.trim())) {
+      roleBadgeEl.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30';
+      roleBadgeEl.innerText = 'Kurumsal Üye';
+    } else {
+      roleBadgeEl.className = 'px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700';
+      roleBadgeEl.innerText = 'Bireysel Üye';
+    }
+  }
+
+  if (companyBadgeEl) {
+    if (u.company && u.company.trim()) {
+      companyBadgeEl.classList.remove('hidden');
+      companyBadgeEl.innerText = u.company.trim();
+    } else {
+      companyBadgeEl.classList.add('hidden');
+    }
+  }
+
+  if (adminBtnBox) {
+    if (isAdmin) {
+      adminBtnBox.innerHTML = `
+        <button onclick="openAdminDashboard()" class="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-2 shadow-[0_0_15px_rgba(0,240,255,0.3)] transition-all">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span>Yönetici Paneli</span>
+        </button>
+      `;
+    } else {
+      adminBtnBox.innerHTML = '';
+    }
+  }
+
+  // Sipariş istatistiklerini hesapla
+  const userOrderIds = (u.orders || []).map(o => typeof o === 'string' ? o.replace('ORD-', '') : (o.id ? String(o.id).replace('ORD-', '') : ''));
+  const userEmail = (u.email || '').toLowerCase().trim();
+  const userPhone = (u.phone || '').replace(/\D/g, '');
+  const ocCustId = (u.id || '').replace('oc-usr-', '');
+
+  const matchedOrders = (state.orders || []).filter(o => {
+    const oId = String(o.id || '').replace('ORD-', '');
+    if (userOrderIds.includes(oId)) return true;
+    if (userEmail && o.email && o.email.toLowerCase().trim() === userEmail) return true;
+    if (ocCustId && o.customer_id && String(o.customer_id) === ocCustId) return true;
+    if (userPhone && userPhone.length >= 7 && o.phone && o.phone.replace(/\D/g, '').includes(userPhone)) return true;
+    return false;
+  });
+
+  const totalSpent = matchedOrders.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0);
+  const orderCount = Math.max((u.orders || []).length, matchedOrders.length);
+
+  const statOrdersEl = document.getElementById('page-profile-stat-orders');
+  const statSpentEl = document.getElementById('page-profile-stat-spent');
+  const badgeOrdersEl = document.getElementById('page-badge-orders-count');
+  const badgeWishlistEl = document.getElementById('page-badge-wishlist-count');
+  const addressStatusEl = document.getElementById('page-profile-stat-address-status');
+
+  if (statOrdersEl) statOrdersEl.innerText = orderCount + ' Adet';
+  if (statSpentEl) statSpentEl.innerText = totalSpent.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ₺';
+  if (badgeOrdersEl) badgeOrdersEl.innerText = orderCount;
+  if (badgeWishlistEl) badgeWishlistEl.innerText = (u.wishlist || []).length;
+  if (addressStatusEl) addressStatusEl.innerText = u.address ? 'Adres Tanımlı' : 'Adres Tanımlanmamış';
+
+  // Form alanlarını doldur
+  const inName = document.getElementById('page-profile-input-name');
+  const inEmail = document.getElementById('page-profile-input-email');
+  const inPhone = document.getElementById('page-profile-input-phone');
+  const inCompany = document.getElementById('page-profile-input-company');
+  const inAddress = document.getElementById('page-profile-input-address');
+
+  if (inName) inName.value = u.name || '';
+  if (inEmail) inEmail.value = u.email || '';
+  if (inPhone) inPhone.value = u.phone || '';
+  if (inCompany) inCompany.value = u.company || '';
+  if (inAddress) inAddress.value = u.address || '';
+
+  // URL'den tab parametresini oku
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab') || 'orders';
+    switchProfilePageTab(tab);
+  } catch (e) {
+    switchProfilePageTab('orders');
+  }
+
+  if (window.lucide) lucide.createIcons();
+};
+
+window.openProfileModal = function(initialTab = 'profile') {
+  if (window.location.pathname.endsWith('profil.html')) {
+    switchProfilePageTab(initialTab);
+    return;
+  }
+  // Diğer sayfalarda doğrudan profil sayfasına yönlendir
+  window.location.href = 'profil.html?tab=' + (initialTab || 'profile');
 };
 
 window.handleSaveProfile = function(e) {
-  e.preventDefault();
+  if (e) e.preventDefault();
   if (!state.currentUser) return;
 
-  state.currentUser.name = document.getElementById('profile-name').value.trim();
-  state.currentUser.phone = document.getElementById('profile-phone').value.trim();
-  state.currentUser.company = document.getElementById('profile-company').value.trim();
-  state.currentUser.address = document.getElementById('profile-address').value.trim();
+  const nameVal = (document.getElementById('page-profile-input-name')?.value || document.getElementById('profile-name')?.value || '').trim();
+  const phoneVal = (document.getElementById('page-profile-input-phone')?.value || document.getElementById('profile-phone')?.value || '').trim();
+  const companyVal = (document.getElementById('page-profile-input-company')?.value || document.getElementById('profile-company')?.value || '').trim();
+  const addressVal = (document.getElementById('page-profile-input-address')?.value || document.getElementById('profile-address')?.value || '').trim();
+
+  if (nameVal) state.currentUser.name = nameVal;
+  if (phoneVal) state.currentUser.phone = phoneVal;
+  state.currentUser.company = companyVal;
+  if (addressVal) state.currentUser.address = addressVal;
 
   localStorage.setItem('dag_current_user', JSON.stringify(state.currentUser));
-  const idx = state.users.findIndex(item => item.id === state.currentUser.id);
+  const idx = state.users.findIndex(item => item.id === state.currentUser.id || (item.email && item.email.toLowerCase() === state.currentUser.email.toLowerCase()));
   if (idx >= 0) {
-    state.users[idx] = state.currentUser;
+    state.users[idx] = { ...state.users[idx], ...state.currentUser };
     localStorage.setItem('dag_users', JSON.stringify(state.users));
   }
 
-  closeModal('user-profile-modal');
+  const modal = document.getElementById('user-profile-modal');
+  if (modal) closeModal('user-profile-modal');
   renderUserNav();
-  showToast('Hesap bilgileriniz başarıyla güncellendi!', 'success');
+  if (document.getElementById('profile-page-main')) {
+    initProfilePage();
+  }
+  showToast('Hesap ve adres bilgileriniz başarıyla güncellendi!', 'success');
+};
+
+window.handleChangePassword = async function(e) {
+  if (e) e.preventDefault();
+  if (!state.currentUser) {
+    showToast('Şifre değiştirmek için lütfen giriş yapınız.', 'warning');
+    return;
+  }
+  const u = state.currentUser;
+  const currentPasswordInput = (document.getElementById('profile-current-password')?.value || '').trim();
+  const newPassword = (document.getElementById('profile-new-password')?.value || '').trim();
+  const confirmPassword = (document.getElementById('profile-confirm-password')?.value || '').trim();
+
+  if (!currentPasswordInput) {
+    showToast('Lütfen mevcut şifrenizi giriniz.', 'error');
+    return;
+  }
+
+  // Mevcut şifreyi doğrula (OpenCart SHA-1 veya düz metin)
+  let isCurrentValid = false;
+  if (u.password && u.password === currentPasswordInput) {
+    isCurrentValid = true;
+  } else if (u.ocHash && u.ocSalt) {
+    isCurrentValid = await verifyOpenCartPassword(currentPasswordInput, u.ocSalt, u.ocHash);
+  }
+
+  if (!isCurrentValid) {
+    showToast('Mevcut şifrenizi hatalı girdiniz!', 'error');
+    return;
+  }
+
+  if (newPassword.length < 6) {
+    showToast('Yeni şifreniz en az 6 karakter olmalıdır.', 'error');
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    showToast('Yeni şifreler birbiriyle eşleşmiyor!', 'error');
+    return;
+  }
+
+  // Şifreyi güncelle
+  u.password = newPassword;
+  delete u.ocHash;
+  delete u.ocSalt;
+
+  localStorage.setItem('dag_current_user', JSON.stringify(u));
+  const idx = state.users.findIndex(item => item.id === u.id || (item.email && item.email.toLowerCase() === u.email.toLowerCase()));
+  if (idx >= 0) {
+    state.users[idx].password = newPassword;
+    delete state.users[idx].ocHash;
+    delete state.users[idx].ocSalt;
+    localStorage.setItem('dag_users', JSON.stringify(state.users));
+  }
+
+  if (document.getElementById('profile-current-password')) document.getElementById('profile-current-password').value = '';
+  if (document.getElementById('profile-new-password')) document.getElementById('profile-new-password').value = '';
+  if (document.getElementById('profile-confirm-password')) document.getElementById('profile-confirm-password').value = '';
+
+  showToast('Şifreniz başarıyla güncellendi! Bir sonraki girişinizde yeni şifreniz geçerli olacaktır.', 'success');
 };
 
 // ==========================================================================
@@ -3493,13 +3896,9 @@ window.openProductModal = function(productId) {
               Ürün Şu Anda Tükendi
             </button>
           ` : `
-            <button onclick="addToCart('${p.id}'); closeModal('product-modal');" class="flex-1 py-3 px-3 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5">
-              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            <button onclick="addToCart('${p.id}'); closeModal('product-modal'); window.location.href = 'sepet.html';" class="flex-1 py-3 px-4 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md">
+              <i data-lucide="shopping-cart" class="w-4 h-4"></i>
               <span>Sepete Ekle</span>
-            </button>
-            <button onclick="closeModal('product-modal'); buyNowWithCreditCard('${p.id}', 1);" class="flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md">
-              <i data-lucide="credit-card" class="w-4 h-4"></i>
-              <span>Kartla Hemen Al</span>
             </button>
           `}
           
@@ -4370,6 +4769,9 @@ window.handleSaveProductForm = function(e) {
   if (document.getElementById('cart-page-container')) {
     initCartPage();
   }
+  if (document.getElementById('profile-page-main')) {
+    initProfilePage();
+  }
 
   try {
     const adminTabParam = (new URLSearchParams(window.location.search)).get('admin_tab');
@@ -5206,24 +5608,13 @@ function initProductDetailPage() {
               Ürün Şu Anda Tükendi
             </button>
           ` : `
-            <div class="flex-1 flex items-center gap-2.5 flex-wrap">
-              <button 
-                onclick="addToCart('` + p.id + `', detailSelectedQty); window.location.href = 'sepet.html';" 
-                class="flex-1 min-w-[130px] py-3.5 px-3 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg transition-transform active:scale-95"
-              >
-                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-                <span>Sepete Ekle</span>
-              </button>
-
-              <button 
-                onclick="buyNowWithCreditCard('` + p.id + `', detailSelectedQty);" 
-                class="flex-1 min-w-[160px] py-3.5 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-transform active:scale-95"
-                title="Kredi kartı ile 3D Secure güvenli hemen satın al"
-              >
-                <i data-lucide="credit-card" class="w-4 h-4"></i>
-                <span>Kredi Kartı ile Hemen Al</span>
-              </button>
-            </div>
+            <button 
+              onclick="addToCart('` + p.id + `', detailSelectedQty); window.location.href = 'sepet.html';" 
+              class="flex-1 py-3.5 px-6 rounded-xl glow-cyan-btn text-slate-950 font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-95 cursor-pointer"
+            >
+              <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+              <span>Sepete Ekle</span>
+            </button>
           `) + `
 
           <!-- Wishlist Heart Button -->
