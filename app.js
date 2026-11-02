@@ -4231,6 +4231,31 @@ function initProductDetailPage() {
     setTimeout(() => buyNowWithCreditCard(p.id), 200);
   }
 
+  if (urlParams.get('test_3d') === '1') {
+    setTimeout(() => {
+      currentPendingOrder = {
+        customer: 'Ahmet Yılmaz',
+        phone: '0507 020 11 98',
+        address: 'Perpa Ticaret Merkezi B Blok No:825',
+        total: 107840,
+        last4: '4816',
+        method: 'credit_card',
+        installment: 'Tek Çekim'
+      };
+      const amountEl = document.getElementById('secure-3d-amount');
+      const maskEl = document.getElementById('secure-3d-card-mask');
+      const phoneEl = document.getElementById('secure-3d-phone');
+      const dateEl = document.getElementById('secure-3d-date');
+      if (amountEl) amountEl.innerText = '107.840 ₺';
+      if (maskEl) maskEl.innerText = '•••• •••• •••• 4816';
+      if (phoneEl) phoneEl.innerText = '0507 *** ** 98';
+      if (dateEl) dateEl.innerText = new Date().toLocaleString('tr-TR');
+      openModal('secure-3d-modal');
+      start3DSecureCountdown();
+      if (window.lucide) lucide.createIcons();
+    }, 200);
+  }
+
   if (window.lucide) lucide.createIcons();
 }
 
