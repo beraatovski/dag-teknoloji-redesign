@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3457';
+const DAG_CATALOG_VERSION = '2026.11.02.v3458';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -4077,7 +4077,7 @@ function initProductDetailPage() {
 
   heroEl.innerHTML = `
     <!-- Left Column: Visual Gallery (Col 5) -->
-    <div class="lg:col-span-5 flex flex-col justify-between space-y-4">
+    <div class="lg:col-span-5 flex flex-col justify-between space-y-4 h-full">
       <div class="glass-panel p-6 rounded-3xl border border-slate-800 relative group overflow-hidden bg-slate-950/70">
         <!-- Floating Badges -->
         <div class="absolute top-4 left-4 z-10 flex flex-wrap items-center gap-2">
@@ -4087,7 +4087,7 @@ function initProductDetailPage() {
         <span class="absolute top-4 right-4 z-10 text-[10px] tracking-wider font-mono text-slate-400 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800 uppercase">Perpa B/825</span>
 
         <!-- Large Main Image View -->
-        <div class="w-full h-[410px] sm:h-[460px] lg:h-[490px] rounded-2xl bg-slate-900/50 p-6 flex items-center justify-center relative overflow-hidden">
+        <div class="w-full h-[430px] sm:h-[480px] lg:h-[515px] rounded-2xl bg-slate-900/50 p-6 flex items-center justify-center relative overflow-hidden">
           ` + mainVisualHtml + `
         </div>
       </div>
@@ -4109,7 +4109,7 @@ function initProductDetailPage() {
     </div>
 
     <!-- Right Column: Product Info & Buy Box (Col 7) -->
-    <div class="lg:col-span-7 space-y-6">
+    <div class="lg:col-span-7 flex flex-col justify-between space-y-5 h-full">
       
       <div>
         <div class="flex items-center gap-2 flex-wrap mb-2">
@@ -4187,7 +4187,7 @@ function initProductDetailPage() {
       </div>
 
       <!-- Purchase Action Controls -->
-      <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-4">
+      <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-4 mt-auto">
         <div class="flex flex-wrap items-center gap-4">
           <!-- Quantity Counter -->
           <div class="flex items-center rounded-xl bg-slate-800 border border-slate-700 p-1">
