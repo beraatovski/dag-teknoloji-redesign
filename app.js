@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3447';
+const DAG_CATALOG_VERSION = '2026.11.02.v3448';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -2174,10 +2174,11 @@ function renderProducts() {
 
           <!-- Pricing & Stock Action Row -->
           <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
-            <div>
-              ${p.oldPrice ? `<span class="text-[11px] text-slate-500 line-through block">${getProductOldPrice(p).toLocaleString('tr-TR')} ₺</span>` : ''}
-              <div class="text-lg font-extrabold text-white">
-                ${getProductPrice(p).toLocaleString('tr-TR')} <span class="text-xs text-cyan-400 font-normal">₺</span>
+            <div class="shrink-0 min-w-0">
+              ${p.oldPrice ? `<span class="text-[11px] text-slate-500 line-through block whitespace-nowrap">${getProductOldPrice(p).toLocaleString('tr-TR')} ₺</span>` : ''}
+              <div class="text-base sm:text-lg font-extrabold text-white whitespace-nowrap inline-flex items-baseline">
+                <span>${getProductPrice(p).toLocaleString('tr-TR')}</span>
+                <span class="text-xs text-cyan-400 font-normal ml-0.5">₺</span>
               </div>
             </div>
             
@@ -2188,17 +2189,17 @@ function renderProducts() {
               </button>
 
               <!-- Kendi Sayfasına Git Butonu (İncele) -->
-              <a href="urun-detay.html?id=${p.id}" title="Ürün Sayfasına Git" class="px-2.5 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-cyan-300 hover:text-white transition-colors border border-slate-700 flex items-center gap-1 text-xs font-semibold">
+              <a href="urun-detay.html?id=${p.id}" title="Ürün Sayfasına Git" class="p-2 sm:px-2.5 sm:py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-cyan-300 hover:text-white transition-colors border border-slate-700 flex items-center gap-1 text-xs font-semibold">
                 <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-                <span class="hidden sm:inline">İncele</span>
+                <span class="hidden 2xl:inline">İncele</span>
               </a>
               
               ${isOutOfStock ? `
-                <button disabled class="px-3 py-2 rounded-xl bg-slate-800/80 text-slate-500 font-bold text-xs cursor-not-allowed border border-slate-700">
+                <button disabled class="px-2.5 sm:px-3 py-2 rounded-xl bg-slate-800/80 text-slate-500 font-bold text-xs cursor-not-allowed border border-slate-700 whitespace-nowrap">
                   <span>Tükendi</span>
                 </button>
               ` : `
-                <button onclick="addToCart('${p.id}')" class="px-3 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-1 transition-all shadow-lg shadow-cyan-500/20 active:scale-95" title="Hemen Sepete Ekle">
+                <button onclick="addToCart('${p.id}')" class="px-2.5 sm:px-3 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-1 transition-all shadow-lg shadow-cyan-500/20 active:scale-95 whitespace-nowrap" title="Hemen Sepete Ekle">
                   <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
                   <span>Ekle</span>
                 </button>
@@ -2546,8 +2547,11 @@ window.openProductModal = function(productId) {
           </div>
         </div>
 
-        <div class="flex items-baseline gap-3 mb-6">
-          <span class="text-3xl font-extrabold text-white">${getProductPrice(p).toLocaleString('tr-TR')} ₺</span>
+        <div class="flex items-baseline gap-3 mb-6 flex-wrap">
+          <span class="inline-flex items-baseline gap-1 whitespace-nowrap">
+            <span class="text-3xl font-extrabold text-white font-mono">${getProductPrice(p).toLocaleString('tr-TR')}</span>
+            <span class="text-lg text-cyan-400 font-bold">₺</span>
+          </span>
           ${p.oldPrice ? `<span class="text-sm text-slate-500 line-through">${getProductOldPrice(p).toLocaleString('tr-TR')} ₺</span>` : ''}
           <span class="text-xs text-emerald-400 font-medium">KDV Dahil</span>
           
@@ -3499,9 +3503,11 @@ function initProductDetailPage() {
       <!-- Price Box -->
       <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/90 flex flex-wrap items-baseline justify-between gap-4">
         <div>
-          <div class="flex items-baseline gap-3">
-            <span class="text-3xl sm:text-4xl font-extrabold text-white font-mono">` + getProductPrice(p).toLocaleString('tr-TR') + `</span>
-            <span class="text-lg text-cyan-400 font-bold">₺</span>
+          <div class="flex items-baseline gap-3 flex-wrap">
+            <span class="inline-flex items-baseline gap-1 whitespace-nowrap">
+              <span class="text-3xl sm:text-4xl font-extrabold text-white font-mono">` + getProductPrice(p).toLocaleString('tr-TR') + `</span>
+              <span class="text-lg sm:text-xl text-cyan-400 font-bold">₺</span>
+            </span>
             ` + (p.oldPrice ? `
               <span class="text-sm sm:text-base text-slate-500 line-through font-mono ml-2">` + getProductOldPrice(p).toLocaleString('tr-TR') + ` ₺</span>
               <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 rounded-full">
@@ -3666,7 +3672,7 @@ function initProductDetailPage() {
               <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors line-clamp-2 mb-2">` + rel.name + `</h5>
             </a>
             <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between">
-              <span class="text-sm font-extrabold text-white font-mono">` + getProductPrice(rel).toLocaleString('tr-TR') + ` ₺</span>
+              <span class="text-sm font-extrabold text-white font-mono whitespace-nowrap">` + getProductPrice(rel).toLocaleString('tr-TR') + ` ₺</span>
               <a href="urun-detay.html?id=` + rel.id + `" class="px-2.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 text-[11px] font-bold transition-all">
                 İncele
               </a>
