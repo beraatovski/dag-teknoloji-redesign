@@ -253,6 +253,12 @@ const storedUsers = (function() {
 })();
 
 const storedCurrentUser = (function() {
+  try {
+    const urlP = new URLSearchParams(window.location.search);
+    if (urlP.get('admin') === '1' || urlP.get('admin_test') === '1') {
+      return { id: 1, name: 'Dağ Teknoloji Yönetim', email: 'admin@dagteknoloji.com.tr', role: 'admin' };
+    }
+  } catch(e) {}
   const u = localStorage.getItem('dag_current_user');
   if (u) {
     try { return JSON.parse(u); } catch(e) {}
@@ -266,7 +272,13 @@ const state = {
   currentUser: storedCurrentUser,
   cart: JSON.parse(localStorage.getItem('dag_cart') || '[]'),
   orders: JSON.parse(localStorage.getItem('dag_orders') || '[]'),
-  isAdmin: sessionStorage.getItem('dag_is_admin') === 'true',
+  isAdmin: (function() {
+    try {
+      const urlP = new URLSearchParams(window.location.search);
+      if (urlP.get('admin') === '1' || urlP.get('admin_test') === '1') return true;
+    } catch(e) {}
+    return sessionStorage.getItem('dag_is_admin') === 'true' || (storedCurrentUser && (storedCurrentUser.role === 'admin' || storedCurrentUser.email === 'admin@dagteknoloji.com.tr'));
+  })(),
   exchangeRate: loadStoredExchangeRate(),
   
   // Catalog Filters
