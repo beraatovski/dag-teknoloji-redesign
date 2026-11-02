@@ -4227,6 +4227,10 @@ function initProductDetailPage() {
     setTimeout(() => openEditProductModal(p.id), 100);
   }
 
+  if (urlParams.get('checkout') === '1') {
+    setTimeout(() => buyNowWithCreditCard(p.id), 200);
+  }
+
   if (window.lucide) lucide.createIcons();
 }
 
