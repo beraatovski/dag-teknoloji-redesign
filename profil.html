@@ -47,7 +47,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=20261101v18">
+  <link rel="stylesheet" href="styles.css?v=20261102v3468">
 </head>
 <body class="bg-[#07090e] text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950 w-full max-w-full min-h-screen flex flex-col justify-between">
 
@@ -224,15 +224,15 @@
           <span class="text-[11px] text-cyan-400 font-medium mt-1 inline-block">Sipariş geçmişini incele &rarr;</span>
         </div>
 
-        <div class="glass-panel p-5 rounded-2xl border border-slate-800/80">
+        <div onclick="switchProfilePageTab('orders')" class="glass-panel p-5 rounded-2xl border border-slate-800/80 hover:border-emerald-500/50 hover:bg-slate-900/80 transition-all cursor-pointer group">
           <div class="flex items-center justify-between text-slate-400 mb-2">
             <span class="text-xs font-mono uppercase tracking-wider">Toplam Alışveriş / Ciro</span>
-            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform">
               <i data-lucide="wallet" class="w-4 h-4"></i>
             </div>
           </div>
           <div id="page-profile-stat-spent" class="text-2xl font-extrabold text-emerald-400 font-mono">0,00 ₺</div>
-          <span class="text-[11px] text-slate-500 mt-1 inline-block">Tamamlanan sipariş tutarı</span>
+          <span class="text-[11px] text-emerald-400 font-medium mt-1 inline-block">Sipariş geçmişini incele &rarr;</span>
         </div>
 
         <div onclick="switchProfilePageTab('profile')" class="glass-panel p-5 rounded-2xl border border-slate-800/80 hover:border-blue-500/50 hover:bg-slate-900/80 transition-all cursor-pointer group">
@@ -485,6 +485,549 @@
     </div>
   </div>
 
+  <div id="admin-panel-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-hidden">
+    <div onclick="closeModal('admin-panel-modal')" class="fixed inset-0 bg-black/85 backdrop-blur-md"></div>
+    
+    <div class="relative w-full max-w-6xl h-[92vh] bg-slate-950 border border-slate-800 rounded-3xl z-10 shadow-2xl flex flex-col overflow-hidden">
+      
+      <!-- Top Admin Header Bar -->
+      <div class="p-5 sm:px-8 border-b border-slate-800 bg-slate-900/90 flex flex-wrap items-center justify-between gap-4 flex-shrink-0">
+        <div class="flex items-center gap-3">
+          <img src="assets/logo.svg?v=20261101v13" alt="Dağ Teknoloji" class="h-8 w-auto">
+          <div class="border-l border-slate-800 pl-3">
+            <span class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block">YÖNETİM SİSTEMİ</span>
+            <span class="text-sm font-bold text-white">Ürün &amp; Stok Kontrol Paneli</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5">
+          <a href="https://dagteknoloji.com.tr/admin" target="_blank" class="px-3 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/40 text-xs font-semibold flex items-center gap-1.5 transition-colors" title="OpenCart Paneli Ayrı Sekmede Aç">
+            <i data-lucide="external-link" class="w-3.5 h-3.5 text-blue-400"></i>
+            <span class="hidden sm:inline">OpenCart Web</span>
+          </a>
+          <button onclick="openNewProductModal()" class="glow-cyan-btn px-3.5 py-1.5 rounded-xl text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-500/20">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+            <span>Yeni Ürün Ekle</span>
+          </button>
+          
+          <button onclick="resetToDefaultProducts()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition-colors" title="Kataloğu Sıfırla">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+          </button>
+
+          <button onclick="adminLogout()" class="px-3.5 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-semibold transition-colors flex items-center gap-1.5">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <span>Çıkış</span>
+          </button>
+
+          <button onclick="closeModal('admin-panel-modal')" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Switcher Navigation -->
+      <div class="px-5 sm:px-8 bg-slate-900/60 border-b border-slate-800 flex items-center gap-2 overflow-x-auto flex-shrink-0">
+        <button id="admin-tab-catalog-btn" onclick="switchAdminTab('catalog')" class="py-3 px-3 sm:px-4 text-xs font-bold border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 transition-all shrink-0">
+          <i data-lucide="package" class="w-4 h-4"></i>
+          <span>Hızlı Katalog &amp; Stok (3.428 Ürün)</span>
+        </button>
+
+        <button id="admin-tab-opencart-btn" onclick="switchAdminTab('opencart')" class="py-3 px-3 sm:px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all shrink-0">
+          <i data-lucide="shopping-cart" class="w-4 h-4 text-blue-400"></i>
+          <span>OpenCart Yönetim Merkezi &amp; Canlı Köprü</span>
+          <span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">AKTİF</span>
+        </button>
+        <button id="admin-tab-users-btn" onclick="switchAdminTab('users')" class="py-3 px-3 sm:px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all shrink-0">
+          <i data-lucide="users" class="w-4 h-4 text-amber-400"></i>
+          <span>Üyeler &amp; Yöneticiler</span>
+          <span id="admin-badge-users-count" class="px-1.5 py-0.5 rounded text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono">0</span>
+        </button>
+      </div>
+
+      <!-- Tab 1: Local Products & Orders -->
+      <div id="admin-tab-catalog" class="flex-1 overflow-y-auto p-5 sm:p-8 space-y-6">
+        
+        <!-- Live Stat Cards (4 Cards) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass-panel p-4 rounded-2xl border border-slate-800/80">
+            <span class="text-[11px] font-mono text-slate-400 uppercase block mb-1">Toplam Ürün</span>
+            <div id="admin-stat-total-products" class="text-2xl sm:text-3xl font-extrabold text-white">0</div>
+            <span class="text-[10px] text-cyan-400 font-mono mt-1 block">Aktif Katalog</span>
+          </div>
+
+          <div class="glass-panel p-4 rounded-2xl border border-slate-800/80">
+            <span class="text-[11px] font-mono text-slate-400 uppercase block mb-1">Toplam Stok Miktarı</span>
+            <div id="admin-stat-total-stock" class="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-mono">0 Adet</div>
+            <span class="text-[10px] text-slate-500 font-mono mt-1 block">Perpa Depo</span>
+          </div>
+
+          <div class="glass-panel p-4 rounded-2xl border border-slate-800/80">
+            <span class="text-[11px] font-mono text-slate-400 uppercase block mb-1">Kritik / Tükenen Stok</span>
+            <div id="admin-stat-low-stock" class="text-2xl sm:text-3xl font-extrabold text-amber-400 font-mono">0 Ürün</div>
+            <span class="text-[10px] text-amber-500/80 font-mono mt-1 block">Yenileme Gerekiyor</span>
+          </div>
+
+          <div class="glass-panel p-4 rounded-2xl border border-slate-800/80">
+            <span class="text-[11px] font-mono text-slate-400 uppercase block mb-1">Envanter Değeri</span>
+            <div id="admin-stat-total-value" class="text-2xl sm:text-3xl font-extrabold text-cyan-300 font-mono">0 ₺</div>
+            <span class="text-[10px] text-slate-500 font-mono mt-1 block">Perakende Tutar</span>
+          </div>
+        </div>
+
+        <!-- Döviz Kuru ve Dinamik Fiyatlandırma Kontrol Kartı -->
+        <div class="glass-panel p-4 sm:p-5 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-950/25 via-slate-900/90 to-cyan-950/25 shadow-lg">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div class="flex items-start sm:items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+                <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <h4 class="text-sm font-bold text-white">Canlı USD / TL Otomatik Fiyatlandırma Entegrasyonu</h4>
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-[10px] font-mono text-emerald-300">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Saatlik Otomatik Kontrol
+                  </span>
+                </div>
+                <p class="text-xs text-slate-400 mt-0.5">Dolar kuru serbest piyasada değiştikçe sitedeki 3.428 ürünün TL fiyatları saatlik olarak aynı oranda güncellenir.</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <div class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 font-mono text-xs shadow-inner">
+                <span class="text-slate-400">Canlı USD:</span>
+                <span id="admin-rate-current" class="font-bold text-emerald-400 ml-1">--.-- ₺</span>
+              </div>
+              <div class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 font-mono text-xs shadow-inner">
+                <span class="text-slate-400">Baz Referans:</span>
+                <span id="admin-rate-base" class="font-bold text-cyan-300 ml-1">34.50 ₺</span>
+              </div>
+              <div class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 font-mono text-xs shadow-inner">
+                <span class="text-slate-400">Çarpan:</span>
+                <span id="admin-rate-ratio" class="font-bold text-white ml-1">x1.000 (0.0%)</span>
+              </div>
+              <button onclick="forceRefreshExchangeRate()" class="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                <span>Kuru Şimdi Güncelle</span>
+              </button>
+              <button onclick="setBaseRateToCurrent()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-semibold transition-all" title="Mevcut kuru referans baz kur olarak ayarlar (%0 değişim)">
+                <span>Mevcut Kuru Baz Al</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin Table & Filter Tools -->
+        <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+          
+          <!-- Filter Bar inside Admin -->
+          <div class="p-4 bg-slate-900/60 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2 flex-1 max-w-md">
+              <i data-lucide="search" class="w-4 h-4 text-slate-500"></i>
+              <input 
+                type="text" 
+                placeholder="Yönetici arama: İsim, SKU, Marka..." 
+                oninput="state.adminFilter.query = this.value; renderAdminProductsTable();" 
+                class="w-full bg-slate-900 border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+              >
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span id="admin-table-count" class="text-xs font-mono text-cyan-400 px-2.5 py-1 rounded-xl bg-cyan-500/10 border border-cyan-500/25 shrink-0 font-bold">3.428 Ürün</span>
+              <select onchange="state.adminFilter.category = this.value; renderAdminProductsTable();" class="bg-slate-900 border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none">
+                <option value="all">Tüm Kategoriler</option>
+                <option value="printers">3D Yazıcı &amp; Lazer</option>
+                <option value="filaments">Filament &amp; Sarf</option>
+                <option value="toners">Muadil Toner</option>
+                <option value="parts">Yedek Parça</option>
+              </select>
+
+              <select onchange="state.adminFilter.stockOnly = this.value; renderAdminProductsTable();" class="bg-slate-900 border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none">
+                <option value="all">Tüm Stoklar</option>
+                <option value="low">Sadece Kritik Stok (1-5)</option>
+                <option value="out">Sadece Tükenenler (0)</option>
+                <option value="in">Normal Stok (>5)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Product Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 text-[11px] font-mono uppercase text-slate-400 bg-slate-900/40">
+                  <th class="py-3 px-4">#</th>
+                  <th class="py-3 px-4">Ürün Bilgisi</th>
+                  <th class="py-3 px-4">Kategori</th>
+                  <th class="py-3 px-4">Fiyat</th>
+                  <th class="py-3 px-4">Stok Adedi (Hızlı Ayarla)</th>
+                  <th class="py-3 px-4">Durum</th>
+                  <th class="py-3 px-4 text-right">İşlemler</th>
+                </tr>
+              </thead>
+              <tbody id="admin-products-tbody">
+                <!-- Rendered dynamically by app.js -->
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <!-- Recent Customer Orders Section -->
+        <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+              <i data-lucide="shopping-bag" class="w-4 h-4 text-cyan-400"></i>
+              <span>Gelen Siparişler &amp; Stok Çıkışları</span>
+            </h4>
+            <span class="text-xs text-slate-500 font-mono">Otomatik Stok Düştü</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 text-[11px] font-mono uppercase text-slate-400">
+                  <th class="py-2.5 px-4">Sipariş No</th>
+                  <th class="py-2.5 px-4">Müşteri</th>
+                  <th class="py-2.5 px-4">Kalemler</th>
+                  <th class="py-2.5 px-4">Tutar</th>
+                  <th class="py-2.5 px-4">Tarih</th>
+                </tr>
+              </thead>
+              <tbody id="admin-orders-tbody">
+                <!-- Rendered dynamically by app.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tab 2: OpenCart Management Center & Live Bridge -->
+      <div id="admin-tab-opencart" class="hidden flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 bg-slate-950">
+        
+        <!-- Direct OpenCart Secure Login Terminal -->
+        <div class="glass-panel p-5 sm:p-6 rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-950/40 via-slate-900/90 to-slate-950 shadow-xl">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-4 border-b border-slate-800/80">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-blue-400">
+                <i data-lucide="shield-check" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                  <span>Doğrudan OpenCart Güvenli Giriş Terminali</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">Doğrudan Bağlantı</span>
+                </h3>
+                <p class="text-xs text-slate-400">Sunucu: <strong class="text-slate-200">dagteknoloji.com.tr/admin</strong> (LiteSpeed PHP 7.4 / OpenCart Türkçe)</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="openOpenCartWindow()" class="px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md shadow-cyan-500/20 transition-all">
+                <i data-lucide="app-window" class="w-4 h-4"></i>
+                <span>Bağımsız Yönetici Penceresi</span>
+              </button>
+              <a href="https://dagteknoloji.com.tr/admin" target="_blank" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-blue-500/20 transition-all">
+                <i data-lucide="external-link" class="w-4 h-4"></i>
+                <span>Yeni Sekmede Aç</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Direct Login Form (Posts directly to OpenCart in target _blank) -->
+          <form action="https://dagteknoloji.com.tr/admin/index.php?route=common/login" method="post" enctype="multipart/form-data" target="_blank" class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">OpenCart Kullanıcı Adınız</label>
+              <div class="relative">
+                <i data-lucide="user" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+                <input type="text" name="username" required placeholder="Örn: admin" class="w-full pl-9 pr-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">OpenCart Parolanız</label>
+              <div class="relative">
+                <i data-lucide="lock" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+                <input type="password" name="password" required placeholder="Parolanız" class="w-full pl-9 pr-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400">
+              </div>
+            </div>
+
+            <div>
+              <button type="submit" class="w-full py-2 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all">
+                <i data-lucide="key" class="w-4 h-4"></i>
+                <span>OpenCart'ta Güvenli Oturum Aç &rarr;</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- OpenCart Quick Modules Grid (6 Core Cards) -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+              <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
+              <span>OpenCart Yönetim Modülleri &amp; Hızlı İşlemler</span>
+            </h4>
+            <span class="text-xs text-slate-400">Tıklayarak doğrudan modüle bağlanın</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div onclick="openOpenCartWindow('sale/order')" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/60 hover:bg-slate-900/80 transition-all group cursor-pointer">
+              <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                  <i data-lucide="shopping-bag" class="w-4.5 h-4.5"></i>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transition-colors"></i>
+              </div>
+              <h5 class="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">Sipariş Yönetimi</h5>
+              <p class="text-xs text-slate-400 mt-1">Gelen siparişler, fatura yazdırma, kargo takip durumları.</p>
+            </div>
+
+            <div onclick="openOpenCartWindow('catalog/product')" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-cyan-500/60 hover:bg-slate-900/80 transition-all group cursor-pointer">
+              <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+                  <i data-lucide="package" class="w-4.5 h-4.5"></i>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
+              </div>
+              <h5 class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">Ürünler Kataloğu</h5>
+              <p class="text-xs text-slate-400 mt-1">Tüm ürün detayları, seçenekler, özellikler ve resimler.</p>
+            </div>
+
+            <div onclick="openOpenCartWindow('catalog/category')" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-indigo-500/60 hover:bg-slate-900/80 transition-all group cursor-pointer">
+              <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+                  <i data-lucide="folder-tree" class="w-4.5 h-4.5"></i>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-indigo-400 transition-colors"></i>
+              </div>
+              <h5 class="text-sm font-bold text-white group-hover:text-indigo-400 transition-colors">Kategoriler &amp; Hiyerarşi</h5>
+              <p class="text-xs text-slate-400 mt-1">3D Yazıcı, Filament, Toner ve Yedek Parça ağaçları.</p>
+            </div>
+
+            <div onclick="openOpenCartWindow('customer/customer')" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-purple-500/60 hover:bg-slate-900/80 transition-all group cursor-pointer">
+              <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
+                  <i data-lucide="users" class="w-4.5 h-4.5"></i>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-purple-400 transition-colors"></i>
+              </div>
+              <h5 class="text-sm font-bold text-white group-hover:text-purple-400 transition-colors">Müşteri Hesapları</h5>
+              <p class="text-xs text-slate-400 mt-1">Kayıtlı kullanıcılar, kurumsal müşteri grupları ve onaylar.</p>
+            </div>
+
+            <div onclick="openOpenCartWindow('report/report')" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-amber-500/60 hover:bg-slate-900/80 transition-all group cursor-pointer">
+              <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                  <i data-lucide="bar-chart-3" class="w-4.5 h-4.5"></i>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-amber-400 transition-colors"></i>
+              </div>
+              <h5 class="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">Satış &amp; Stok Raporları</h5>
+              <p class="text-xs text-slate-400 mt-1">Günlük/aylık ciro, çok satanlar, görüntülenen ürün raporları.</p>
+            </div>
+
+            <div onclick="openOpenCartWindow('setting/store')" class="glass-panel p-4 rounded-2xl border border-slate-800 hover:border-rose-500/60 hover:bg-slate-900/80 transition-all group cursor-pointer">
+              <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center">
+                  <i data-lucide="settings" class="w-4.5 h-4.5"></i>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-rose-400 transition-colors"></i>
+              </div>
+              <h5 class="text-sm font-bold text-white group-hover:text-rose-400 transition-colors">Sistem Ayarları</h5>
+              <p class="text-xs text-slate-400 mt-1">Ödeme yöntemleri, kargo eklentileri, e-posta sunucusu.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- OpenCart Server & Architecture Info -->
+        <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+          <h4 class="text-sm font-bold text-white flex items-center gap-2 mb-3">
+            <i data-lucide="link-2" class="w-4 h-4 text-cyan-400"></i>
+            <span>OpenCart Sunucu &amp; Entegrasyon Altyapısı</span>
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+              <span class="text-[10px] font-mono text-slate-500 uppercase block">OpenCart Yönetim URL</span>
+              <span class="text-xs text-white font-mono font-semibold break-all">https://dagteknoloji.com.tr/admin</span>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+              <span class="text-[10px] font-mono text-slate-500 uppercase block">Sunucu &amp; PHP Altyapısı</span>
+              <span class="text-xs text-emerald-400 font-mono font-semibold">HTTPS / LiteSpeed PHP 7.4</span>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+              <span class="text-[10px] font-mono text-slate-500 uppercase block">Köprü Durumu</span>
+              <span class="text-xs text-cyan-400 font-mono font-semibold flex items-center gap-1.5 mt-0.5">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                <span>Aktif &amp; Bağlı</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Registered Users & Admins Management -->
+      <div id="admin-tab-users" class="hidden flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 bg-slate-950">
+        <!-- Live Stat Cards (3 Cards) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="glass-panel p-4 rounded-2xl border border-slate-800/80 bg-slate-900/60">
+            <span class="text-[11px] font-mono text-slate-400 uppercase block mb-1">Toplam Kayıtlı Üye</span>
+            <div id="admin-stat-total-users" class="text-2xl sm:text-3xl font-extrabold text-white">0</div>
+            <span class="text-[10px] text-cyan-400 font-mono mt-1 block">Aktif Kullanıcı Havuzu</span>
+          </div>
+
+          <div class="glass-panel p-4 rounded-2xl border border-slate-800/80 bg-slate-900/60">
+            <span class="text-[11px] font-mono text-slate-400 uppercase block mb-1">Yetkili Yöneticiler</span>
+            <div id="admin-stat-total-admins" class="text-2xl sm:text-3xl font-extrabold text-amber-400 font-mono">1</div>
+            <span class="text-[10px] text-amber-300 font-mono mt-1 block">Yönetim Yetkisi Açık</span>
+          </div>
+
+          <div class="glass-panel p-4 rounded-2xl border border-slate-800/80 bg-slate-900/60">
+            <span class="text-[11px] font-mono text-slate-400 uppercase block mb-1">Kurumsal Müşteriler</span>
+            <div id="admin-stat-corporate-users" class="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-mono">0</div>
+            <span class="text-[10px] text-slate-400 font-mono mt-1 block">Vergi / Firma Kayıtlı</span>
+          </div>
+        </div>
+
+        <!-- Add Admin / Fast Invite Action Card -->
+        <div class="p-5 rounded-2xl bg-slate-900/90 border border-amber-500/30 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+              <i data-lucide="user-plus" class="w-4 h-4 text-amber-400"></i>
+              <span>Yeni Yönetici Yetkilendir</span>
+            </h4>
+            <p class="text-xs text-slate-400 mt-0.5">İleride eklemek istediğiniz yöneticinin e-posta adresini girerek anında admin listesine ekleyebilirsiniz.</p>
+          </div>
+          <form onsubmit="handleQuickAddAdmin(event)" class="flex items-center gap-2 w-full sm:w-auto">
+            <input id="quick-admin-email" type="email" required placeholder="yonetici@gmail.com" class="px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs w-full sm:w-64 focus:border-amber-400 focus:outline-none">
+            <button type="submit" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shrink-0 transition-colors">
+              + Yönetici Yap
+            </button>
+          </form>
+        </div>
+
+        <!-- Filter and Search Row -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <div class="relative flex-1">
+            <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3"></i>
+            <input id="admin-user-search-input" oninput="renderAdminUsersTable()" type="text" placeholder="Üye adı, e-posta veya telefon ile ara..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs focus:border-cyan-400 focus:outline-none">
+          </div>
+
+          <div class="flex items-center gap-2">
+            <select id="admin-user-role-filter" onchange="renderAdminUsersTable()" class="px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 focus:border-cyan-400 focus:outline-none">
+              <option value="all">Tüm Üyeler &amp; Roller</option>
+              <option value="admin">Yalnızca Yöneticiler (Admin)</option>
+              <option value="customer">Standart Müşteriler</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="glass-panel rounded-2xl border border-slate-800/80 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-300">
+              <thead class="bg-slate-900/90 text-slate-400 font-mono text-[11px] uppercase border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4">Üye Bilgisi</th>
+                  <th class="py-3 px-4">İletişim</th>
+                  <th class="py-3 px-4">Hesap Türü</th>
+                  <th class="py-3 px-4">Yetki / Rol</th>
+                  <th class="py-3 px-4">Siparişler</th>
+                  <th class="py-3 px-4 text-right">Yönetim İşlemi</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-table-body" class="divide-y divide-slate-800/60 font-sans">
+                <!-- Dynamically rendered by renderAdminUsersTable() -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 3. ADD / EDIT PRODUCT MODAL -->
+  <div id="edit-product-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div onclick="closeModal('edit-product-modal')" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+    <div class="relative w-full max-w-xl bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 z-10 shadow-2xl my-8">
+      <button onclick="closeModal('edit-product-modal')" class="absolute top-5 right-5 p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-2 text-cyan-400 mb-2">
+        <i data-lucide="box" class="w-5 h-5"></i>
+        <span class="text-xs font-mono font-bold uppercase">Ürün Editörü</span>
+      </div>
+      <h3 id="product-form-title" class="text-xl font-bold text-white mb-4">Ürün Bilgilerini Düzenle</h3>
+
+      <form id="product-form" onsubmit="handleSaveProductForm(event)" class="space-y-4">
+        <input type="hidden" id="edit-product-id">
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Ürün Adı *</label>
+          <input type="text" id="form-prod-name" required placeholder="Örn: Bambu Lab P1S Combo 3D Yazıcı" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Kategori *</label>
+            <select id="form-prod-category" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+              <option value="printers">3D Yazıcı &amp; Lazer</option>
+              <option value="filaments">Filament &amp; Sarf</option>
+              <option value="toners">Muadil &amp; Orijinal Toner</option>
+              <option value="parts">Yedek Parça &amp; Mekanik</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Marka</label>
+            <input type="text" id="form-prod-brand" placeholder="Örn: Creality, Bambu Lab, HP..." class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Fiyat (₺) *</label>
+            <input type="number" id="form-prod-price" required min="0" placeholder="1250" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Eski Fiyat (₺)</label>
+            <input type="number" id="form-prod-old-price" min="0" placeholder="1450" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Stok Miktarı *</label>
+            <input type="number" id="form-prod-stock" required min="0" placeholder="15" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none font-bold text-emerald-400">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Görsel Yolu veya URL *</label>
+          <input type="text" id="form-prod-image" placeholder="assets/products/prod_4873.png veya https://..." class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none font-mono">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Teknik Özellikler (Virgülle ayırın)</label>
+          <input type="text" id="form-prod-specs" placeholder="500 mm/s Hız, Otomatik Kalibrasyon, 1.75mm Çap" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Ürün Açıklaması</label>
+          <textarea id="form-prod-desc" rows="3" placeholder="Ürün açıklaması, uyumlu yazıcı modelleri veya kullanım alanı..." class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+          <i data-lucide="save" class="w-4 h-4"></i>
+          <span>Değişiklikleri Kaydet &amp; Yayınla</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================== -->
+  <!-- USER MEMBERSHIP & ACCOUNT MODALS (ÜYELİK SİSTEMİ) -->
+  <!-- ========================================================================== -->
+
+  <!-- 1. AUTH MODAL (Giriş Yap / Üye Ol) -->
+  
   <!-- CUSTOMER ORDERS MODAL -->
   <div id="customer-orders-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto"></div>
 
@@ -495,6 +1038,6 @@
   <script src="products.js?v=20261102v3449"></script>
   <script src="data/opencart_users.js?v=20261102v3466"></script>
   <script src="data/opencart_orders.js?v=20261102v3466"></script>
-  <script src="app.js?v=20261102v3466"></script>
+  <script src="app.js?v=20261102v3468"></script>
 </body>
 </html>

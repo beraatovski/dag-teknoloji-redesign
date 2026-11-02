@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3466';
+const DAG_CATALOG_VERSION = '2026.11.02.v3468';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -1516,14 +1516,6 @@ function renderUserNav() {
             <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-mono">YÖNET</span>
           </a>
 
-          <a href="profil.html?tab=orders" onclick="toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center justify-between transition-colors">
-            <span class="flex items-center gap-2">
-              <i data-lucide="package" class="w-4 h-4 text-emerald-400"></i>
-              <span>Siparişlerim</span>
-            </span>
-            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.2 rounded-full font-mono font-bold">${(u.orders || []).length}</span>
-          </a>
-
           <a href="profil.html?tab=security" onclick="toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center gap-2 transition-colors">
             <i data-lucide="key-round" class="w-4 h-4 text-amber-400"></i>
             <span>Şifre Değiştir</span>
@@ -1582,9 +1574,9 @@ function renderUserNav() {
               <i data-lucide="user" class="w-3.5 h-3.5 text-cyan-400"></i>
               <span>Profilim</span>
             </a>
-            <a href="profil.html?tab=orders" class="py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 border border-slate-700">
-              <i data-lucide="package" class="w-3.5 h-3.5 text-emerald-400"></i>
-              <span>Siparişlerim</span>
+            <a href="profil.html?tab=wishlist" class="py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 border border-slate-700">
+              <i data-lucide="heart" class="w-3.5 h-3.5 text-rose-400"></i>
+              <span>Favorilerim (${wishlistCount})</span>
             </a>
             <a href="profil.html?tab=security" class="py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 border border-slate-700">
               <i data-lucide="key-round" class="w-3.5 h-3.5 text-amber-400"></i>
@@ -2805,7 +2797,7 @@ function getCategoryName(cat) {
 // 5. E-COMMERCE SHOPPING CART & STOCK MANAGEMENT
 // (Sepete eklemede stok düşülmez; sadece sipariş onaylandığında stoktan düşülür)
 // ==========================================================================
-window.addToCart = function(productId, qty = 1) {
+window.addToCart = function(productId, qty = 1, triggerBtn = null) {
   const prod = state.products.find(p => p.id === productId);
   if (!prod) return;
 
@@ -2839,7 +2831,82 @@ window.addToCart = function(productId, qty = 1) {
   saveCart();
   updateCartBadge();
   renderCartDrawer();
-  showToast(`${prod.name} sepete eklendi!`, 'success');
+
+  const totalInCartForThis = (existing ? existing.quantity : qty);
+
+  // 1. Toast bildirim
+  showToast(`${prod.name} sepete eklendi! (Sepette: ${totalInCartForThis} adet)`, 'success');
+
+  // 2. Buton üzerinde anlık görsel onay (Yeşil check ve 'Sepete Eklendi!')
+  try {
+    let btn = triggerBtn;
+    if (!btn && typeof window.event !== 'undefined' && window.event && window.event.target) {
+      btn = window.event.target.closest('button');
+    }
+    if (!btn) {
+      btn = document.querySelector(`button[onclick*="addToCart('${productId}'"]`);
+    }
+    if (btn) {
+      const originalHtml = btn.innerHTML;
+      const originalClass = btn.className;
+      btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>✓ Sepete Eklendi!</span>`;
+      btn.classList.remove('glow-cyan-btn');
+      btn.classList.add('!bg-emerald-500', '!text-slate-950', 'shadow-lg', 'shadow-emerald-500/30', 'scale-[1.02]');
+      if (window.lucide) lucide.createIcons();
+      setTimeout(() => {
+        btn.innerHTML = originalHtml;
+        btn.className = originalClass;
+        if (window.lucide) lucide.createIcons();
+      }, 2400);
+    }
+  } catch (err) {}
+
+  // 3. Ürün detay sayfasında ve modallarda özel sayfa içi bildirim kutusu
+  try {
+    const feedbackEl = document.getElementById('cart-page-feedback-indicator') || document.getElementById('modal-cart-feedback-indicator');
+    if (feedbackEl) {
+      feedbackEl.innerHTML = `
+        <div class="p-3.5 rounded-2xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 flex items-center justify-between gap-3 shadow-lg shadow-emerald-950/40 animate-in fade-in duration-300">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-bold shrink-0 shadow-md">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-white leading-tight">✓ Ürün Sepetinize Eklendi!</p>
+              <p class="text-[11px] text-emerald-400 font-medium">Bu üründen toplam ${totalInCartForThis} adet sepetinizde</p>
+            </div>
+          </div>
+          <a href="sepet.html" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-colors shrink-0 shadow-md">
+            <span>Sepete Git</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+      `;
+      feedbackEl.classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+      
+      if (window._cartFeedbackTimer) clearTimeout(window._cartFeedbackTimer);
+      window._cartFeedbackTimer = setTimeout(() => {
+        if (feedbackEl) feedbackEl.classList.add('hidden');
+      }, 7000);
+    }
+  } catch (err) {}
+
+  // 4. Header sepet ikonunda nabız ve badge zıplama animasyonu
+  try {
+    const navCart = document.querySelector('a[href="sepet.html"]') || document.getElementById('navbar-cart-btn');
+    if (navCart) {
+      navCart.classList.add('ring-2', 'ring-emerald-400', 'scale-110', 'bg-emerald-500/20');
+      setTimeout(() => {
+        navCart.classList.remove('ring-2', 'ring-emerald-400', 'scale-110', 'bg-emerald-500/20');
+      }, 1500);
+    }
+    const badge = document.getElementById('cart-badge-count');
+    if (badge) {
+      badge.classList.add('animate-bounce');
+      setTimeout(() => badge.classList.remove('animate-bounce'), 1500);
+    }
+  } catch (err) {}
 };
 
 function saveCart() {
@@ -3977,6 +4044,11 @@ window.openAdminDashboard = function(initialTab = 'catalog') {
   if (!isAdmin) {
     showToast('Bu panele yalnızca yetkili yöneticiler erişebilir. Lütfen yönetici hesabınızla giriş yapın.', 'error');
     openAuthModal('login');
+    return;
+  }
+  const modal = document.getElementById('admin-panel-modal');
+  if (!modal) {
+    window.location.href = 'index.html?admin_tab=' + encodeURIComponent(initialTab || 'catalog');
     return;
   }
   renderAdminStats();
@@ -5642,6 +5714,9 @@ function initProductDetailPage() {
           </button>
         </div>
 
+        <!-- In-page Cart Feedback Notification Box -->
+        <div id="cart-page-feedback-indicator" class="hidden transition-all duration-300"></div>
+
         <!-- WhatsApp Quick Order Button -->
         <a 
           href="https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizden%20` + encodeURIComponent(p.name) + `%20(SKU:%20` + (p.sku || p.id) + `,%20Fiyat:%20` + getProductPrice(p) + `%20TL)%20hakk%C4%B1nda%20bilgi%20almak%20ve%20sipari%C5%9F%20vermek%20istiyorum." 
@@ -5827,6 +5902,17 @@ function initPageTransitionEngine() {
     }
   });
 
+  // Handle incoming hash anchor smoothly on page load
+  if (window.location.hash) {
+    const targetHash = window.location.hash.substring(1);
+    setTimeout(() => {
+      const targetEl = document.getElementById(targetHash) || document.querySelector(`[name="${targetHash}"]`);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 350);
+  }
+
   // Intercept internal page link clicks
   document.addEventListener('click', (e) => {
     const link = e.target.closest('a');
@@ -5834,13 +5920,35 @@ function initPageTransitionEngine() {
     const href = link.getAttribute('href');
     if (!href) return;
 
-    if (href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    if (href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
     if (link.target === '_blank' || href.includes('wa.me') || href.includes('api.whatsapp.com')) return;
     if (href.startsWith('http://') || href.startsWith('https://')) {
       if (!href.includes(window.location.host)) return;
     }
 
-    // Smooth page exit transition
+    // Check same-page hash navigation (e.g. "index.html#calc-section" or "#calc-section")
+    const currentFile = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+    const [targetUrl, targetHash] = href.split('#');
+    const targetFile = (targetUrl.split('/').pop() || (targetHash ? currentFile : 'index.html')).toLowerCase();
+    const isSamePage = (!targetUrl || targetFile === currentFile || ((currentFile === '' || currentFile === 'index.html') && targetFile === 'index.html'));
+
+    if (targetHash && isSamePage) {
+      e.preventDefault();
+      const targetEl = document.getElementById(targetHash) || document.querySelector(`[name="${targetHash}"]`);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        try { history.pushState(null, '', '#' + targetHash); } catch(err) {}
+      }
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+      }
+      return;
+    }
+
+    if (href.startsWith('#')) return;
+
+    // Smooth page exit transition for real page navigation
     e.preventDefault();
     if (bar) {
       bar.style.transition = 'width 0.22s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease';
@@ -5850,6 +5958,12 @@ function initPageTransitionEngine() {
       setTimeout(() => { bar.style.width = '94%'; }, 120);
     }
     document.body.classList.add('page-transitioning');
+
+    // Safety timeout: ensure page returns to normal if navigation is aborted
+    setTimeout(() => {
+      document.body.classList.remove('page-transitioning');
+      if (bar) bar.style.opacity = '0';
+    }, 1500);
 
     setTimeout(() => {
       window.location.href = href;
