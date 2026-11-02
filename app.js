@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3462';
+const DAG_CATALOG_VERSION = '2026.11.02.v3465';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -213,7 +213,7 @@ const defaultUsers = (typeof window !== 'undefined' && Array.isArray(window.OPEN
         accountType: 'corporate',
         role: 'admin',
         address: 'Halil Rıfat Paşa Mah. Perpa Ticaret Merkezi B Blok Kat: 8 No: 825 Şişli / İstanbul',
-        orders: ['ORD-198'],
+        orders: [],
         wishlist: ['dt-4816', 'dt-4873']
       }
     ];
@@ -231,10 +231,11 @@ const storedUsers = (function() {
     } catch(e) {}
   }
 
-  // beratakkurt346@gmail.com kullanıcısının listede mevcut ve Admin olduğunu garantile
+  // beratakkurt346@gmail.com kullanıcısının listede mevcut ve Admin olduğunu garantile, tamamlanmamış test siparişlerini temizle
   let berat = list.find(item => item.email && item.email.toLowerCase() === 'beratakkurt346@gmail.com');
   if (berat) {
     berat.role = 'admin';
+    berat.orders = (berat.orders || []).filter(o => o !== 'ORD-198' && o !== '198');
   } else {
     list.unshift(defaultUsers[0]);
   }
@@ -262,6 +263,7 @@ const storedCurrentUser = (function() {
       const parsed = JSON.parse(u);
       if (parsed && parsed.email && parsed.email.toLowerCase() === 'beratakkurt346@gmail.com') {
         parsed.role = 'admin';
+        parsed.orders = (parsed.orders || []).filter(o => o !== 'ORD-198' && o !== '198');
       }
       return parsed;
     } catch(e) {}
@@ -275,17 +277,19 @@ const state = {
   currentUser: storedCurrentUser,
   cart: JSON.parse(localStorage.getItem('dag_cart') || '[]'),
   orders: (function() {
+    let orderList = [];
     const saved = localStorage.getItem('dag_orders');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length >= 10) return parsed;
+        if (Array.isArray(parsed) && parsed.length >= 10) orderList = parsed;
       } catch(e) {}
     }
-    if (typeof window !== 'undefined' && Array.isArray(window.OPENCART_ORDERS) && window.OPENCART_ORDERS.length > 0) {
-      return window.OPENCART_ORDERS;
+    if (orderList.length === 0 && typeof window !== 'undefined' && Array.isArray(window.OPENCART_ORDERS) && window.OPENCART_ORDERS.length > 0) {
+      orderList = window.OPENCART_ORDERS;
     }
-    return [];
+    // GÜVENLİK & TEMİZLİK: Tamamlanmamış sipariş kayıtlarını tutma ve Berat Akkurt test siparişini temizle
+    return orderList.filter(o => String(o.id) !== '198' && String(o.id) !== 'ORD-198' && (o.email || '').toLowerCase() !== 'beratakkurt346@gmail.com');
   })(),
   isAdmin: (function() {
     // Güvenlik: Admin yetkisi asla URL parametresinden alınamaz, doğrulanmış oturum gerektirir.
@@ -398,6 +402,42 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (err) {
     console.error('URL param parsing error:', err);
   }
+
+  // Sipariş Temizliği & Veri Doğrulama: Tamamlanmamış test siparişi ORD-198'i tarayıcı önbelleğinden temizle
+  try {
+    const rawCur = localStorage.getItem('dag_current_user');
+    if (rawCur) {
+      const u = JSON.parse(rawCur);
+      if (u && u.email && u.email.toLowerCase() === 'beratakkurt346@gmail.com') {
+        u.orders = (u.orders || []).filter(o => o !== 'ORD-198' && o !== '198');
+        localStorage.setItem('dag_current_user', JSON.stringify(u));
+        if (state.currentUser && state.currentUser.email && state.currentUser.email.toLowerCase() === 'beratakkurt346@gmail.com') {
+          state.currentUser.orders = u.orders;
+        }
+      }
+    }
+    const rawUsers = localStorage.getItem('dag_users');
+    if (rawUsers) {
+      const uList = JSON.parse(rawUsers);
+      if (Array.isArray(uList)) {
+        uList.forEach(u => {
+          if (u.email && u.email.toLowerCase() === 'beratakkurt346@gmail.com') {
+            u.orders = (u.orders || []).filter(o => o !== 'ORD-198' && o !== '198');
+          }
+        });
+        localStorage.setItem('dag_users', JSON.stringify(uList));
+      }
+    }
+    const rawOrders = localStorage.getItem('dag_orders');
+    if (rawOrders) {
+      let orders = JSON.parse(rawOrders);
+      if (Array.isArray(orders)) {
+        orders = orders.filter(o => String(o.id) !== '198' && String(o.id) !== 'ORD-198' && (o.email || '').toLowerCase() !== 'beratakkurt346@gmail.com');
+        localStorage.setItem('dag_orders', JSON.stringify(orders));
+        state.orders = orders;
+      }
+    }
+  } catch (e) {}
 
   initPageTransitionEngine();
   initThreeJsViewport();
@@ -1479,7 +1519,7 @@ function renderUserNav() {
           <a href="profil.html?tab=orders" onclick="toggleUserDropdown(false);" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800 flex items-center justify-between transition-colors">
             <span class="flex items-center gap-2">
               <i data-lucide="package" class="w-4 h-4 text-emerald-400"></i>
-              <span>Sipariş Geçmişim</span>
+              <span>Siparişlerim</span>
             </span>
             <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.2 rounded-full font-mono font-bold">${(u.orders || []).length}</span>
           </a>
@@ -1858,75 +1898,11 @@ window.openMyOrdersModal = function() {
     if (typeof openAuthModal === 'function') openAuthModal('login');
     return;
   }
-  const u = state.currentUser;
-  const listEl = document.getElementById('user-orders-list');
-  const emptyEl = document.getElementById('user-orders-empty');
-
-  const userOrderIds = (u.orders || []).map(o => typeof o === 'string' ? o.replace('ORD-', '') : (o.id ? String(o.id).replace('ORD-', '') : ''));
-  const userEmail = (u.email || '').toLowerCase().trim();
-  const userPhone = (u.phone || '').replace(/\D/g, '');
-  const ocCustId = (u.id || '').replace('oc-usr-', '');
-
-  const matchedOrders = (state.orders || []).filter(o => {
-    const oId = String(o.id || '').replace('ORD-', '');
-    if (userOrderIds.includes(oId)) return true;
-    if (userEmail && o.email && o.email.toLowerCase().trim() === userEmail) return true;
-    if (ocCustId && o.customer_id && String(o.customer_id) === ocCustId) return true;
-    if (userPhone && userPhone.length >= 7 && o.phone && o.phone.replace(/\D/g, '').includes(userPhone)) return true;
-    return false;
-  }).sort((a, b) => (parseInt(b.id) || 0) - (parseInt(a.id) || 0));
-
-  if (matchedOrders.length === 0) {
-    if (listEl) listEl.innerHTML = '';
-    if (emptyEl) emptyEl.classList.remove('hidden');
-  } else {
-    if (emptyEl) emptyEl.classList.add('hidden');
-    if (listEl) {
-      listEl.innerHTML = matchedOrders.map(o => {
-        const isCompleted = (o.status || '').toLowerCase().includes('tamam') || o.statusId === '5';
-        return `
-          <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700/80 flex flex-col gap-3 transition-all hover:border-cyan-500/40">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-700/60 pb-2">
-              <div class="flex items-center gap-2">
-                <span class="text-xs font-mono font-bold text-cyan-400">#ORD-${o.id}</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full ${isCompleted ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'} font-bold">
-                  ${o.status || 'Hazırlanıyor'}
-                </span>
-                <span class="text-[11px] text-slate-400 font-mono">${o.date || '-'}</span>
-              </div>
-              <div class="text-right">
-                <span class="text-sm font-extrabold text-white font-mono">${(parseFloat(o.total) || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺</span>
-              </div>
-            </div>
-
-            <!-- Kalemler -->
-            <div class="space-y-1.5">
-              ${(o.items && o.items.length > 0) ? o.items.map(it => `
-                <div class="flex items-center justify-between text-xs bg-slate-900/40 px-2.5 py-1.5 rounded-lg border border-slate-800/80">
-                  <span class="text-slate-200 font-medium">
-                    <span class="text-cyan-400 font-mono font-bold mr-1">${it.quantity || 1}x</span> ${it.name || it.model}
-                  </span>
-                  <span class="text-slate-300 font-mono">${((parseFloat(it.price) || 0) * (it.quantity || 1)).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺</span>
-                </div>
-              `).join('') : `
-                <p class="text-xs text-slate-300 font-medium">${o.itemsSummary || (o.itemsCount ? o.itemsCount + ' Adet Ürün' : 'Sipariş Detayı')}</p>
-              `}
-            </div>
-            
-            ${(o.address || o.city) ? `
-              <div class="text-[11px] text-slate-400 font-mono flex items-center gap-1.5 pt-1.5 border-t border-slate-800/80">
-                <i data-lucide="truck" class="w-3.5 h-3.5 text-cyan-400 shrink-0"></i>
-                <span class="truncate">Teslimat Adresi: ${o.address || ''} ${o.city ? '(' + o.city + ')' : ''}</span>
-              </div>
-            ` : ''}
-          </div>
-        `;
-      }).join('');
-    }
+  if (window.location.pathname.endsWith('profil.html')) {
+    if (typeof switchProfilePageTab === 'function') switchProfilePageTab('orders');
+    return;
   }
-
-  openModal('user-orders-modal');
-  if (window.lucide) lucide.createIcons();
+  window.location.href = 'profil.html?tab=orders';
 };
 
 window.openWishlistModal = function() {
@@ -3173,13 +3149,21 @@ window.renderCartPage = function() {
     `;
   }).join('');
 
-  // WhatsApp Mesaj Özeti
+  // WhatsApp Mesaj Özeti & Kargo Hesaplama
+  const SHIPPING_THRESHOLD = 1000;
+  const STANDARD_SHIPPING_FEE = 95;
+  const isFreeShipping = subtotal >= SHIPPING_THRESHOLD;
+  const shippingFee = isFreeShipping ? 0 : STANDARD_SHIPPING_FEE;
+  const grandTotal = subtotal + shippingFee;
+  const remainingForFree = Math.max(0, SHIPPING_THRESHOLD - subtotal);
+  const freeShippingProgress = Math.min(100, Math.round((subtotal / SHIPPING_THRESHOLD) * 100));
+
   let waSummary = state.cart.map((item, idx) => {
     const prod = state.products.find(p => p.id === item.id);
     const sku = prod ? getProductSku(prod) : '';
     return `${idx + 1}) ${item.name} (Stok: ${sku}) x ${item.quantity} Adet = ${(item.price * item.quantity).toLocaleString('tr-TR')} TL`;
   }).join('%0A');
-  const waUrl = `https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizden%20sepetimdeki%20%C3%BCr%C3%BCnler%20i%C3%A7in%20sipari%C5%9F%20vermek%20istiyorum:%0A%0A${waSummary}%0A%0AToplam%20Tutar:%20${subtotal.toLocaleString('tr-TR')}%20TL`;
+  const waUrl = `https://wa.me/905070201198?text=Merhaba,%20Da%C4%9F%20Teknoloji%20web%20sitenizden%20sepetimdeki%20%C3%BCr%C3%BCnler%20i%C3%A7in%20sipari%C5%9F%20vermek%20istiyorum:%0A%0A${waSummary}%0A%0AÜrünler%20Toplamı:%20${subtotal.toLocaleString('tr-TR')}%20TL%0AKargo:%20${isFreeShipping ? 'Ücretsiz' : STANDARD_SHIPPING_FEE + '%20TL'}%0AToplam%20Tutar:%20${grandTotal.toLocaleString('tr-TR')}%20TL`;
 
   container.innerHTML = `
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -3187,19 +3171,42 @@ window.renderCartPage = function() {
       <!-- Sol Sütun: Sepet Ürünleri (Col 8) -->
       <div class="lg:col-span-8 space-y-4">
         
-        <!-- Ücretsiz Kargo Şeridi -->
-        <div class="p-4 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-slate-900 to-cyan-950/30 border border-emerald-500/30 flex items-center justify-between gap-3 text-xs">
-          <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-              <i data-lucide="truck" class="w-4 h-4"></i>
+        <!-- 1.000 TL Kargo Durum Şeridi -->
+        ` + (isFreeShipping ? `
+          <div class="p-4 rounded-2xl bg-gradient-to-r from-emerald-950/60 via-slate-900 to-teal-950/40 border border-emerald-500/40 flex items-center justify-between gap-3 text-xs shadow-lg">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
+                <i data-lucide="truck" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="font-bold text-white text-sm block">Tebrikler! 1.000 TL Üzeri Ücretsiz Kargo Kazandınız</span>
+                <span class="text-slate-400 text-[11px]">Siparişiniz Perpa Ticaret Merkezi depomuzdan sigortalı ve kargo ücretsiz olarak sevk edilecektir.</span>
+              </div>
             </div>
-            <div>
-              <span class="font-bold text-white block">Tüm Siparişlerde Ücretsiz &amp; Sigortalı Kargo</span>
-              <span class="text-slate-400 text-[11px]">Perpa Ticaret Merkezi merkez depomuzdan saat 16:00'ya kadar aynı gün çıkış yapılır.</span>
+            <span class="shrink-0 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold text-[10px] border border-emerald-500/30">ÜCRETSİZ KARGO</span>
+          </div>
+        ` : `
+          <div class="p-4 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-slate-900 to-amber-950/30 border border-cyan-500/30 space-y-2.5 text-xs shadow-md">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center shrink-0">
+                  <i data-lucide="truck" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <span class="font-bold text-white text-sm block">1.000 TL Üzeri Siparişlerde Kargo Ücretsiz!</span>
+                  <span class="text-slate-300 text-[11px]">Sepetinize <strong class="text-cyan-400 font-mono">${remainingForFree.toLocaleString('tr-TR')} TL</strong> daha ürün ekleyin, kargo bedava olsun.</span>
+                </div>
+              </div>
+              <a href="urunler.html" class="shrink-0 px-3 py-1.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 font-bold text-[11px] transition-colors flex items-center gap-1">
+                <span>+ Ürün Ekle</span>
+              </a>
+            </div>
+            <!-- Mini Kargo Hedef Barı -->
+            <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700/80">
+              <div class="bg-gradient-to-r from-cyan-500 to-emerald-400 h-2 rounded-full transition-all duration-500" style="width: ${freeShippingProgress}%;"></div>
             </div>
           </div>
-          <span class="hidden sm:inline-block px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold text-[10px]">AKTİF KAMPANYA</span>
-        </div>
+        `) + `
 
         <!-- Ürün Kartları Listesi -->
         <div class="space-y-3">
@@ -3242,9 +3249,11 @@ window.renderCartPage = function() {
             <div class="flex justify-between items-center text-slate-300">
               <span class="flex items-center gap-1.5">
                 <span>Kargo Bedeli:</span>
-                <span class="text-[10px] text-slate-500">(Perpa Depo)</span>
+                <span class="text-[10px] text-slate-500">${isFreeShipping ? '(1.000 TL Üzeri)' : '(Standart Kargo)'}</span>
               </span>
-              <span class="font-mono font-bold text-emerald-400">ÜCRETSİZ</span>
+              <span class="font-mono font-bold ${isFreeShipping ? 'text-emerald-400' : 'text-slate-200'}">
+                ${isFreeShipping ? 'ÜCRETSİZ' : `${STANDARD_SHIPPING_FEE.toLocaleString('tr-TR')},00 ₺`}
+              </span>
             </div>
 
             <div class="flex justify-between items-center text-slate-300">
@@ -3257,7 +3266,7 @@ window.renderCartPage = function() {
           <div class="pt-4 border-t border-slate-800 flex justify-between items-baseline">
             <span class="text-sm font-bold text-slate-200">Toplam Tutar:</span>
             <div class="text-right">
-              <span class="text-2xl font-extrabold text-cyan-400 font-mono">${subtotal.toLocaleString('tr-TR')}</span>
+              <span class="text-2xl font-extrabold text-cyan-400 font-mono">${grandTotal.toLocaleString('tr-TR')}</span>
               <span class="text-base font-bold text-cyan-400 font-mono ml-0.5">₺</span>
             </div>
           </div>
@@ -3408,14 +3417,17 @@ window.processCheckout = function() {
     totalItemsCount += item.quantity;
   });
 
+  const shippingFee = totalAmount >= 1000 ? 0 : 95;
+  const grandTotal = totalAmount + shippingFee;
+
   // Update summary banner
   const itemsSummaryEl = document.getElementById('checkout-items-summary');
   if (itemsSummaryEl) {
-    itemsSummaryEl.innerText = `${totalItemsCount} Adet Ürün Sepette (${state.cart.map(i => `${i.quantity}x ${i.name}`).slice(0, 2).join(', ')}${state.cart.length > 2 ? '...' : ''})`;
+    itemsSummaryEl.innerText = `${totalItemsCount} Adet Ürün ${shippingFee > 0 ? '(+95 TL Kargo)' : '(1.000 TL Üzeri Ücretsiz Kargo)'} (${state.cart.map(i => `${i.quantity}x ${i.name}`).slice(0, 2).join(', ')}${state.cart.length > 2 ? '...' : ''})`;
   }
   const totalPriceEl = document.getElementById('checkout-total-price');
   if (totalPriceEl) {
-    totalPriceEl.innerText = totalAmount.toLocaleString('tr-TR');
+    totalPriceEl.innerText = grandTotal.toLocaleString('tr-TR');
   }
 
   // Generate Installment Options
@@ -3430,7 +3442,7 @@ window.processCheckout = function() {
     ];
 
     installmentGrid.innerHTML = installments.map((ins, idx) => {
-      const finalTot = Math.round(totalAmount * ins.rate);
+      const finalTot = Math.round(grandTotal * ins.rate);
       const monthly = Math.round(finalTot / ins.count);
       const isChecked = idx === 0;
 
@@ -3586,6 +3598,9 @@ window.handleCheckoutSubmit = function(e) {
     itemsSummaryList.push(`${cartItem.quantity}x ${cartItem.name}`);
   });
 
+  const shippingFee = totalAmount >= 1000 ? 0 : 95;
+  const grandTotal = totalAmount + shippingFee;
+
   const selectedInsEl = document.querySelector('input[name="selectedInstallment"]:checked');
   const installmentCount = selectedInsEl ? parseInt(selectedInsEl.value) : 1;
   const installmentLabel = installmentCount === 1 ? 'Tek Çekim (Peşin)' : `${installmentCount} Taksit`;
@@ -3595,7 +3610,7 @@ window.handleCheckoutSubmit = function(e) {
     phone: phone,
     address: address,
     itemsSummary: itemsSummaryList.slice(0, 2).join(', '),
-    total: totalAmount,
+    total: grandTotal,
     method: activePaymentMethod,
     installment: installmentLabel
   };
@@ -3637,7 +3652,7 @@ window.handleCheckoutSubmit = function(e) {
       const phoneEl = document.getElementById('secure-3d-phone');
       const dateEl = document.getElementById('secure-3d-date');
 
-      if (amountEl) amountEl.innerText = `${totalAmount.toLocaleString('tr-TR')} ₺`;
+      if (amountEl) amountEl.innerText = `${grandTotal.toLocaleString('tr-TR')} ₺`;
       if (maskEl) maskEl.innerText = `•••• •••• •••• ${last4}`;
       if (phoneEl) {
         phoneEl.innerText = phone.length > 6 ? `${phone.substring(0, 4)} *** ** ${phone.substring(phone.length - 2)}` : '0507 *** ** 98';
