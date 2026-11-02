@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3459';
+const DAG_CATALOG_VERSION = '2026.11.02.v3460';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -199,44 +199,24 @@ window.setBaseRateToCurrent = function() {
   showToast(`Mevcut kur (${state.exchangeRate.current.toFixed(2)} ₺) referans baz kur olarak ayarlandı. Değişim oranı %0.0 olarak sıfırlandı.`, 'success');
 };
 
-// Default registered users (Yönetici ve Müşteri)
-const defaultUsers = [
-  {
-    id: 'usr-berat',
-    name: 'Berat Akkurt',
-    email: 'beratakkurt346@gmail.com',
-    password: 'admin',
-    phone: '0507 020 11 98',
-    company: 'Dağ Teknoloji Ltd. Şti.',
-    accountType: 'corporate',
-    role: 'admin',
-    address: 'Halil Rıfat Paşa Mah. Perpa Ticaret Merkezi B Blok Kat: 8 No: 825 Şişli / İstanbul',
-    orders: [],
-    wishlist: ['dt-4816', 'dt-4873']
-  },
-  {
-    id: 'usr-1',
-    name: 'Ahmet Yılmaz',
-    email: 'ahmet@dag.com',
-    password: '123',
-    phone: '0555 123 4567',
-    company: 'Yılmaz 3D Prototip & Tasarım',
-    accountType: 'corporate',
-    role: 'customer',
-    address: 'Halil Rıfat Paşa Mah. Perpa Ticaret Merkezi B Blok Kat: 8 No: 825 Şişli / İstanbul',
-    orders: [
+// Default registered users (OpenCart 56 gerçek üye havuzu veya varsayılan yönetici)
+const defaultUsers = (typeof window !== 'undefined' && Array.isArray(window.OPENCART_USERS) && window.OPENCART_USERS.length > 0)
+  ? window.OPENCART_USERS
+  : [
       {
-        id: '94812',
-        date: '28 Eki, 14:30',
-        itemsSummary: '1x Bambu Lab A1 Mini, 2x Ender 1.75mm PLA Siyah',
-        itemsCount: 3,
-        total: 13299,
-        status: 'Kargoya Verildi'
+        id: 'oc-usr-2',
+        name: 'Berat Akkurt',
+        email: 'beratakkurt346@gmail.com',
+        password: 'admin',
+        phone: '0501 202 38 70',
+        company: 'Dağ Teknoloji Ltd. Şti.',
+        accountType: 'corporate',
+        role: 'admin',
+        address: 'Halil Rıfat Paşa Mah. Perpa Ticaret Merkezi B Blok Kat: 8 No: 825 Şişli / İstanbul',
+        orders: ['ORD-198'],
+        wishlist: ['dt-4816', 'dt-4873']
       }
-    ],
-    wishlist: ['dt-4873', 'dt-5051', 'dt-4773']
-  }
-];
+    ];
 
 const storedUsers = (function() {
   const u = localStorage.getItem('dag_users');
@@ -244,7 +224,8 @@ const storedUsers = (function() {
   if (u) {
     try {
       const parsed = JSON.parse(u);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      // Eğer daha önce kaydedilen liste eski 2 kukla üyeyse, OpenCart'ın gerçek 56 üyesine terfi et
+      if (Array.isArray(parsed) && parsed.length >= 10) {
         list = parsed;
       }
     } catch(e) {}
@@ -293,7 +274,19 @@ const state = {
   users: storedUsers,
   currentUser: storedCurrentUser,
   cart: JSON.parse(localStorage.getItem('dag_cart') || '[]'),
-  orders: JSON.parse(localStorage.getItem('dag_orders') || '[]'),
+  orders: (function() {
+    const saved = localStorage.getItem('dag_orders');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length >= 10) return parsed;
+      } catch(e) {}
+    }
+    if (typeof window !== 'undefined' && Array.isArray(window.OPENCART_ORDERS) && window.OPENCART_ORDERS.length > 0) {
+      return window.OPENCART_ORDERS;
+    }
+    return [];
+  })(),
   isAdmin: (function() {
     // Güvenlik: Admin yetkisi asla URL parametresinden alınamaz, doğrulanmış oturum gerektirir.
     return sessionStorage.getItem('dag_is_admin') === 'true' && !!(storedCurrentUser && (storedCurrentUser.role === 'admin' || (storedCurrentUser.email && storedCurrentUser.email.toLowerCase() === 'beratakkurt346@gmail.com')));
@@ -1595,17 +1588,39 @@ window.switchAuthTab = function(tab) {
   }
 };
 
+// Native WebCrypto SHA-1 helper for OpenCart password hash verification
+async function hashSha1(str) {
+  if (window.crypto && window.crypto.subtle) {
+    const buf = await window.crypto.subtle.digest('SHA-1', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  return '';
+}
+
+async function verifyOpenCartPassword(plainPassword, salt, expectedHash) {
+  if (!salt || !expectedHash) return false;
+  try {
+    const p1 = await hashSha1(plainPassword);
+    const p2 = await hashSha1(salt + p1);
+    const p3 = await hashSha1(salt + p2);
+    return (p3.toLowerCase() === expectedHash.toLowerCase());
+  } catch (e) {
+    return false;
+  }
+}
+window.verifyOpenCartPassword = verifyOpenCartPassword;
+
 window.handleUserLogin = async function(e) {
   e.preventDefault();
   const emailInput = document.getElementById('login-email').value.trim().toLowerCase();
   const passwordInput = document.getElementById('login-password').value;
 
   if (!emailInput || !passwordInput) {
-    showToast('LÃ¼tfen e-posta ve ÅŸifrenizi eksiksiz giriniz.', 'error');
+    showToast('Lütfen e-posta ve şifrenizi eksiksiz giriniz.', 'error');
     return;
   }
 
-  // 1. Sunucu TarafÄ± GÃ¼venli Kimlik DoÄŸrulama (Backend API)
+  // 1. Sunucu Tarafı Güvenli Kimlik Doğrulama (Backend API)
   try {
     const res = await fetch('api/auth.php?action=login', {
       method: 'POST',
@@ -1629,19 +1644,38 @@ window.handleUserLogin = async function(e) {
           initProductDetailPage();
         }
         if (state.isAdmin) {
-          showToast('HoÅŸ geldiniz SayÄ±n ' + data.user.name + '! YÃ¶netici yetkileri doÄŸrulandÄ±.', 'success');
+          showToast('Hoş geldiniz Sayın ' + data.user.name + '! Yönetici yetkileri doğrulandı.', 'success');
         } else {
-          showToast('HoÅŸ geldiniz SayÄ±n ' + data.user.name + '!', 'success');
+          showToast('Hoş geldiniz Sayın ' + data.user.name + '!', 'success');
         }
         return;
       }
     }
   } catch (err) {
-    // API sunucusuna eriÅŸilemediÄŸinde (statik barÄ±ndÄ±rma ortamÄ±)
+    // API sunucusuna erişilemediğinde (statik barındırma ortamı)
   }
 
   // 2. İstemci Tarafı Doğrulama (Statik sunucu modu)
-  let found = state.users.find(u => (u.email.toLowerCase() === emailInput || u.phone === emailInput) && (u.password === passwordInput));
+  let found = null;
+  for (const u of state.users) {
+    const matchEmail = (u.email && u.email.toLowerCase() === emailInput) || (u.phone && u.phone === emailInput);
+    if (!matchEmail) continue;
+
+    // A. Düz metin şifre eşleşmesi (admin, 123456 veya sonradan değiştirilen şifre)
+    if (u.password && u.password === passwordInput) {
+      found = u;
+      break;
+    }
+
+    // B. OpenCart Kriptografik Şifre Eşleşmesi (Kullanıcının asıl OpenCart şifresi)
+    if (u.ocHash && u.ocSalt) {
+      const isOcMatch = await verifyOpenCartPassword(passwordInput, u.ocSalt, u.ocHash);
+      if (isOcMatch) {
+        found = u;
+        break;
+      }
+    }
+  }
 
   if (found) {
     const isTargetAdmin = (found.email.toLowerCase() === 'beratakkurt346@gmail.com') || (found.role === 'admin');
@@ -3713,20 +3747,44 @@ function renderAdminOrdersTable() {
   const container = document.getElementById('admin-orders-tbody');
   if (!container) return;
 
-  if (state.orders.length === 0) {
+  if (!state.orders || state.orders.length === 0) {
     container.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-slate-500">Henüz kaydedilmiş sipariş bulunmuyor.</td></tr>`;
     return;
   }
 
-  container.innerHTML = state.orders.map((o, idx) => `
-    <tr class="border-b border-slate-800/80">
-      <td class="py-3 px-4 text-xs font-mono text-cyan-400">#ORD-${o.id || (1000 + idx)}</td>
-      <td class="py-3 px-4 text-xs font-bold text-white">${o.customer || 'İsimsiz Müşteri'}</td>
-      <td class="py-3 px-4 text-xs text-slate-300">${o.itemsCount || 1} Ürün (${o.itemsSummary || 'Detay'})</td>
-      <td class="py-3 px-4 text-xs font-mono font-bold text-emerald-400">${(o.total || 0).toLocaleString('tr-TR')} ₺</td>
-      <td class="py-3 px-4 text-xs text-slate-500">${o.date || 'Bugün'}</td>
-    </tr>
-  `).join('');
+  // En son sipariş en üstte olacak şekilde sırala (ID'ye göre azalan)
+  const sorted = [...state.orders].sort((a, b) => {
+    return (parseInt(b.id) || 0) - (parseInt(a.id) || 0);
+  });
+
+  const displayOrders = sorted.slice(0, 100);
+
+  container.innerHTML = displayOrders.map((o, idx) => {
+    const isCompleted = (o.status || '').toLowerCase().includes('tamam') || o.statusId === '5';
+    return `
+      <tr class="border-b border-slate-800/80 hover:bg-slate-900/40 transition-colors">
+        <td class="py-3 px-4 text-xs font-mono text-cyan-400 font-bold">#ORD-${o.id || (1000 + idx)}</td>
+        <td class="py-3 px-4 text-xs">
+          <div class="font-bold text-white">${o.customer || 'İsimsiz Müşteri'}</div>
+          ${o.company ? `<div class="text-[10px] text-slate-400 font-mono">${o.company}</div>` : ''}
+          ${o.city ? `<div class="text-[10px] text-slate-500">${o.city}</div>` : ''}
+        </td>
+        <td class="py-3 px-4 text-xs text-slate-300">
+          <div class="line-clamp-1" title="${o.itemsSummary || 'Detay'}">${o.itemsSummary || 'Ürün Siparişi'}</div>
+          <div class="text-[10px] text-slate-500 font-mono mt-0.5">${o.itemsCount || 1} Kalem Ürün</div>
+        </td>
+        <td class="py-3 px-4 text-xs font-mono font-bold text-emerald-400 whitespace-nowrap">
+          ${(o.total || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺
+        </td>
+        <td class="py-3 px-4 text-xs font-mono text-slate-400 whitespace-nowrap">
+          <div>${(o.date || '').slice(0, 16)}</div>
+          <span class="inline-block mt-0.5 px-1.5 py-0.5 rounded text-[10px] font-semibold ${isCompleted ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'}">
+            ${o.status || 'Tamamlandı'}
+          </span>
+        </td>
+      </tr>
+    `;
+  }).join('');
 }
 
 // ==========================================================================
