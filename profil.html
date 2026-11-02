@@ -47,7 +47,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=20261102v3470">
+  <link rel="stylesheet" href="styles.css?v=20261102v3471">
 </head>
 <body class="bg-[#07090e] text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950 w-full max-w-full min-h-screen flex flex-col justify-between">
 
@@ -169,7 +169,7 @@
           <i data-lucide="log-in" class="w-4 h-4"></i>
           <span>Giriş Yap</span>
         </button>
-        <button onclick="openAuthModal('register')" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs uppercase tracking-wider border border-slate-700 transition-colors">
+        <button onclick="openAuthModal('signup')" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs uppercase tracking-wider border border-slate-700 transition-colors">
           Yeni Üyelik Oluştur
         </button>
       </div>
@@ -432,56 +432,102 @@
   </footer>
 
   <!-- AUTH MODAL (Login & Register) -->
-  <div id="auth-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div id="auth-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
     <div onclick="closeModal('auth-modal')" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
-    <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 z-10 shadow-2xl">
+    <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 z-10 shadow-2xl my-auto">
       <button onclick="closeModal('auth-modal')" class="absolute top-5 right-5 p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
-      <div class="flex items-center justify-center gap-4 mb-6 border-b border-slate-800 pb-3">
-        <button id="auth-tab-login" onclick="switchAuthTab('login')" class="text-sm font-bold text-cyan-400 border-b-2 border-cyan-400 pb-1">Giriş Yap</button>
-        <button id="auth-tab-register" onclick="switchAuthTab('register')" class="text-sm font-bold text-slate-400 hover:text-white pb-1">Kayıt Ol</button>
+      <!-- Tabs Header -->
+      <div class="flex items-center gap-4 border-b border-slate-800 pb-3 mb-6">
+        <button id="auth-tab-login" onclick="switchAuthTab('login')" class="text-sm font-bold pb-2 border-b-2 border-cyan-400 text-cyan-400 transition-colors">
+          Giriş Yap
+        </button>
+        <button id="auth-tab-signup" onclick="switchAuthTab('signup')" class="text-sm font-bold pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-colors">
+          Yeni Üyelik Oluştur
+        </button>
       </div>
 
-      <!-- Login Form -->
-      <form id="login-form" onsubmit="handleUserLogin(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">E-Posta Adresi veya Telefon *</label>
-          <input type="text" id="login-email" required placeholder="beratakkurt346@gmail.com" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+      <!-- Login Form Box -->
+      <div id="auth-login-form-box">
+        <div class="mb-4">
+          <h3 class="text-lg font-bold text-white">Hesabınıza Giriş Yapın</h3>
+          <p class="text-xs text-slate-400">Sipariş takibi ve üyelik yönetimi için oturum açın.</p>
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Şifre *</label>
-          <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
-        </div>
-        <button type="submit" class="w-full py-3.5 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-          <i data-lucide="log-in" class="w-4 h-4"></i>
-          <span>Oturum Aç</span>
-        </button>
-      </form>
 
-      <!-- Register Form -->
-      <form id="register-form" onsubmit="handleUserRegister(event)" class="hidden space-y-3">
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Ad Soyad *</label>
-          <input type="text" id="reg-name" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+        <form onsubmit="handleUserLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">E-Posta Adresi veya Telefon *</label>
+            <input type="text" id="login-email" required placeholder="ornek@firma.com veya 0532..." class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Şifre *</label>
+            <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+          </div>
+          <button type="submit" class="w-full py-3 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider">
+            Giriş Yap
+          </button>
+
+          <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+            <span>👑 Yönetici: <span class="text-cyan-400 font-mono font-bold">beratakkurt346@gmail.com</span></span>
+            <button type="button" onclick="fillAdminCredentials()" class="text-cyan-400 hover:text-cyan-300 hover:underline font-semibold flex items-center gap-1">
+              <span>Hızlı Doldur</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Signup Form Box -->
+      <div id="auth-signup-form-box" class="hidden">
+        <div class="mb-4">
+          <h3 class="text-lg font-bold text-white">Dağ Teknoloji Üyesi Olun</h3>
+          <p class="text-xs text-slate-400">Toptan alım fırsatları ve anlık stok rezervasyonu kazanın.</p>
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">E-Posta Adresi *</label>
-          <input type="email" id="reg-email" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Telefon *</label>
-          <input type="tel" id="reg-phone" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Şifre *</label>
-          <input type="password" id="reg-password" minlength="6" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
-        </div>
-        <button type="submit" class="w-full py-3 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-          <span>Hesap Oluştur</span>
-        </button>
-      </form>
+
+        <form onsubmit="handleUserSignup(event)" class="space-y-3.5">
+          <div class="flex items-center gap-4 py-1">
+            <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+              <input type="radio" name="account-type" value="individual" checked class="accent-cyan-400">
+              <span>Bireysel</span>
+            </label>
+            <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+              <input type="radio" name="account-type" value="corporate" class="accent-cyan-400">
+              <span>Kurumsal / Şirket</span>
+            </label>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Ad Soyad *</label>
+            <input type="text" id="signup-name" required placeholder="Adınız Soyadınız" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">E-Posta *</label>
+              <input type="email" id="signup-email" required placeholder="ornek@dag.com" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Telefon *</label>
+              <input type="tel" id="signup-phone" required placeholder="05XX XXX XX XX" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Şirket / Kurum Adı (Opsiyonel)</label>
+            <input type="text" id="signup-company" placeholder="Örn: Dağ Tasarım Mühendislik Ltd." class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Şifre Belirleyin *</label>
+            <input type="password" id="signup-password" required minlength="4" placeholder="En az 4 karakter" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+          </div>
+
+          <button type="submit" class="w-full py-3 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider mt-2">
+            Hesabımı Oluştur
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -1038,6 +1084,6 @@
   <script src="products.js?v=20261102v3449"></script>
   <script src="data/opencart_users.js?v=20261102v3466"></script>
   <script src="data/opencart_orders.js?v=20261102v3466"></script>
-  <script src="app.js?v=20261102v3470"></script>
+  <script src="app.js?v=20261102v3471"></script>
 </body>
 </html>
