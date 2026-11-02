@@ -4,7 +4,7 @@
  */
 
 // --- INITIAL STATE SETUP & CATALOG VERSIONING ---
-const DAG_CATALOG_VERSION = '2026.11.02.v3450';
+const DAG_CATALOG_VERSION = '2026.11.02.v3451';
 
 const initialProducts = (function() {
   const savedVersion = localStorage.getItem('dag_catalog_version');
@@ -2481,8 +2481,45 @@ window.removeFromCart = function(id) {
   showToast('Ürün sepetten çıkarıldı');
 };
 
+// ==========================================================================
+// KREDİ KARTI VE GÜVENLİ CHECKOUT SİSTEMİ
+// ==========================================================================
+
+let activePaymentMethod = 'credit_card';
+let secure3DCountdownTimer = null;
+let currentPendingOrder = null;
+
+window.buyNowWithCreditCard = function(productId, qty = 1) {
+  const p = state.products.find(item => item.id === productId);
+  if (!p) return;
+  const numQty = parseInt(qty) || 1;
+
+  // Add or update cart
+  const existing = state.cart.find(i => i.id === p.id);
+  if (existing) {
+    existing.quantity = Math.min((p.stock || 99), existing.quantity + numQty);
+  } else {
+    state.cart.push({
+      id: p.id,
+      name: p.name,
+      price: getProductPrice(p),
+      quantity: numQty,
+      image: getProductImageUrl(p) || 'assets/logo.svg'
+    });
+  }
+  saveCart();
+  updateCartBadge();
+  renderCartDrawer();
+
+  // Directly trigger credit card checkout
+  processCheckout();
+};
+
 window.processCheckout = function() {
-  if (state.cart.length === 0) return;
+  if (state.cart.length === 0) {
+    showToast('Sepetinizde ürün bulunmuyor. Lütfen önce ürün ekleyin.', 'info');
+    return;
+  }
   toggleCartDrawer(false);
 
   // Autofill user information if logged in
@@ -2492,13 +2529,405 @@ window.processCheckout = function() {
     const phoneEl = document.getElementById('checkout-phone');
     const addrEl = document.getElementById('checkout-address');
 
-    if (nameEl) nameEl.value = u.name;
-    if (phoneEl) phoneEl.value = u.phone || '';
-    if (addrEl) addrEl.value = u.address || '';
+    if (nameEl && !nameEl.value) nameEl.value = u.name || '';
+    if (phoneEl && !phoneEl.value) phoneEl.value = u.phone || '';
+    if (addrEl && !addrEl.value) addrEl.value = u.address || '';
+
+    const cardHolderEl = document.getElementById('card-holder');
+    if (cardHolderEl && !cardHolderEl.value && u.name) {
+      cardHolderEl.value = u.name.toUpperCase();
+      const previewName = document.getElementById('card-preview-name');
+      if (previewName) previewName.innerText = u.name.toUpperCase();
+    }
   }
 
+  // Calculate totals
+  let totalAmount = 0;
+  let totalItemsCount = 0;
+  state.cart.forEach(item => {
+    totalAmount += (item.price * item.quantity);
+    totalItemsCount += item.quantity;
+  });
+
+  // Update summary banner
+  const itemsSummaryEl = document.getElementById('checkout-items-summary');
+  if (itemsSummaryEl) {
+    itemsSummaryEl.innerText = `${totalItemsCount} Adet Ürün Sepette (${state.cart.map(i => `${i.quantity}x ${i.name}`).slice(0, 2).join(', ')}${state.cart.length > 2 ? '...' : ''})`;
+  }
+  const totalPriceEl = document.getElementById('checkout-total-price');
+  if (totalPriceEl) {
+    totalPriceEl.innerText = totalAmount.toLocaleString('tr-TR');
+  }
+
+  // Generate Installment Options
+  const installmentGrid = document.getElementById('installment-options-grid');
+  if (installmentGrid) {
+    const installments = [
+      { count: 1, label: 'Tek Çekim', rate: 1.0, note: 'Peşin Fiyatına' },
+      { count: 3, label: '3 Taksit', rate: 1.0, note: 'Vade Farksız' },
+      { count: 6, label: '6 Taksit', rate: 1.0, note: 'Vade Farksız' },
+      { count: 9, label: '9 Taksit', rate: 1.04, note: '%4 Vade' },
+      { count: 12, label: '12 Taksit', rate: 1.08, note: '%8 Vade' }
+    ];
+
+    installmentGrid.innerHTML = installments.map((ins, idx) => {
+      const finalTot = Math.round(totalAmount * ins.rate);
+      const monthly = Math.round(finalTot / ins.count);
+      const isChecked = idx === 0;
+
+      return `
+        <label class="relative flex flex-col p-2.5 rounded-xl border border-slate-700/80 bg-slate-900/60 hover:border-cyan-500/50 cursor-pointer transition-all has-[:checked]:border-cyan-400 has-[:checked]:bg-cyan-500/10">
+          <input type="radio" name="selectedInstallment" value="${ins.count}" ${isChecked ? 'checked' : ''} onchange="updateCheckoutTotalByInstallment(${ins.count}, ${finalTot})" class="sr-only">
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-bold text-white text-[11px]">${ins.label}</span>
+            <span class="text-[9px] text-cyan-400 font-mono">${ins.note}</span>
+          </div>
+          <div class="font-mono text-cyan-300 font-bold text-xs">${monthly.toLocaleString('tr-TR')} ₺/ay</div>
+          <span class="text-[9px] text-slate-500 font-mono">Toplam: ${finalTot.toLocaleString('tr-TR')} ₺</span>
+        </label>
+      `;
+    }).join('');
+  }
+
+  // Set default method
+  switchPaymentMethod('credit_card');
+
   openModal('checkout-modal');
+  if (window.lucide) lucide.createIcons();
 };
+
+window.updateCheckoutTotalByInstallment = function(count, finalTotal) {
+  const submitLabel = document.getElementById('checkout-submit-label');
+  if (submitLabel) {
+    submitLabel.innerText = `3D Secure ile Güvenli Öde (${finalTotal.toLocaleString('tr-TR')} ₺)`;
+  }
+};
+
+window.switchPaymentMethod = function(method) {
+  activePaymentMethod = method;
+
+  const cardBox = document.getElementById('payment-credit-card-box');
+  const bankBox = document.getElementById('payment-bank-box');
+  const storeBox = document.getElementById('payment-store-box');
+
+  const pillCard = document.getElementById('payment-pill-card');
+  const pillBank = document.getElementById('payment-pill-bank');
+  const pillStore = document.getElementById('payment-pill-store');
+
+  const submitLabel = document.getElementById('checkout-submit-label');
+
+  let totalAmount = state.cart.reduce((s, i) => s + (i.price * i.quantity), 0);
+
+  if (pillCard) {
+    pillCard.classList.toggle('border-cyan-400', method === 'credit_card');
+    pillCard.classList.toggle('bg-cyan-500/10', method === 'credit_card');
+    pillCard.classList.toggle('border-slate-800', method !== 'credit_card');
+    pillCard.classList.toggle('bg-slate-800/40', method !== 'credit_card');
+  }
+  if (pillBank) {
+    pillBank.classList.toggle('border-emerald-400', method === 'bank_transfer');
+    pillBank.classList.toggle('bg-emerald-500/10', method === 'bank_transfer');
+    pillBank.classList.toggle('border-slate-800', method !== 'bank_transfer');
+    pillBank.classList.toggle('bg-slate-800/40', method !== 'bank_transfer');
+  }
+  if (pillStore) {
+    pillStore.classList.toggle('border-amber-400', method === 'store_pickup');
+    pillStore.classList.toggle('bg-amber-500/10', method === 'store_pickup');
+    pillStore.classList.toggle('border-slate-800', method !== 'store_pickup');
+    pillStore.classList.toggle('bg-slate-800/40', method !== 'store_pickup');
+  }
+
+  if (cardBox) cardBox.classList.toggle('hidden', method !== 'credit_card');
+  if (bankBox) bankBox.classList.toggle('hidden', method !== 'bank_transfer');
+  if (storeBox) storeBox.classList.toggle('hidden', method !== 'store_pickup');
+
+  if (submitLabel) {
+    if (method === 'credit_card') {
+      submitLabel.innerText = `3D Secure ile Güvenli Öde (${totalAmount.toLocaleString('tr-TR')} ₺)`;
+    } else if (method === 'bank_transfer') {
+      const discounted = Math.round(totalAmount * 0.97);
+      submitLabel.innerText = `Havale ile Siparişi Onayla (%3 İndirimli: ${discounted.toLocaleString('tr-TR')} ₺)`;
+    } else {
+      submitLabel.innerText = `Perpa Mağazada Teslim Al & Siparişi Onayla (${totalAmount.toLocaleString('tr-TR')} ₺)`;
+    }
+  }
+
+  if (window.lucide) lucide.createIcons();
+};
+
+window.formatCardNumber = function(input) {
+  let val = input.value.replace(/\D/g, '').substring(0, 16);
+  let formatted = val.match(/.{1,4}/g)?.join(' ') || val;
+  input.value = formatted;
+
+  const previewNum = document.getElementById('card-preview-number');
+  if (previewNum) {
+    previewNum.innerText = formatted ? formatted.padEnd(19, ' •••• •••• •••• ••••'.substring(formatted.length)) : '•••• •••• •••• ••••';
+  }
+
+  // Detect brand
+  let brand = 'KART';
+  if (val.startsWith('4')) {
+    brand = 'VISA';
+  } else if (/^(5[1-5]|2[2-7])/.test(val)) {
+    brand = 'MASTERCARD';
+  } else if (val.startsWith('9792')) {
+    brand = 'TROY';
+  } else if (/^(34|37)/.test(val)) {
+    brand = 'AMEX';
+  }
+
+  const brandEl = document.getElementById('card-preview-brand');
+  if (brandEl) brandEl.innerText = brand;
+};
+
+window.updateCardHolder = function(input) {
+  const val = input.value.toUpperCase();
+  const preview = document.getElementById('card-preview-name');
+  if (preview) {
+    preview.innerText = val || 'AD SOYAD';
+  }
+};
+
+window.formatCardExpiry = function(input) {
+  let val = input.value.replace(/\D/g, '').substring(0, 4);
+  if (val.length >= 3) {
+    val = val.substring(0, 2) + '/' + val.substring(2);
+  }
+  input.value = val;
+
+  const preview = document.getElementById('card-preview-expiry');
+  if (preview) {
+    preview.innerText = val || 'AA/YY';
+  }
+};
+
+window.handleCheckoutSubmit = function(e) {
+  e.preventDefault();
+
+  if (state.cart.length === 0) {
+    showToast('Sepetiniz boş.', 'error');
+    return;
+  }
+
+  const name = (document.getElementById('checkout-name')?.value || '').trim();
+  const phone = (document.getElementById('checkout-phone')?.value || '').trim();
+  const address = (document.getElementById('checkout-address')?.value || '').trim();
+
+  if (!name || !phone || !address) {
+    showToast('Lütfen teslimat ve fatura bilgilerinizi eksiksiz doldurunuz.', 'error');
+    return;
+  }
+
+  let totalAmount = 0;
+  const itemsSummaryList = [];
+  state.cart.forEach(cartItem => {
+    totalAmount += cartItem.price * cartItem.quantity;
+    itemsSummaryList.push(`${cartItem.quantity}x ${cartItem.name}`);
+  });
+
+  const selectedInsEl = document.querySelector('input[name="selectedInstallment"]:checked');
+  const installmentCount = selectedInsEl ? parseInt(selectedInsEl.value) : 1;
+  const installmentLabel = installmentCount === 1 ? 'Tek Çekim (Peşin)' : `${installmentCount} Taksit`;
+
+  currentPendingOrder = {
+    customer: name,
+    phone: phone,
+    address: address,
+    itemsSummary: itemsSummaryList.slice(0, 2).join(', '),
+    total: totalAmount,
+    method: activePaymentMethod,
+    installment: installmentLabel
+  };
+
+  if (activePaymentMethod === 'credit_card') {
+    const cardNum = (document.getElementById('card-number')?.value || '').replace(/\s+/g, '');
+    const cardHolder = (document.getElementById('card-holder')?.value || '').trim();
+    const cardExpiry = (document.getElementById('card-expiry')?.value || '').trim();
+    const cardCvv = (document.getElementById('card-cvv')?.value || '').trim();
+
+    if (cardNum.length < 15) {
+      showToast('Lütfen 16 haneli kredi kartı numaranızı eksiksiz giriniz.', 'error');
+      return;
+    }
+    if (!cardHolder) {
+      showToast('Lütfen kart üzerindeki isim ve soyisimi giriniz.', 'error');
+      return;
+    }
+    if (!/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+      showToast('Lütfen son kullanma tarihini AA/YY formatında giriniz.', 'error');
+      return;
+    }
+    if (cardCvv.length < 3) {
+      showToast('Lütfen 3 haneli CVV güvenlik kodunu giriniz.', 'error');
+      return;
+    }
+
+    const last4 = cardNum.substring(cardNum.length - 4);
+    currentPendingOrder.last4 = last4;
+
+    const use3D = document.getElementById('chk-3d-secure')?.checked !== false;
+
+    if (use3D) {
+      // Launch 3D Secure SMS Verification
+      closeModal('checkout-modal');
+
+      const amountEl = document.getElementById('secure-3d-amount');
+      const maskEl = document.getElementById('secure-3d-card-mask');
+      const phoneEl = document.getElementById('secure-3d-phone');
+      const dateEl = document.getElementById('secure-3d-date');
+
+      if (amountEl) amountEl.innerText = `${totalAmount.toLocaleString('tr-TR')} ₺`;
+      if (maskEl) maskEl.innerText = `•••• •••• •••• ${last4}`;
+      if (phoneEl) {
+        phoneEl.innerText = phone.length > 6 ? `${phone.substring(0, 4)} *** ** ${phone.substring(phone.length - 2)}` : '0507 *** ** 98';
+      }
+      if (dateEl) dateEl.innerText = new Date().toLocaleString('tr-TR');
+
+      start3DSecureCountdown();
+      openModal('secure-3d-modal');
+      if (window.lucide) lucide.createIcons();
+      return;
+    }
+  }
+
+  // If not credit card or 3D disabled:
+  finalizeSuccessfulOrder(currentPendingOrder);
+};
+
+function start3DSecureCountdown() {
+  if (secure3DCountdownTimer) clearInterval(secure3DCountdownTimer);
+  let secondsLeft = 179;
+  const timerEl = document.getElementById('secure-3d-timer');
+
+  secure3DCountdownTimer = setInterval(() => {
+    secondsLeft--;
+    if (secondsLeft <= 0) {
+      clearInterval(secure3DCountdownTimer);
+      if (timerEl) timerEl.innerText = '00:00 - Süre Doldu';
+    } else {
+      const mins = Math.floor(secondsLeft / 60).toString().padStart(2, '0');
+      const secs = (secondsLeft % 60).toString().padStart(2, '0');
+      if (timerEl) timerEl.innerText = `${mins}:${secs}`;
+    }
+  }, 1000);
+}
+
+window.close3DSecureModal = function() {
+  if (secure3DCountdownTimer) clearInterval(secure3DCountdownTimer);
+  closeModal('secure-3d-modal');
+};
+
+window.confirm3DSecurePayment = function() {
+  const codeInput = document.getElementById('secure-3d-code-input');
+  const code = (codeInput?.value || '').trim();
+
+  if (!code || code.length < 6) {
+    showToast('Lütfen 6 haneli SMS doğrulama kodunu giriniz (Demo: 123456).', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('btn-confirm-3d-payment');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span class="inline-block animate-spin mr-2">⟳</span> Banka 3D Secure Onayı Alınıyor...`;
+  }
+
+  setTimeout(() => {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i><span>Onayla ve Ödemeyi Tamamla</span>`;
+    }
+    if (secure3DCountdownTimer) clearInterval(secure3DCountdownTimer);
+    closeModal('secure-3d-modal');
+
+    finalizeSuccessfulOrder(currentPendingOrder || {
+      customer: 'Sayın Müşteri',
+      total: state.cart.reduce((s, i) => s + (i.price * i.quantity), 0),
+      method: 'credit_card',
+      installment: 'Tek Çekim'
+    });
+  }, 900);
+};
+
+function finalizeSuccessfulOrder(pending) {
+  let totalAmount = 0;
+  const itemsSummaryList = [];
+
+  state.cart.forEach(cartItem => {
+    const prod = state.products.find(p => p.id === cartItem.id);
+    if (prod) {
+      prod.stock = Math.max(0, (prod.stock || 0) - cartItem.quantity);
+      totalAmount += cartItem.price * cartItem.quantity;
+      itemsSummaryList.push(`${cartItem.quantity}x ${cartItem.name}`);
+      if (window.syncProductToOpenCart) {
+        window.syncProductToOpenCart(prod);
+      }
+    }
+  });
+
+  const orderId = Math.floor(10000 + Math.random() * 90000);
+  let methodLabel = 'Kredi Kartı (3D Secure)';
+  if (pending.method === 'bank_transfer') methodLabel = 'Havale / EFT (%3 İndirimli)';
+  if (pending.method === 'store_pickup') methodLabel = 'Perpa Mağazada Elden Teslim';
+
+  const newOrder = {
+    id: orderId,
+    customer: pending.customer,
+    phone: pending.phone,
+    address: pending.address,
+    itemsCount: state.cart.reduce((s, i) => s + i.quantity, 0),
+    itemsSummary: itemsSummaryList.slice(0, 2).join(', '),
+    total: pending.total || totalAmount,
+    method: methodLabel,
+    installment: pending.installment || 'Tek Çekim',
+    status: 'Ödendi / Hazırlanıyor',
+    date: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+  };
+
+  // Push to global orders
+  state.orders.unshift(newOrder);
+  localStorage.setItem('dag_orders', JSON.stringify(state.orders));
+
+  // Push to current user orders if logged in
+  if (state.currentUser) {
+    if (!state.currentUser.orders) state.currentUser.orders = [];
+    state.currentUser.orders.unshift(newOrder);
+    localStorage.setItem('dag_current_user', JSON.stringify(state.currentUser));
+
+    const uIdx = state.users.findIndex(u => u.id === state.currentUser.id);
+    if (uIdx >= 0) {
+      state.users[uIdx].orders = state.currentUser.orders;
+      localStorage.setItem('dag_users', JSON.stringify(state.users));
+    }
+    renderUserNav();
+  }
+
+  saveProductsState();
+
+  // Clear cart
+  state.cart = [];
+  saveCart();
+  updateCartBadge();
+  closeModal('checkout-modal');
+
+  renderProducts();
+  renderAdminStats();
+  renderAdminProductsTable();
+
+  // Show Success Receipt Modal
+  const recId = document.getElementById('receipt-order-id');
+  const recMethod = document.getElementById('receipt-payment-method');
+  const recTotal = document.getElementById('receipt-total-amount');
+
+  if (recId) recId.innerText = `#DT-${orderId}`;
+  if (recMethod) recMethod.innerText = `${methodLabel} - ${pending.installment || 'Tek Çekim'}`;
+  if (recTotal) recTotal.innerText = `${(pending.total || totalAmount).toLocaleString('tr-TR')} ₺`;
+
+  openModal('order-success-modal');
+  if (window.lucide) lucide.createIcons();
+  showToast(`Ödeme başarıyla onaylandı! Sipariş No: #DT-${orderId}`, 'success');
+}
 
 // ==========================================================================
 // 6. PRODUCT DETAIL MODAL (QUICK-VIEW)
@@ -2588,9 +3017,13 @@ window.openProductModal = function(productId) {
               Ürün Şu Anda Tükendi
             </button>
           ` : `
-            <button onclick="addToCart('${p.id}'); closeModal('product-modal');" class="flex-1 py-3 px-6 rounded-xl glow-cyan-btn text-slate-950 font-bold text-sm flex items-center justify-center gap-2">
+            <button onclick="addToCart('${p.id}'); closeModal('product-modal');" class="flex-1 py-3 px-3 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5">
               <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-              <span>Hemen Sepete Ekle</span>
+              <span>Sepete Ekle</span>
+            </button>
+            <button onclick="closeModal('product-modal'); buyNowWithCreditCard('${p.id}', 1);" class="flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md">
+              <i data-lucide="credit-card" class="w-4 h-4"></i>
+              <span>Kartla Hemen Al</span>
             </button>
           `}
           
@@ -3151,70 +3584,13 @@ function setupEventListeners() {
     });
   }
 
-  // Checkout Form - Real Stock Deduction & Order Record
+  // Checkout Form Delegation
   const checkoutForm = document.getElementById('checkout-form');
-  if (checkoutForm) {
+  if (checkoutForm && !checkoutForm.hasAttribute('onsubmit')) {
     checkoutForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const nameInput = document.getElementById('checkout-name');
-      const customerName = (nameInput && nameInput.value.trim()) || (state.currentUser ? state.currentUser.name : 'Müşteri');
-
-      let totalAmount = 0;
-      const itemsSummaryList = [];
-
-      state.cart.forEach(cartItem => {
-        const prod = state.products.find(p => p.id === cartItem.id);
-        if (prod) {
-          prod.stock = Math.max(0, (prod.stock || 0) - cartItem.quantity);
-          totalAmount += cartItem.price * cartItem.quantity;
-          itemsSummaryList.push(`${cartItem.quantity}x ${cartItem.name}`);
-          if (window.syncProductToOpenCart) {
-            window.syncProductToOpenCart(prod);
-          }
-        }
-      });
-
-      const newOrder = {
-        id: Math.floor(10000 + Math.random() * 90000),
-        customer: customerName,
-        itemsCount: state.cart.reduce((s, i) => s + i.quantity, 0),
-        itemsSummary: itemsSummaryList.slice(0, 2).join(', '),
-        total: totalAmount,
-        status: 'Sipariş Alındı',
-        date: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
-      };
-
-      // Push to global orders
-      state.orders.unshift(newOrder);
-      localStorage.setItem('dag_orders', JSON.stringify(state.orders));
-
-      // Push to current user orders if logged in
-      if (state.currentUser) {
-        if (!state.currentUser.orders) state.currentUser.orders = [];
-        state.currentUser.orders.unshift(newOrder);
-        localStorage.setItem('dag_current_user', JSON.stringify(state.currentUser));
-
-        const uIdx = state.users.findIndex(u => u.id === state.currentUser.id);
-        if (uIdx >= 0) {
-          state.users[uIdx].orders = state.currentUser.orders;
-          localStorage.setItem('dag_users', JSON.stringify(state.users));
-        }
-        renderUserNav();
+      if (window.handleCheckoutSubmit) {
+        window.handleCheckoutSubmit(e);
       }
-
-      saveProductsState();
-
-      state.cart = [];
-      saveCart();
-      updateCartBadge();
-      closeModal('checkout-modal');
-
-      renderProducts();
-      renderAdminStats();
-      renderAdminProductsTable();
-
-      showToast(`Tebrikler ${customerName}! Siparişiniz alındı ve stoktan ayrıldı.`, 'success');
     });
   }
 }
@@ -3698,13 +4074,24 @@ function initProductDetailPage() {
               Ürün Şu Anda Tükendi
             </button>
           ` : `
-            <button 
-              onclick="addToCart('` + p.id + `', detailSelectedQty); toggleCartDrawer(true);" 
-              class="flex-1 py-3.5 px-6 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-95"
-            >
-              <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-              <span>Sepete Ekle</span>
-            </button>
+            <div class="flex-1 flex items-center gap-2.5 flex-wrap">
+              <button 
+                onclick="addToCart('` + p.id + `', detailSelectedQty); toggleCartDrawer(true);" 
+                class="flex-1 min-w-[130px] py-3.5 px-3 rounded-xl glow-cyan-btn text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg transition-transform active:scale-95"
+              >
+                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                <span>Sepete Ekle</span>
+              </button>
+
+              <button 
+                onclick="buyNowWithCreditCard('` + p.id + `', detailSelectedQty);" 
+                class="flex-1 min-w-[160px] py-3.5 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-transform active:scale-95"
+                title="Kredi kartı ile 3D Secure güvenli hemen satın al"
+              >
+                <i data-lucide="credit-card" class="w-4 h-4"></i>
+                <span>Kredi Kartı ile Hemen Al</span>
+              </button>
+            </div>
           `) + `
 
           <!-- Wishlist Heart Button -->
